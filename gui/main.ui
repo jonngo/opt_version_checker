@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>974</width>
+    <height>504</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Version Checker</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QLabel" name="title_label">
+      <property name="font">
+       <font>
+        <pointsize>20</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>VERSION CHECKER</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_8">
+        <item>
+         <widget class="QLabel" name="merge_result_label">
+          <property name="text">
+           <string>Merged Result</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTableView" name="merge_result_table"/>
+        </item>
+        <item>
+         <widget class="QFrame" name="merge_result_buttom_button_frame">
+          <property name="frameShape">
+           <enum>QFrame::Box</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_7">
+           <item>
+            <spacer name="horizontalSpacer_5">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="merge_result_hide_pushbutton">
+             <property name="text">
+              <string>Hide</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="merge_result_export_pushbutton">
+             <property name="text">
+              <string>Export</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_7">
+        <item>
+         <widget class="QLabel" name="job_bundle_pkg_ver_label">
+          <property name="text">
+           <string>Job Bundle Package Version</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTableView" name="jbz_pkg_ver_table"/>
+        </item>
+        <item>
+         <widget class="QFrame" name="jbz_pkg_ver_buttom_button_frame">
+          <property name="frameShape">
+           <enum>QFrame::Box</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <item>
+            <spacer name="horizontalSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="jbz_pkg_version_hide_pushbutton">
+             <property name="text">
+              <string>Hide</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="jbz_pkg_version_export_pushbutton">
+             <property name="text">
+              <string>Export</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_6">
+        <item>
+         <widget class="QLabel" name="tms_param_label">
+          <property name="text">
+           <string>TMSLite Parameters</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTableView" name="tms_param_table"/>
+        </item>
+        <item>
+         <widget class="QFrame" name="tms_param_buttom_button_frame">
+          <property name="frameShape">
+           <enum>QFrame::Box</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <item>
+            <spacer name="horizontalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="tms_param_hide_pushbutton">
+             <property name="text">
+              <string>Hide</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="tms_param_export_pushbutton">
+             <property name="text">
+              <string>Export</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_5">
+        <item>
+         <widget class="QLabel" name="manifest_file_label">
+          <property name="text">
+           <string>Manifest File</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTableView" name="manifest_table"/>
+        </item>
+        <item>
+         <widget class="QFrame" name="manifest_buttom_button_frame">
+          <property name="frameShape">
+           <enum>QFrame::Box</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_5">
+           <item>
+            <spacer name="horizontalSpacer_3">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="manifest_hide_pushbutton">
+             <property name="text">
+              <string>Hide</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="manifest_export_pushbutton">
+             <property name="text">
+              <string>Export</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QLabel" name="emv_kernel_version_label">
+          <property name="text">
+           <string>EMV Kernel Version</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTableView" name="emv_kernel_ver_table"/>
+        </item>
+        <item>
+         <widget class="QFrame" name="emv_kernel_ver_buttom_button_frame">
+          <property name="frameShape">
+           <enum>QFrame::Box</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_6">
+           <item>
+            <spacer name="horizontalSpacer_4">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="emv_kernel_ver_hide_pushbutton">
+             <property name="text">
+              <string>Hide</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="emv_kernel_ver_export_pushbutton">
+             <property name="text">
+              <string>Export</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>974</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="exit_MenuItem"/>
+   </widget>
+   <widget class="QMenu" name="menuSource">
+    <property name="title">
+     <string>Source</string>
+    </property>
+    <addaction name="jbz_pkg_menuItem"/>
+    <addaction name="tmsLiteMenuItem"/>
+    <addaction name="emvMenuItem"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <widget class="QMenu" name="menuResult">
+     <property name="title">
+      <string>Merged Result</string>
+     </property>
+     <addaction name="merge_show_menu_item"/>
+     <addaction name="merge_hide_menu_item"/>
+    </widget>
+    <widget class="QMenu" name="menuJob_Bundle_Package_Version">
+     <property name="title">
+      <string>Job Bundle Package Version</string>
+     </property>
+     <addaction name="jbz_show_menu_item"/>
+     <addaction name="jbz_hide_menu_item"/>
+    </widget>
+    <widget class="QMenu" name="menuTMSParameter">
+     <property name="title">
+      <string>TMSLite Parameters</string>
+     </property>
+     <addaction name="tms_show_menu_item"/>
+     <addaction name="tms_hide_menu_item"/>
+    </widget>
+    <widget class="QMenu" name="menuManifest_File">
+     <property name="title">
+      <string>Manifest File</string>
+     </property>
+     <addaction name="manifest_show_menu_item"/>
+     <addaction name="manifest_hide_menu_item"/>
+    </widget>
+    <widget class="QMenu" name="menuEMV_Kernel_Version">
+     <property name="title">
+      <string>EMV Kernel Version</string>
+     </property>
+     <addaction name="emv_show_menu_item"/>
+     <addaction name="emv_hide_menu_item"/>
+    </widget>
+    <widget class="QMenu" name="menuShow_Only">
+     <property name="title">
+      <string>Show Only</string>
+     </property>
+     <addaction name="show_only_merge_result_menu_item"/>
+     <addaction name="show_only_jbz_menu_item"/>
+     <addaction name="show_only_tms_menu_item"/>
+     <addaction name="show_only_manifest_menu_item"/>
+     <addaction name="show_only_emv_menu_item"/>
+    </widget>
+    <addaction name="menuResult"/>
+    <addaction name="menuJob_Bundle_Package_Version"/>
+    <addaction name="menuTMSParameter"/>
+    <addaction name="menuManifest_File"/>
+    <addaction name="menuEMV_Kernel_Version"/>
+    <addaction name="menuShow_Only"/>
+    <addaction name="show_all_menu_item"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuSource"/>
+   <addaction name="menuView"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="exit_MenuItem">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
+  <action name="jbz_pkg_menuItem">
+   <property name="text">
+    <string>Job Bundle</string>
+   </property>
+  </action>
+  <action name="tmsLiteMenuItem">
+   <property name="text">
+    <string>TMSLite</string>
+   </property>
+  </action>
+  <action name="manifestMenuItem">
+   <property name="text">
+    <string>Manifest</string>
+   </property>
+  </action>
+  <action name="emvMenuItem">
+   <property name="text">
+    <string>EMV</string>
+   </property>
+  </action>
+  <action name="merge_show_menu_item">
+   <property name="text">
+    <string>Show</string>
+   </property>
+  </action>
+  <action name="merge_hide_menu_item">
+   <property name="text">
+    <string>Hide</string>
+   </property>
+  </action>
+  <action name="jbz_show_menu_item">
+   <property name="text">
+    <string>Show</string>
+   </property>
+  </action>
+  <action name="jbz_hide_menu_item">
+   <property name="text">
+    <string>Hide</string>
+   </property>
+  </action>
+  <action name="tms_show_menu_item">
+   <property name="text">
+    <string>Show</string>
+   </property>
+  </action>
+  <action name="tms_hide_menu_item">
+   <property name="text">
+    <string>Hide</string>
+   </property>
+  </action>
+  <action name="manifest_show_menu_item">
+   <property name="text">
+    <string>Show</string>
+   </property>
+  </action>
+  <action name="manifest_hide_menu_item">
+   <property name="text">
+    <string>Hide</string>
+   </property>
+  </action>
+  <action name="emv_show_menu_item">
+   <property name="text">
+    <string>Show</string>
+   </property>
+  </action>
+  <action name="emv_hide_menu_item">
+   <property name="text">
+    <string>Hide</string>
+   </property>
+  </action>
+  <action name="show_only_merge_result_menu_item">
+   <property name="text">
+    <string>Merged Result</string>
+   </property>
+  </action>
+  <action name="show_only_jbz_menu_item">
+   <property name="text">
+    <string>Job Bundle Package Version</string>
+   </property>
+  </action>
+  <action name="show_only_tms_menu_item">
+   <property name="text">
+    <string>TMSLite Parameters</string>
+   </property>
+  </action>
+  <action name="show_only_manifest_menu_item">
+   <property name="text">
+    <string>Manifest File</string>
+   </property>
+  </action>
+  <action name="show_only_emv_menu_item">
+   <property name="text">
+    <string>EMV Kernel Version</string>
+   </property>
+  </action>
+  <action name="show_all_menu_item">
+   <property name="text">
+    <string>Show All</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>exit_MenuItem</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>329</x>
+     <y>327</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
