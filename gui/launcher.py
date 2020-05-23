@@ -86,10 +86,10 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget):
             return
         jbx = JobBundleExtraction()
         result_jbz,result_manifest = jbx.extract(self.pkg_ui.jbzPathLineEdit.text())
-        # print (result)
         self.pkg_widget.hide()
         self.populate_jb_table(result_jbz)
-        self.populate_manifest_table(result_manifest)
+        if result_manifest is not None:
+            self.populate_manifest_table(result_manifest)
 
     def populate_jb_table(self,result):
         header = result.pop(0)
@@ -279,3 +279,6 @@ if __name__ == "__main__":
     ui.setupUi(version_checker_mainwindow)
     ui.extendUI(version_checker_mainwindow)
     sys.exit(app.exec_())
+
+# To convert ui to py
+# pyuic5 jbz_pkg.ui -o jbz_pkg.py
