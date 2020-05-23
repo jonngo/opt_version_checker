@@ -127,3 +127,16 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+#File extraction folders
+xtrak_level_1/
+xtrak_level_2/
+xtrak_level_3/
+xtrak_level_4/
+xtrak_level_5/
+xtrak_level_6/
+xtrak_level_7/
+xtrak_level_8/
+xtrak_level_9/
+
+
