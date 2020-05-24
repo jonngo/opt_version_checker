@@ -87,7 +87,7 @@
         <item>
          <widget class="QLabel" name="job_bundle_pkg_ver_label">
           <property name="text">
-           <string>Job Bundle Package Version</string>
+           <string>Package Version</string>
           </property>
          </widget>
         </item>
@@ -396,7 +396,7 @@
   </action>
   <action name="jbz_pkg_menuItem">
    <property name="text">
-    <string>Job Bundle</string>
+    <string>Packages</string>
    </property>
   </action>
   <action name="tmsLiteMenuItem">

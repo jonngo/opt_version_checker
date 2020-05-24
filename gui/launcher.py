@@ -86,10 +86,31 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget):
         self.open_file_dialog(self.pkg_ui.conf_other_pkg_3_line_edit)
 
     def extractJbz(self):
-        if self.pkg_ui.jbzPathLineEdit.text() == "":
-            return
         jbx = JobBundleExtraction()
-        result_jbz,result_manifest = jbx.extract(self.pkg_ui.jbzPathLineEdit.text())
+
+        if self.pkg_ui.jbzPathLineEdit.text() != "":
+            # self.pkg_ui.jbz_file_path_label.setStyleSheet("background-color: lightgreen")
+            result_jbz,result_manifest = jbx.extract(self.pkg_ui.jbzPathLineEdit.text())
+            # self.pkg_ui.jbz_file_path_label.setStyleSheet("background-color: white")
+
+        if self.pkg_ui.conf_other_pkg_1_line_edit.text() != "":
+            # self.pkg_ui.conf_other_pkg_label_1.setStyleSheet("background-color: lightgreen")
+            result_conf_other_1,_ = jbx.extract(self.pkg_ui.conf_other_pkg_1_line_edit.text())
+            # self.pkg_ui.conf_other_pkg_label_1.setStyleSheet("background-color: white")
+            result_jbz = result_jbz + result_conf_other_1
+
+        if self.pkg_ui.conf_other_pkg_2_line_edit.text() != "":
+            # self.pkg_ui.conf_other_pkg_label_2.setStyleSheet("background-color: lightgreen")
+            result_conf_other_2,_ = jbx.extract(self.pkg_ui.conf_other_pkg_2_line_edit.text())
+            # self.pkg_ui.conf_other_pkg_label_2.setStyleSheet("background-color: white")
+            result_jbz = result_jbz + result_conf_other_2
+
+        if self.pkg_ui.conf_other_pkg_3_line_edit.text() != "":
+            # self.pkg_ui.conf_other_pkg_label_3.setStyleSheet("background-color: lightgreen")
+            result_conf_other_3,_ = jbx.extract(self.pkg_ui.conf_other_pkg_3_line_edit.text())
+            # self.pkg_ui.conf_other_pkg_label_3.setStyleSheet("background-color: white")
+            result_jbz = result_jbz + result_conf_other_3
+
         self.pkg_widget.hide()
         self.populate_jb_table(result_jbz)
         if result_manifest is not None:
@@ -101,7 +122,6 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget):
         data = pd.DataFrame(result, columns=header,index=rn)
         self.model = TableModel(data)
         self.jbz_pkg_ver_table.setModel(self.model)
-        #self.tms_param_table.setModel(self.model)
 
     def populate_manifest_table(self,result):
         header = result.pop(0)

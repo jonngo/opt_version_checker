@@ -16,12 +16,6 @@ class JobBundleExtraction:
         self.regexp_string = r"\d{2}.\d{2}.\d{4}"
         self.use_full_path = False
 
-        for x in range(self.extract_file_starting_index,self.extract_file_ending_index+1):
-            if os.path.exists(self.base_xtrak_path+self.extract_folder+str(x)):
-                try:
-                    shutil.rmtree(self.base_xtrak_path+self.extract_folder+str(x))
-                except:
-                    print('Error while deleting directory')
 
     def filenameOnly(self,f):
         return os.path.splitext(f.split('/')[-1])[0]
@@ -45,7 +39,18 @@ class JobBundleExtraction:
         else:
             return pkg_name1
 
+    def clear_xtrak_folders(self):
+        for x in range(self.extract_file_starting_index,self.extract_file_ending_index+1):
+            if os.path.exists(self.base_xtrak_path+self.extract_folder+str(x)):
+                try:
+                    shutil.rmtree(self.base_xtrak_path+self.extract_folder+str(x))
+                except:
+                    print('Error while deleting directory')
+
     def extract(self, jbz_file):
+        #Remove existing extract folder
+        self.clear_xtrak_folders()
+
         pkg_list = [jbz_file, ]
 
         for x in range(self.extract_file_starting_index,self.extract_file_ending_index+1):
@@ -118,6 +123,7 @@ class JobBundleExtraction:
 
         if manifest is not None:
             self.display_table(manifest)
+
         return master_pkg_list, manifest
 
     def display_table(self, content):
