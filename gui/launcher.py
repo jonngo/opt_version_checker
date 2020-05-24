@@ -55,11 +55,6 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget):
 
         version_checker_mainwindow.show()
 
-    # def closeOtherForms(self):
-    #     self.pkg_widget.close()
-    #     self.tms_widget.close()
-    #     self.emv_widget.close()
-
     #JBZ PACKAGE VERSION
     def openPkgWidget(self):
         #read pre-defined config
@@ -70,16 +65,25 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget):
         self.pkg_ui.jbz_regex_match_ver_line_edit.setText(jbx.regexp_string)
         self.pkg_widget.show()
 
-    def searchJbzPath(self):
+    def open_file_dialog(self,line_edit):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        #file, _ = QFileDialog.getOpenFileName(None,'Open file','D:\\JonNgoStorage',"jbz files (*.jbz))")
         file, _ = QFileDialog.getOpenFileName()
-        #file = str(QFileDialog.getExistingDirectory())
 
         if file:
-            print(file)
-            self.pkg_ui.jbzPathLineEdit.setText(file)
+            line_edit.setText(file)
+
+    def searchJbzPath(self):
+        self.open_file_dialog(self.pkg_ui.jbzPathLineEdit)
+
+    def search_other_pkg_path_1(self):
+        self.open_file_dialog(self.pkg_ui.conf_other_pkg_1_line_edit)
+
+    def search_other_pkg_path_2(self):
+        self.open_file_dialog(self.pkg_ui.conf_other_pkg_2_line_edit)
+
+    def search_other_pkg_path_3(self):
+        self.open_file_dialog(self.pkg_ui.conf_other_pkg_3_line_edit)
 
     def extractJbz(self):
         if self.pkg_ui.jbzPathLineEdit.text() == "":
@@ -112,6 +116,9 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget):
         self.pkg_ui.setupUi(self.pkg_widget)
         self.pkg_ui.jbzPathPushButton.clicked.connect(self.searchJbzPath)
         self.pkg_ui.extractPushButton.clicked.connect(self.extractJbz)
+        self.pkg_ui.conf_other_pkg_1_push_button.clicked.connect(self.search_other_pkg_path_1)
+        self.pkg_ui.conf_other_pkg_2_push_button.clicked.connect(self.search_other_pkg_path_2)
+        self.pkg_ui.conf_other_pkg_3_push_button.clicked.connect(self.search_other_pkg_path_3)
 
     #EMV KERNEL VERSION
     def initEmvWidget(self):
