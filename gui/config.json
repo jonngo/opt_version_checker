@@ -1,0 +1,10 @@
+{
+    "pkg_version_cfg": [
+        {"base_xtrak_path":"D:/JonNgoStorage/my_hack_project/opt_version_checker/extract/"},
+        {"sevenZ_exe":"C:/Program Files/7-Zip/7z.exe"},
+        {"manifest_file":"manifest.mnf"},
+        {"regexp_string":"\\d{2}.\\d{2}.\\d{4}"}
+    ]
+}
+
+

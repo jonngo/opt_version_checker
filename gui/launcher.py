@@ -10,10 +10,31 @@ from tms_parameters import TmsExtraction
 import sys
 from PyQt5.QtCore import Qt
 import pandas as pd
+import json
 
 
 
 class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget):
+    def __init__(self):
+        """
+            Configuration variables of package version
+                - conf_base_xtrak_path
+                - conf_sevenZ_exe
+                - conf_manifest
+                - conf_regexp_string
+        """
+
+        with open("config.json") as json_data_file:
+            data = json.load(json_data_file)
+            for conf in data['pkg_version_cfg']:
+                if 'base_xtrak_path' in conf:
+                    self.conf_base_xtrak_path = conf['base_xtrak_path']
+                elif 'sevenZ_exe' in conf:
+                    self.conf_sevenZ_exe = conf['sevenZ_exe']
+                elif 'manifest_file' in conf:
+                    self.conf_manifest = conf['manifest_file']
+                elif 'regexp_string' in conf:
+                    self.conf_regexp_string = conf['regexp_string']
 
     #MAIN
     def extendUI(self,version_checker_mainwindow):
@@ -57,12 +78,10 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget):
 
     #JBZ PACKAGE VERSION
     def openPkgWidget(self):
-        #read pre-defined config
-        jbx = JobBundleExtraction()
-        self.pkg_ui.extractionPathLineEdit.setText(jbx.base_xtrak_path)
-        self.pkg_ui.sevenZlineEdit.setText(jbx.sevenZ_exe)
-        self.pkg_ui.jbz_manifest_line_edit.setText(jbx.manifest_file)
-        self.pkg_ui.jbz_regex_match_ver_line_edit.setText(jbx.regexp_string)
+        self.pkg_ui.extractionPathLineEdit.setText(self.conf_base_xtrak_path)
+        self.pkg_ui.sevenZlineEdit.setText(self.conf_sevenZ_exe)
+        self.pkg_ui.jbz_manifest_line_edit.setText(self.conf_manifest)
+        self.pkg_ui.jbz_regex_match_ver_line_edit.setText(self.conf_regexp_string)
         self.pkg_widget.show()
 
     def open_file_dialog(self,line_edit):
@@ -88,27 +107,24 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget):
     def extractJbz(self):
         jbx = JobBundleExtraction()
 
+        jbx.base_xtrak_path = self.conf_base_xtrak_path
+        jbx.sevenZ_exe = self.conf_sevenZ_exe
+        jbx.manifest_file = self.conf_manifest
+        jbx.regexp_string = self.conf_regexp_string
+
         if self.pkg_ui.jbzPathLineEdit.text() != "":
-            # self.pkg_ui.jbz_file_path_label.setStyleSheet("background-color: lightgreen")
             result_jbz,result_manifest = jbx.extract(self.pkg_ui.jbzPathLineEdit.text())
-            # self.pkg_ui.jbz_file_path_label.setStyleSheet("background-color: white")
 
         if self.pkg_ui.conf_other_pkg_1_line_edit.text() != "":
-            # self.pkg_ui.conf_other_pkg_label_1.setStyleSheet("background-color: lightgreen")
             result_conf_other_1,_ = jbx.extract(self.pkg_ui.conf_other_pkg_1_line_edit.text())
-            # self.pkg_ui.conf_other_pkg_label_1.setStyleSheet("background-color: white")
             result_jbz = result_jbz + result_conf_other_1
 
         if self.pkg_ui.conf_other_pkg_2_line_edit.text() != "":
-            # self.pkg_ui.conf_other_pkg_label_2.setStyleSheet("background-color: lightgreen")
             result_conf_other_2,_ = jbx.extract(self.pkg_ui.conf_other_pkg_2_line_edit.text())
-            # self.pkg_ui.conf_other_pkg_label_2.setStyleSheet("background-color: white")
             result_jbz = result_jbz + result_conf_other_2
 
         if self.pkg_ui.conf_other_pkg_3_line_edit.text() != "":
-            # self.pkg_ui.conf_other_pkg_label_3.setStyleSheet("background-color: lightgreen")
             result_conf_other_3,_ = jbx.extract(self.pkg_ui.conf_other_pkg_3_line_edit.text())
-            # self.pkg_ui.conf_other_pkg_label_3.setStyleSheet("background-color: white")
             result_jbz = result_jbz + result_conf_other_3
 
         self.pkg_widget.hide()
