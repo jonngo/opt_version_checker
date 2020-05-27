@@ -13,7 +13,10 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_tms_widget(object):
     def setupUi(self, tms_widget):
         tms_widget.setObjectName("tms_widget")
-        tms_widget.resize(787, 140)
+        tms_widget.resize(599, 140)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("vc.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        tms_widget.setWindowIcon(icon)
         self.verticalLayout = QtWidgets.QVBoxLayout(tms_widget)
         self.verticalLayout.setObjectName("verticalLayout")
         self.label = QtWidgets.QLabel(tms_widget)

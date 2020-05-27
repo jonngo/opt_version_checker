@@ -42,6 +42,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget):
         self.emvMenuItem.triggered.connect(self.openEmvWidget)
         self.tmsLiteMenuItem.triggered.connect(self.openTmsWidget)
 
+
         #Initialize Widgets
         self.initPkgWidget()
         self.initEmvWidget()
@@ -324,4 +325,13 @@ if __name__ == "__main__":
     sys.exit(app.exec_())
 
 # To convert ui to py
+# pyuic5 main.ui -o main.py
+# pyuic5 emv.ui -o emv.py
+# pyuic5 tms_param.ui -o tms_param.py
 # pyuic5 jbz_pkg.ui -o jbz_pkg.py
+
+# To make .exe
+# pyinstaller --noconsole --onefile --windowed --icon=../vc.ico launcher.py
+
+# does not work
+# pyinstaller --noconsole --onefile --windowed --icon=vc.ico gui/launcher.py

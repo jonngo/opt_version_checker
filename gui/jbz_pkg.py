@@ -14,6 +14,9 @@ class Ui_pkg_widget(object):
     def setupUi(self, pkg_widget):
         pkg_widget.setObjectName("pkg_widget")
         pkg_widget.resize(989, 359)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("vc.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        pkg_widget.setWindowIcon(icon)
         self.verticalLayout = QtWidgets.QVBoxLayout(pkg_widget)
         self.verticalLayout.setObjectName("verticalLayout")
         self.label = QtWidgets.QLabel(pkg_widget)

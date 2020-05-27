@@ -13,7 +13,10 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_emv_widget(object):
     def setupUi(self, emv_widget):
         emv_widget.setObjectName("emv_widget")
-        emv_widget.resize(784, 243)
+        emv_widget.resize(598, 243)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("vc.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        emv_widget.setWindowIcon(icon)
         self.verticalLayout = QtWidgets.QVBoxLayout(emv_widget)
         self.verticalLayout.setObjectName("verticalLayout")
         self.emv_label = QtWidgets.QLabel(emv_widget)

@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Version Checker</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>vc.ico</normaloff>vc.ico</iconset>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
