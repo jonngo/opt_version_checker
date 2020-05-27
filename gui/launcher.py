@@ -16,17 +16,19 @@ import json
 
 class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget):
     def __init__(self):
-        """
-            Configuration variables of package version
-                - conf_base_xtrak_path
-                - conf_sevenZ_exe
-                - conf_manifest
-                - conf_regexp_string
-        """
 
         with open("config.json") as json_data_file:
             data = json.load(json_data_file)
             for conf in data['pkg_version_cfg']:
+
+                """
+                    Configuration variables of package version
+                        - conf_base_xtrak_path
+                        - conf_sevenZ_exe
+                        - conf_manifest
+                        - conf_regexp_string
+                """
+
                 if 'base_xtrak_path' in conf:
                     self.conf_base_xtrak_path = conf['base_xtrak_path']
                 elif 'sevenZ_exe' in conf:
@@ -35,6 +37,19 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget):
                     self.conf_manifest = conf['manifest_file']
                 elif 'regexp_string' in conf:
                     self.conf_regexp_string = conf['regexp_string']
+
+            for conf in data['emv_version_cfg']:
+
+                """
+                Configuration variables of EMV version
+                    - conf_emv_ver_url
+                    - conf_chrome_driver_filepath
+                """
+
+                if 'emv_ver_url' in conf:
+                    self.conf_emv_ver_url = conf['emv_ver_url']
+                elif 'chrome_driver_filepath' in conf:
+                    self.conf_chrome_driver_filepath = conf['chrome_driver_filepath']
 
     #MAIN
     def extendUI(self,version_checker_mainwindow):
@@ -168,13 +183,20 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget):
 
     def openEmvWidget(self):
         emvx = EmvExtraction()
-        self.emv_ui.emv_ver_url_lineedit.setText(emvx.emv_ver_url)
-        self.emv_ui.chrome_driver_lineEdit.setText(emvx.chrome_driver_filepath)
+        self.emv_ui.emv_ver_url_lineedit.setText(self.conf_emv_ver_url)
+        self.emv_ui.chrome_driver_lineEdit.setText(self.conf_chrome_driver_filepath)
         self.emv_widget.show()
 
     def extractEMV(self):
+        if self.emv_ui.usernameLineEdit.text() == '' or self.emv_ui.passwordLineEdit.text() == '':
+            return
+
         #login to confluence and get EMV version
         emvx = EmvExtraction()
+
+        emvx.emv_ver_url = self.conf_emv_ver_url
+        emvx.chrome_driver_filepath = self.conf_chrome_driver_filepath
+
         index = self.emv_ui.emv_device_comboBox.currentIndex()
         dc = self.device_customer_list[index].split(' ')
         if len(dc) == 1:

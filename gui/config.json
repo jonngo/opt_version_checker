@@ -4,6 +4,10 @@
         {"sevenZ_exe":"C:/Program Files/7-Zip/7z.exe"},
         {"manifest_file":"manifest.mnf"},
         {"regexp_string":"\\d{2}.\\d{2}.\\d{4}"}
+    ],
+    "emv_version_cfg": [
+        {"emv_ver_url": "https://conf.invenco.com/display/CC/EMV+Versions"},
+        {"chrome_driver_filepath":"D:/JonNgoStorage/my_hack_project/opt_version_checker/chromedriver_win32/chromedriver.exe"}
     ]
 }
 

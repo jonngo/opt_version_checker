@@ -97,8 +97,6 @@ class EmvExtraction:
             print("Page loaded")
 
         tlist = []
-        # tlist.append(["device type","customer","tag name", "version xpath", "tag name xpath"])
-        # tlist.append(["TAG", "VERSION", "MATCH"])
         tlist.append(["TAG", "VERSION"])
         for row in self.xpath:
             if device_m == row[0] and customer_m == row[1]:
@@ -129,5 +127,10 @@ class EmvExtraction:
         driver.quit()
 
         return tlist
+
+# Uncomment to perform module test.
+# if __name__ == "__main__":
+#     emvx = EmvExtraction()
+#     emvx.login('username','password','G6-300','ALL')
 
 
