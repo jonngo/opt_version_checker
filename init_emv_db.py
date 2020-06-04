@@ -62,6 +62,7 @@ class Device(Base):
     __tablename__ = 'device'
     id = Column(Integer, primary_key=True, autoincrement=True)
     model = Column(String(10), nullable=False,unique=True)
+    emv_ver_xpath = relationship('EmvVerXpath', back_populates='device')
 
     def __repr__(self):
         return "<Device (model='%s')>" % self.model
@@ -70,6 +71,7 @@ class DeviceRegion(Base):
     __tablename__ = 'device_region'
     id = Column(Integer, primary_key=True, autoincrement=True)
     region_name = Column(String(10), nullable=False,unique=True)
+    emv_ver_xpath = relationship('EmvVerXpath', back_populates='device_region')
 
     def __repr__(self):
         return "<Device Region/Customer (name='%s')>" % self.region_name
@@ -82,8 +84,8 @@ class EmvVerXpath(Base):
     tag_name = Column(String(55))
     version_xpath = Column(String(75))
     tag_name_xpath = Column(String(75))
-    device = relationship(Device)
-    device_region = relationship(DeviceRegion)
+    device = relationship(Device,back_populates='emv_ver_xpath')
+    device_region = relationship(DeviceRegion,back_populates='emv_ver_xpath')
 
     def __repr__(self):
         return "<EmvVerXpath (device_id='%d', device_region_id='%d', tag_name='%s', version_xpath='%s', tag_name_xpath='%s')>" \
