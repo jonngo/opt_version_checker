@@ -324,7 +324,7 @@
     <addaction name="jbz_pkg_menuItem"/>
     <addaction name="tmsLiteMenuItem"/>
     <addaction name="emvMenuItem"/>
-    <addaction name="actionJFrog"/>
+    <addaction name="jfrogMenuItem"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -334,8 +334,8 @@
      <property name="title">
       <string>JFrog Artifactory</string>
      </property>
-     <addaction name="merge_show_menu_item"/>
-     <addaction name="merge_hide_menu_item"/>
+     <addaction name="jfrog_show_menu_item"/>
+     <addaction name="jfrog_hide_menu_item"/>
     </widget>
     <widget class="QMenu" name="menuJob_Bundle_Package_Version">
      <property name="title">
@@ -369,7 +369,7 @@
      <property name="title">
       <string>Show Only</string>
      </property>
-     <addaction name="show_only_merge_result_menu_item"/>
+     <addaction name="show_only_jfrog_result_menu_item"/>
      <addaction name="show_only_jbz_menu_item"/>
      <addaction name="show_only_tms_menu_item"/>
      <addaction name="show_only_manifest_menu_item"/>
@@ -419,12 +419,12 @@
     <string>EMV</string>
    </property>
   </action>
-  <action name="merge_show_menu_item">
+  <action name="jfrog_show_menu_item">
    <property name="text">
     <string>Show</string>
    </property>
   </action>
-  <action name="merge_hide_menu_item">
+  <action name="jfrog_hide_menu_item">
    <property name="text">
     <string>Hide</string>
    </property>
@@ -469,7 +469,7 @@
     <string>Hide</string>
    </property>
   </action>
-  <action name="show_only_merge_result_menu_item">
+  <action name="show_only_jfrog_result_menu_item">
    <property name="text">
     <string>Jfrog Artifactory</string>
    </property>
@@ -499,7 +499,7 @@
     <string>Show All</string>
    </property>
   </action>
-  <action name="actionJFrog">
+  <action name="jfrogMenuItem">
    <property name="text">
     <string>JFrog</string>
    </property>

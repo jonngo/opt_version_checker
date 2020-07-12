@@ -11,19 +11,19 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_Form(object):
-    def setupUi(self, Form):
-        Form.setObjectName("Form")
-        Form.resize(1123, 139)
-        self.verticalLayout = QtWidgets.QVBoxLayout(Form)
+class Ui_jfrog_widget(object):
+    def setupUi(self, jfrog_widget):
+        jfrog_widget.setObjectName("jfrog_widget")
+        jfrog_widget.resize(1123, 139)
+        self.verticalLayout = QtWidgets.QVBoxLayout(jfrog_widget)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.label = QtWidgets.QLabel(Form)
+        self.label = QtWidgets.QLabel(jfrog_widget)
         font = QtGui.QFont()
         font.setPointSize(20)
         self.label.setFont(font)
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)
-        self.frame = QtWidgets.QFrame(Form)
+        self.frame = QtWidgets.QFrame(jfrog_widget)
         self.frame.setAutoFillBackground(False)
         self.frame.setFrameShape(QtWidgets.QFrame.Box)
         self.frame.setFrameShadow(QtWidgets.QFrame.Plain)
@@ -48,22 +48,22 @@ class Ui_Form(object):
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem1)
-        self.jfrog_load_push_button = QtWidgets.QPushButton(Form)
+        self.jfrog_load_push_button = QtWidgets.QPushButton(jfrog_widget)
         self.jfrog_load_push_button.setObjectName("jfrog_load_push_button")
         self.horizontalLayout_3.addWidget(self.jfrog_load_push_button)
-        self.jfrog_close_push_button = QtWidgets.QPushButton(Form)
+        self.jfrog_close_push_button = QtWidgets.QPushButton(jfrog_widget)
         self.jfrog_close_push_button.setObjectName("jfrog_close_push_button")
         self.horizontalLayout_3.addWidget(self.jfrog_close_push_button)
         self.verticalLayout.addLayout(self.horizontalLayout_3)
 
-        self.retranslateUi(Form)
-        QtCore.QMetaObject.connectSlotsByName(Form)
+        self.retranslateUi(jfrog_widget)
+        QtCore.QMetaObject.connectSlotsByName(jfrog_widget)
 
-    def retranslateUi(self, Form):
+    def retranslateUi(self, jfrog_widget):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
-        self.label.setText(_translate("Form", "JFrog Artifactory"))
-        self.jfrog_browse_push_button.setText(_translate("Form", "Browse"))
-        self.jfrog_label.setText(_translate("Form", "URL"))
-        self.jfrog_load_push_button.setText(_translate("Form", "Load"))
-        self.jfrog_close_push_button.setText(_translate("Form", "Close"))
+        jfrog_widget.setWindowTitle(_translate("jfrog_widget", "JFrog Artifactory"))
+        self.label.setText(_translate("jfrog_widget", "JFrog Artifactory"))
+        self.jfrog_browse_push_button.setText(_translate("jfrog_widget", "Browse"))
+        self.jfrog_label.setText(_translate("jfrog_widget", "URL"))
+        self.jfrog_load_push_button.setText(_translate("jfrog_widget", "Load"))
+        self.jfrog_close_push_button.setText(_translate("jfrog_widget", "Close"))

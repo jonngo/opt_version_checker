@@ -3,6 +3,7 @@ from gui import Ui_MainWindow
 from gui import Ui_pkg_widget
 from gui import Ui_emv_widget
 from gui import Ui_tms_widget
+from gui import Ui_jfrog_widget
 from PyQt5 import QtCore, QtGui, QtWidgets
 from jbz_extraction import JobBundleExtraction
 from emv_version import EmvExtraction
@@ -14,7 +15,7 @@ import json
 
 
 
-class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget):
+class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jfrog_widget):
     def __init__(self):
 
         with open("config.json") as json_data_file:
@@ -56,15 +57,17 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget):
         self.jbz_pkg_menuItem.triggered.connect(self.openPkgWidget)
         self.emvMenuItem.triggered.connect(self.openEmvWidget)
         self.tmsLiteMenuItem.triggered.connect(self.openTmsWidget)
+        self.jfrogMenuItem.triggered.connect(self.openJFrogWidget)
 
 
         #Initialize Widgets
         self.initPkgWidget()
         self.initEmvWidget()
         self.initTmsWidget()
+        self.initJfrogWidget()
 
         #hide pushbutton
-        self.merge_result_hide_pushbutton.clicked.connect(lambda state, x={'result':False}: self.show_hide_panel(x))
+        self.jfrog_result_hide_pushbutton.clicked.connect(lambda state, x={'result':False}: self.show_hide_panel(x))
         self.jbz_pkg_version_hide_pushbutton.clicked.connect(lambda state, x={'jbz':False}: self.show_hide_panel(x))
         self.tms_param_hide_pushbutton.clicked.connect(lambda state, x={'tms': False}: self.show_hide_panel(x))
         self.manifest_hide_pushbutton.clicked.connect(lambda state, x={'manifest': False}: self.show_hide_panel(x))
@@ -72,19 +75,19 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget):
         #show_all view
         self.show_all_menu_item.triggered.connect(lambda state, x={'result':True,'jbz':True,'tms': True,'manifest': True,'emv': True}: self.show_hide_panel(x))
         #show_only_view
-        self.show_only_merge_result_menu_item.triggered.connect(lambda state, x={'result':True,'jbz':False,'tms': False,'manifest': False,'emv': False}: self.show_hide_panel(x))
+        self.show_only_jfrog_result_menu_item.triggered.connect(lambda state, x={'result':True,'jbz':False,'tms': False,'manifest': False,'emv': False}: self.show_hide_panel(x))
         self.show_only_jbz_menu_item.triggered.connect(lambda state, x={'result':False,'jbz':True,'tms': False,'manifest': False,'emv': False}: self.show_hide_panel(x))
         self.show_only_tms_menu_item.triggered.connect(lambda state, x={'result':False,'jbz':False,'tms': True,'manifest': False,'emv': False}: self.show_hide_panel(x))
         self.show_only_manifest_menu_item.triggered.connect(lambda state, x={'result':False,'jbz':False,'tms': False,'manifest': True,'emv': False}: self.show_hide_panel(x))
         self.show_only_emv_menu_item.triggered.connect(lambda state, x={'result':False,'jbz':False,'tms': False,'manifest': False,'emv': True}: self.show_hide_panel(x))
         #show
-        self.merge_show_menu_item.triggered.connect(lambda state, x={'result':True}: self.show_hide_panel(x))
+        self.jfrog_show_menu_item.triggered.connect(lambda state, x={'result':True}: self.show_hide_panel(x))
         self.jbz_show_menu_item.triggered.connect(lambda state, x={'jbz':True}: self.show_hide_panel(x))
         self.tms_show_menu_item.triggered.connect(lambda state, x={'tms': True}: self.show_hide_panel(x))
         self.manifest_show_menu_item.triggered.connect(lambda state, x={'manifest': True}: self.show_hide_panel(x))
         self.emv_show_menu_item.triggered.connect(lambda state, x={'emv': True}: self.show_hide_panel(x))
         #hide
-        self.merge_hide_menu_item.triggered.connect(lambda state, x={'result':False}: self.show_hide_panel(x))
+        self.jfrog_hide_menu_item.triggered.connect(lambda state, x={'result':False}: self.show_hide_panel(x))
         self.jbz_hide_menu_item.triggered.connect(lambda state, x={'jbz':False}: self.show_hide_panel(x))
         self.tms_hide_menu_item.triggered.connect(lambda state, x={'tms':False}: self.show_hide_panel(x))
         self.manifest_hide_menu_item.triggered.connect(lambda state, x={'manifest':False}: self.show_hide_panel(x))
@@ -250,6 +253,15 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget):
         self.model = TableModel(data)
         self.tms_param_table.setModel(self.model)
 
+    #JFROG ARTIFACTORY
+    def initJfrogWidget(self):
+        self.jfrog_widget = QtWidgets.QWidget()
+        self.jfrog_ui = Ui_jfrog_widget()
+        self.jfrog_ui.setupUi(self.jfrog_widget)
+
+    def openJFrogWidget(self):
+        self.jfrog_widget.show()
+
     #Hide panel
     def show_hide_panel(self, hs_dict):
         for key, value in hs_dict.items():
@@ -257,14 +269,14 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget):
             if key == 'result':
                 if value:
                     #show result
-                    self.merge_result_buttom_button_frame.show()
-                    self.merge_result_table.show()
-                    self.merge_result_label.show()
+                    self.jfrog_result_buttom_button_frame.show()
+                    self.jfrog_result_table.show()
+                    self.jfrog_result_label.show()
                 else:
                     #hide result
-                    self.merge_result_buttom_button_frame.hide()
-                    self.merge_result_table.hide()
-                    self.merge_result_label.hide()
+                    self.jfrog_result_buttom_button_frame.hide()
+                    self.jfrog_result_table.hide()
+                    self.jfrog_result_label.hide()
             if key == 'jbz':
                  if value:
                      #show jbz
@@ -351,6 +363,7 @@ if __name__ == "__main__":
 # pyuic5 emv.ui -o emv.py
 # pyuic5 tms_param.ui -o tms_param.py
 # pyuic5 jbz_pkg.ui -o jbz_pkg.py
+# pyuic5 jfrog.ui -o jfrog.py
 
 # To make .exe
 # pyinstaller --noconsole --onefile --windowed --icon=../vc.ico launcher.py
