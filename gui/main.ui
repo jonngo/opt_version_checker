@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>974</width>
-    <height>504</height>
+    <width>1131</width>
+    <height>717</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -36,14 +36,14 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_8">
         <item>
-         <widget class="QLabel" name="merge_result_label">
+         <widget class="QLabel" name="jfrog_result_label">
           <property name="text">
-           <string>Merged Result</string>
+           <string>Jfrog Artifactory</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QTableView" name="merge_result_table"/>
+         <widget class="QTableView" name="jfrog_result_table"/>
         </item>
         <item>
          <widget class="QFrame" name="merge_result_buttom_button_frame">
@@ -68,14 +68,14 @@
             </spacer>
            </item>
            <item>
-            <widget class="QPushButton" name="merge_result_hide_pushbutton">
+            <widget class="QPushButton" name="jfrog_result_hide_pushbutton">
              <property name="text">
               <string>Hide</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="merge_result_export_pushbutton">
+            <widget class="QPushButton" name="jfrog_result_export_pushbutton">
              <property name="text">
               <string>Export</string>
              </property>
@@ -307,7 +307,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>974</width>
+     <width>1131</width>
      <height>21</height>
     </rect>
    </property>
@@ -324,6 +324,7 @@
     <addaction name="jbz_pkg_menuItem"/>
     <addaction name="tmsLiteMenuItem"/>
     <addaction name="emvMenuItem"/>
+    <addaction name="actionJFrog"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -331,7 +332,7 @@
     </property>
     <widget class="QMenu" name="menuResult">
      <property name="title">
-      <string>Merged Result</string>
+      <string>JFrog Artifactory</string>
      </property>
      <addaction name="merge_show_menu_item"/>
      <addaction name="merge_hide_menu_item"/>
@@ -470,7 +471,7 @@
   </action>
   <action name="show_only_merge_result_menu_item">
    <property name="text">
-    <string>Merged Result</string>
+    <string>Jfrog Artifactory</string>
    </property>
   </action>
   <action name="show_only_jbz_menu_item">
@@ -496,6 +497,11 @@
   <action name="show_all_menu_item">
    <property name="text">
     <string>Show All</string>
+   </property>
+  </action>
+  <action name="actionJFrog">
+   <property name="text">
+    <string>JFrog</string>
    </property>
   </action>
  </widget>
