@@ -36,17 +36,17 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_8">
         <item>
-         <widget class="QLabel" name="jfrog_result_label">
+         <widget class="QLabel" name="jfrog_label">
           <property name="text">
            <string>Jfrog Artifactory</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QTableView" name="jfrog_result_table"/>
+         <widget class="QTableView" name="jfrog_table"/>
         </item>
         <item>
-         <widget class="QFrame" name="merge_result_buttom_button_frame">
+         <widget class="QFrame" name="jfrog_buttom_button_frame">
           <property name="frameShape">
            <enum>QFrame::Box</enum>
           </property>
@@ -68,14 +68,14 @@
             </spacer>
            </item>
            <item>
-            <widget class="QPushButton" name="jfrog_result_hide_pushbutton">
+            <widget class="QPushButton" name="jfrog_hide_pushbutton">
              <property name="text">
               <string>Hide</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="jfrog_result_export_pushbutton">
+            <widget class="QPushButton" name="jfrog_export_pushbutton">
              <property name="text">
               <string>Export</string>
              </property>
@@ -369,7 +369,7 @@
      <property name="title">
       <string>Show Only</string>
      </property>
-     <addaction name="show_only_jfrog_result_menu_item"/>
+     <addaction name="show_only_jfrog_menu_item"/>
      <addaction name="show_only_jbz_menu_item"/>
      <addaction name="show_only_tms_menu_item"/>
      <addaction name="show_only_manifest_menu_item"/>
@@ -469,7 +469,7 @@
     <string>Hide</string>
    </property>
   </action>
-  <action name="show_only_jfrog_result_menu_item">
+  <action name="show_only_jfrog_menu_item">
    <property name="text">
     <string>Jfrog Artifactory</string>
    </property>

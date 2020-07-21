@@ -67,27 +67,27 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.initJfrogWidget()
 
         #hide pushbutton
-        self.jfrog_result_hide_pushbutton.clicked.connect(lambda state, x={'result':False}: self.show_hide_panel(x))
+        self.jfrog_hide_pushbutton.clicked.connect(lambda state, x={'jfrog':False}: self.show_hide_panel(x))
         self.jbz_pkg_version_hide_pushbutton.clicked.connect(lambda state, x={'jbz':False}: self.show_hide_panel(x))
         self.tms_param_hide_pushbutton.clicked.connect(lambda state, x={'tms': False}: self.show_hide_panel(x))
         self.manifest_hide_pushbutton.clicked.connect(lambda state, x={'manifest': False}: self.show_hide_panel(x))
         self.emv_kernel_ver_hide_pushbutton.clicked.connect(lambda state, x={'emv': False}: self.show_hide_panel(x))
         #show_all view
-        self.show_all_menu_item.triggered.connect(lambda state, x={'result':True,'jbz':True,'tms': True,'manifest': True,'emv': True}: self.show_hide_panel(x))
+        self.show_all_menu_item.triggered.connect(lambda state, x={'jfrog':True,'jbz':True,'tms': True,'manifest': True,'emv': True}: self.show_hide_panel(x))
         #show_only_view
-        self.show_only_jfrog_result_menu_item.triggered.connect(lambda state, x={'result':True,'jbz':False,'tms': False,'manifest': False,'emv': False}: self.show_hide_panel(x))
-        self.show_only_jbz_menu_item.triggered.connect(lambda state, x={'result':False,'jbz':True,'tms': False,'manifest': False,'emv': False}: self.show_hide_panel(x))
-        self.show_only_tms_menu_item.triggered.connect(lambda state, x={'result':False,'jbz':False,'tms': True,'manifest': False,'emv': False}: self.show_hide_panel(x))
-        self.show_only_manifest_menu_item.triggered.connect(lambda state, x={'result':False,'jbz':False,'tms': False,'manifest': True,'emv': False}: self.show_hide_panel(x))
-        self.show_only_emv_menu_item.triggered.connect(lambda state, x={'result':False,'jbz':False,'tms': False,'manifest': False,'emv': True}: self.show_hide_panel(x))
+        self.show_only_jfrog_menu_item.triggered.connect(lambda state, x={'jfrog':True,'jbz':False,'tms': False,'manifest': False,'emv': False}: self.show_hide_panel(x))
+        self.show_only_jbz_menu_item.triggered.connect(lambda state, x={'jfrog':False,'jbz':True,'tms': False,'manifest': False,'emv': False}: self.show_hide_panel(x))
+        self.show_only_tms_menu_item.triggered.connect(lambda state, x={'jfrog':False,'jbz':False,'tms': True,'manifest': False,'emv': False}: self.show_hide_panel(x))
+        self.show_only_manifest_menu_item.triggered.connect(lambda state, x={'jfrog':False,'jbz':False,'tms': False,'manifest': True,'emv': False}: self.show_hide_panel(x))
+        self.show_only_emv_menu_item.triggered.connect(lambda state, x={'jfrog':False,'jbz':False,'tms': False,'manifest': False,'emv': True}: self.show_hide_panel(x))
         #show
-        self.jfrog_show_menu_item.triggered.connect(lambda state, x={'result':True}: self.show_hide_panel(x))
+        self.jfrog_show_menu_item.triggered.connect(lambda state, x={'jfrog':True}: self.show_hide_panel(x))
         self.jbz_show_menu_item.triggered.connect(lambda state, x={'jbz':True}: self.show_hide_panel(x))
         self.tms_show_menu_item.triggered.connect(lambda state, x={'tms': True}: self.show_hide_panel(x))
         self.manifest_show_menu_item.triggered.connect(lambda state, x={'manifest': True}: self.show_hide_panel(x))
         self.emv_show_menu_item.triggered.connect(lambda state, x={'emv': True}: self.show_hide_panel(x))
         #hide
-        self.jfrog_hide_menu_item.triggered.connect(lambda state, x={'result':False}: self.show_hide_panel(x))
+        self.jfrog_hide_menu_item.triggered.connect(lambda state, x={'jfrog':False}: self.show_hide_panel(x))
         self.jbz_hide_menu_item.triggered.connect(lambda state, x={'jbz':False}: self.show_hide_panel(x))
         self.tms_hide_menu_item.triggered.connect(lambda state, x={'tms':False}: self.show_hide_panel(x))
         self.manifest_hide_menu_item.triggered.connect(lambda state, x={'manifest':False}: self.show_hide_panel(x))
@@ -266,17 +266,17 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
     def show_hide_panel(self, hs_dict):
         for key, value in hs_dict.items():
             # print(key)
-            if key == 'result':
+            if key == 'jfrog':
                 if value:
-                    #show result
-                    self.jfrog_result_buttom_button_frame.show()
-                    self.jfrog_result_table.show()
-                    self.jfrog_result_label.show()
+                    #show jfrog
+                    self.jfrog_buttom_button_frame.show()
+                    self.jfrog_table.show()
+                    self.jfrog_label.show()
                 else:
-                    #hide result
-                    self.jfrog_result_buttom_button_frame.hide()
-                    self.jfrog_result_table.hide()
-                    self.jfrog_result_label.hide()
+                    #hide jfrog
+                    self.jfrog_buttom_button_frame.hide()
+                    self.jfrog_table.hide()
+                    self.jfrog_label.hide()
             if key == 'jbz':
                  if value:
                      #show jbz
