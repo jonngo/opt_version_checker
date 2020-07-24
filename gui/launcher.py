@@ -1,3 +1,5 @@
+import os
+
 from PyQt5.QtWidgets import QFileDialog, QAbstractItemView
 from gui import Ui_MainWindow
 from gui import Ui_pkg_widget
@@ -12,8 +14,6 @@ import sys
 from PyQt5.QtCore import Qt
 import pandas as pd
 import json
-
-
 
 class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jfrog_widget):
     def __init__(self):
@@ -124,26 +124,26 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.open_file_dialog(self.pkg_ui.conf_other_pkg_3_line_edit)
 
     def extractJbz(self):
-        jbx = JobBundleExtraction()
+        self.jbx = JobBundleExtraction()
 
-        jbx.base_xtrak_path = self.conf_base_xtrak_path
-        jbx.sevenZ_exe = self.conf_sevenZ_exe
-        jbx.manifest_file = self.conf_manifest
-        jbx.regexp_string = self.conf_regexp_string
+        self.jbx.base_xtrak_path = self.conf_base_xtrak_path
+        self.jbx.sevenZ_exe = self.conf_sevenZ_exe
+        self.jbx.manifest_file = self.conf_manifest
+        self.jbx.regexp_string = self.conf_regexp_string
 
         if self.pkg_ui.jbzPathLineEdit.text() != "":
-            result_jbz,result_manifest = jbx.extract(self.pkg_ui.jbzPathLineEdit.text())
+            result_jbz,result_manifest = self.jbx.extract(self.pkg_ui.jbzPathLineEdit.text())
 
         if self.pkg_ui.conf_other_pkg_1_line_edit.text() != "":
-            result_conf_other_1,_ = jbx.extract(self.pkg_ui.conf_other_pkg_1_line_edit.text())
+            result_conf_other_1,_ = self.jbx.extract(self.pkg_ui.conf_other_pkg_1_line_edit.text())
             result_jbz = result_jbz + result_conf_other_1
 
         if self.pkg_ui.conf_other_pkg_2_line_edit.text() != "":
-            result_conf_other_2,_ = jbx.extract(self.pkg_ui.conf_other_pkg_2_line_edit.text())
+            result_conf_other_2,_ = self.jbx.extract(self.pkg_ui.conf_other_pkg_2_line_edit.text())
             result_jbz = result_jbz + result_conf_other_2
 
         if self.pkg_ui.conf_other_pkg_3_line_edit.text() != "":
-            result_conf_other_3,_ = jbx.extract(self.pkg_ui.conf_other_pkg_3_line_edit.text())
+            result_conf_other_3,_ = self.jbx.extract(self.pkg_ui.conf_other_pkg_3_line_edit.text())
             result_jbz = result_jbz + result_conf_other_3
 
         self.pkg_widget.hide()
@@ -155,9 +155,11 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         header = result.pop(0)
         rn = [str(c+1) for c in range(0,len(result))]
         data = pd.DataFrame(result, columns=header,index=rn)
-        self.model = TableModel(data)
+        self.model_jbz_pkg_ver = TableModel(data)
         self.jbz_pkg_ver_table.setSelectionBehavior(QAbstractItemView.SelectRows)
-        self.jbz_pkg_ver_table.setModel(self.model)
+        self.jbz_pkg_ver_table.setModel(self.model_jbz_pkg_ver)
+        self.jbz_pkg_ver_table.clicked.connect(self.package_info)
+
 
     def populate_manifest_table(self,result):
         header = result.pop(0)
@@ -166,6 +168,27 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.model = TableModel(data)
         self.manifest_table.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.manifest_table.setModel(self.model)
+
+    def package_info(self,signal):
+        row = signal.row()  # RETRIEVES ROW OF CELL THAT WAS DOUBLE CLICKED
+        # column = signal.column()  # RETRIEVES COLUMN OF CELL THAT WAS DOUBLE CLICKED
+        # cell_dict = self.model_jbz_pkg_ver.itemData(signal)  # RETURNS DICT VALUE OF SIGNAL
+        # cell_value = cell_dict.get(0)  # RETRIEVE VALUE FROM DICT
+
+        index = signal.sibling(row, 0)
+        index_dict = self.model_jbz_pkg_ver.itemData(index)
+        index_value = index_dict.get(0)
+        print(self.get_pkg_full_path(index_value))
+        # print('Row {}, Column {} clicked - value: {}\nColumn 1 contents: {}'.format(row, column, cell_value, index_value))
+
+    def get_pkg_full_path(self,pkg_name):
+        for x in range(self.jbx.extract_file_starting_index,self.jbx.extract_file_ending_index+1):
+            if os.path.exists(self.jbx.base_xtrak_path + self.jbx.extract_folder + str(x)):
+                print('processing ... {}'.format(x))
+                for root, dirs, files in os.walk(self.jbx.base_xtrak_path+self.jbx.extract_folder+str(x)):
+                    for name in files:
+                        if name == pkg_name:
+                            return os.path.join(root,name)
 
     def initPkgWidget(self):
         self.pkg_widget = QtWidgets.QWidget()
