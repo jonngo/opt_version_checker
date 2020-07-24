@@ -109,7 +109,7 @@
       <item row="3" column="2">
        <widget class="QPushButton" name="chromeDriverPushButton">
         <property name="text">
-         <string>Search</string>
+         <string>Browse</string>
         </property>
        </widget>
       </item>

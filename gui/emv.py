@@ -13,7 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_emv_widget(object):
     def setupUi(self, emv_widget):
         emv_widget.setObjectName("emv_widget")
-        emv_widget.resize(598, 243)
+        emv_widget.resize(1000, 243)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("vc.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         emv_widget.setWindowIcon(icon)
@@ -96,7 +96,7 @@ class Ui_emv_widget(object):
         self.label_2.setText(_translate("emv_widget", "Username"))
         self.label_5.setText(_translate("emv_widget", "Chrome driver"))
         self.label_4.setText(_translate("emv_widget", "EMV Version URL"))
-        self.chromeDriverPushButton.setText(_translate("emv_widget", "Search"))
+        self.chromeDriverPushButton.setText(_translate("emv_widget", "Browse"))
         self.label.setText(_translate("emv_widget", "Device"))
         self.extractEMVPushButton.setText(_translate("emv_widget", "Extract"))
         self.closeEMVPushButton.setText(_translate("emv_widget", "Close"))

@@ -13,7 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_tms_widget(object):
     def setupUi(self, tms_widget):
         tms_widget.setObjectName("tms_widget")
-        tms_widget.resize(599, 140)
+        tms_widget.resize(984, 140)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("vc.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         tms_widget.setWindowIcon(icon)
@@ -66,7 +66,7 @@ class Ui_tms_widget(object):
         _translate = QtCore.QCoreApplication.translate
         tms_widget.setWindowTitle(_translate("tms_widget", "TMSLite Parameters"))
         self.label.setText(_translate("tms_widget", "TMSLite Parameters"))
-        self.tms_param_search_push_button.setText(_translate("tms_widget", "Search"))
+        self.tms_param_search_push_button.setText(_translate("tms_widget", "Browse"))
         self.tms_param_label.setText(_translate("tms_widget", "TMSLite Parameter"))
         self.tms_param_load_push_button.setText(_translate("tms_widget", "Load"))
         self.tms_param_close_push_button.setText(_translate("tms_widget", "Close"))

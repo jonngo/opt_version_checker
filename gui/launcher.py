@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QFileDialog, QAbstractItemView
 from gui import Ui_MainWindow
 from gui import Ui_pkg_widget
 from gui import Ui_emv_widget
@@ -156,6 +156,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         rn = [str(c+1) for c in range(0,len(result))]
         data = pd.DataFrame(result, columns=header,index=rn)
         self.model = TableModel(data)
+        self.jbz_pkg_ver_table.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.jbz_pkg_ver_table.setModel(self.model)
 
     def populate_manifest_table(self,result):
@@ -163,6 +164,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         rn = [str(c+1) for c in range(0,len(result))]
         data = pd.DataFrame(result, columns=header,index=rn)
         self.model = TableModel(data)
+        self.manifest_table.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.manifest_table.setModel(self.model)
 
     def initPkgWidget(self):
@@ -218,6 +220,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         data = pd.DataFrame(result, columns=header,index=rn)
         self.model = TableModel(data)
         # self.emv_widget.hide()
+        self.emv_kernel_ver_table.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.emv_kernel_ver_table.setModel(self.model)
 
     #TMSLITE PARAMETERS
@@ -251,6 +254,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         rn = [str(c+1) for c in range(0,len(result))]
         data = pd.DataFrame(result, columns=header,index=rn)
         self.model = TableModel(data)
+        self.tms_param_table.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.tms_param_table.setModel(self.model)
 
     #JFROG ARTIFACTORY
