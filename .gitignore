@@ -144,3 +144,5 @@ experiment.py
 .idea/
 
 output/
+
+config.json
