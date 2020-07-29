@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1131</width>
-    <height>717</height>
+    <width>1280</width>
+    <height>720</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -99,6 +99,16 @@
          <widget class="QTableView" name="jbz_pkg_ver_table"/>
         </item>
         <item>
+         <widget class="QListView" name="pkg_listview">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QFrame" name="jbz_pkg_ver_buttom_button_frame">
           <property name="frameShape">
            <enum>QFrame::Box</enum>
@@ -119,6 +129,13 @@
               </size>
              </property>
             </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pkg_header_pushbutton">
+             <property name="text">
+              <string>Header</string>
+             </property>
+            </widget>
            </item>
            <item>
             <widget class="QPushButton" name="jbz_pkg_version_hide_pushbutton">
@@ -307,8 +324,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1131</width>
-     <height>21</height>
+     <width>1280</width>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

@@ -66,6 +66,9 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.initTmsWidget()
         self.initJfrogWidget()
 
+        #toggle package header button
+        self.pkg_header_pushbutton.clicked.connect(self.toggle_header_listview)
+
         #hide pushbutton
         self.jfrog_hide_pushbutton.clicked.connect(lambda state, x={'jfrog':False}: self.show_hide_panel(x))
         self.jbz_pkg_version_hide_pushbutton.clicked.connect(lambda state, x={'jbz':False}: self.show_hide_panel(x))
@@ -289,6 +292,13 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
     def openJFrogWidget(self):
         self.jfrog_widget.show()
 
+    #Toggle the package header list view
+    def toggle_header_listview(self):
+        if self.pkg_listview.isVisible():
+            self.pkg_listview.hide()
+        else:
+            self.pkg_listview.show()
+
     #Hide panel
     def show_hide_panel(self, hs_dict):
         for key, value in hs_dict.items():
@@ -310,12 +320,13 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
                      self.jbz_pkg_ver_buttom_button_frame.show()
                      self.jbz_pkg_ver_table.show()
                      self.job_bundle_pkg_ver_label.show()
+                     self.pkg_listview.show()
                  else:
                      #hide jbz
                      self.jbz_pkg_ver_buttom_button_frame.hide()
                      self.jbz_pkg_ver_table.hide()
                      self.job_bundle_pkg_ver_label.hide()
-
+                     self.pkg_listview.hide()
             if key == 'tms':
                  if value:
                      #show tms
