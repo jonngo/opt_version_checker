@@ -1,6 +1,8 @@
 import os
 
 from PyQt5.QtWidgets import QFileDialog, QAbstractItemView
+
+import package
 from gui import Ui_MainWindow
 from gui import Ui_pkg_widget
 from gui import Ui_emv_widget
@@ -181,7 +183,8 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         index = signal.sibling(row, 0)
         index_dict = self.model_jbz_pkg_ver.itemData(index)
         index_value = index_dict.get(0)
-        print(self.get_pkg_full_path(index_value))
+
+        print(package.header_info(self.get_pkg_full_path(index_value)))
         # print('Row {}, Column {} clicked - value: {}\nColumn 1 contents: {}'.format(row, column, cell_value, index_value))
 
     def get_pkg_full_path(self,pkg_name):
