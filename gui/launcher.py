@@ -1,5 +1,6 @@
 import os
 
+from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from PyQt5.QtWidgets import QFileDialog, QAbstractItemView
 
 import package
@@ -60,7 +61,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.emvMenuItem.triggered.connect(self.openEmvWidget)
         self.tmsLiteMenuItem.triggered.connect(self.openTmsWidget)
         self.jfrogMenuItem.triggered.connect(self.openJFrogWidget)
-
+        self.pkg_header_list_model = QStandardItemModel(self.pkg_listview)
 
         #Initialize Widgets
         self.initPkgWidget()
@@ -175,17 +176,20 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.manifest_table.setModel(self.model)
 
     def package_info(self,signal):
-        row = signal.row()  # RETRIEVES ROW OF CELL THAT WAS DOUBLE CLICKED
-        # column = signal.column()  # RETRIEVES COLUMN OF CELL THAT WAS DOUBLE CLICKED
-        # cell_dict = self.model_jbz_pkg_ver.itemData(signal)  # RETURNS DICT VALUE OF SIGNAL
-        # cell_value = cell_dict.get(0)  # RETRIEVE VALUE FROM DICT
-
+        row = signal.row()
         index = signal.sibling(row, 0)
         index_dict = self.model_jbz_pkg_ver.itemData(index)
         index_value = index_dict.get(0)
 
-        print(package.header_info(self.get_pkg_full_path(index_value)))
-        # print('Row {}, Column {} clicked - value: {}\nColumn 1 contents: {}'.format(row, column, cell_value, index_value))
+        pkg_header_list = str(package.header_info(self.get_pkg_full_path(index_value)))
+
+        self.pkg_header_list_model.clear()
+
+        for h in pkg_header_list.splitlines():
+            self.pkg_header_list_model.appendRow(QStandardItem(h))
+
+        # Apply the model to the list view
+        self.pkg_listview.setModel(self.pkg_header_list_model)
 
     def get_pkg_full_path(self,pkg_name):
         for x in range(self.jbx.extract_file_starting_index,self.jbx.extract_file_ending_index+1):

@@ -64,8 +64,9 @@ class JobBundleExtraction:
             #If the extract folder is not created then break from the loop
             if not os.path.exists(self.base_xtrak_path+self.extract_folder+str(x)):
                 break;
-
-            pkg_list = [os.path.join(root, name) for root, dirs, files in os.walk(self.base_xtrak_path+self.extract_folder+str(x)+'/') for name in files]
+            #Display only .pkg
+            pkg_list = [os.path.join(root, name) for root, dirs, files in
+                        os.walk(self.base_xtrak_path + self.extract_folder + str(x) + '/') for name in files if os.path.join(root, name).endswith(".pkg")]
 
         master_pkg_list = []
         master_pkg_list.append(['Package','Version'])
