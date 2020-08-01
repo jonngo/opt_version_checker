@@ -13,6 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from jbz_extraction import JobBundleExtraction
 from emv_version import EmvExtraction
 from tms_parameters import TmsExtraction
+from jfrog_artifactory import JfrogArtifactory
 import sys
 from PyQt5.QtCore import Qt
 import pandas as pd
@@ -55,12 +56,17 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
                 elif 'chrome_driver_filepath' in conf:
                     self.conf_chrome_driver_filepath = conf['chrome_driver_filepath']
 
+            #TODO include in the config the default directory to open
+
     #MAIN
     def extendUI(self,version_checker_mainwindow):
+        #Main menu signals
         self.jbz_pkg_menuItem.triggered.connect(self.openPkgWidget)
         self.emvMenuItem.triggered.connect(self.openEmvWidget)
         self.tmsLiteMenuItem.triggered.connect(self.openTmsWidget)
         self.jfrogMenuItem.triggered.connect(self.openJFrogWidget)
+
+        #List Model for the package header list
         self.pkg_header_list_model = QStandardItemModel(self.pkg_listview)
 
         #Initialize Widgets
@@ -99,6 +105,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.manifest_hide_menu_item.triggered.connect(lambda state, x={'manifest':False}: self.show_hide_panel(x))
         self.emv_hide_menu_item.triggered.connect(lambda state, x={'emv':False}: self.show_hide_panel(x))
 
+        #Display the main window
         version_checker_mainwindow.show()
 
     #JBZ PACKAGE VERSION
@@ -295,9 +302,41 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.jfrog_widget = QtWidgets.QWidget()
         self.jfrog_ui = Ui_jfrog_widget()
         self.jfrog_ui.setupUi(self.jfrog_widget)
+        #Jfrog Artifactory Signals
+        self.jfrog_ui.jfrog_load_push_button.clicked.connect(self.load_selected_sku_bundle)
+        self.jfrog_ui.jfrog_build_ver_line_edit.returnPressed.connect(self.load_build_list)
 
     def openJFrogWidget(self):
         self.jfrog_widget.show()
+
+    #Jfrog Artifactory slot when Load button is clicked
+    def load_build_list(self):
+        jfrog_art = JfrogArtifactory()
+        self.result_of_jfrog_list = jfrog_art.load_artifact(self.jfrog_ui.jfrog_build_ver_line_edit.text())
+        self.populate_jfrog_sku_bundle_table(self.result_of_jfrog_list)
+
+    def load_selected_sku_bundle(self):
+        if self.result_of_jfrog_list:
+            self.populate_jfrog_table(self.result_of_jfrog_list)
+            self.jfrog_widget.hide()
+
+
+    def populate_jfrog_sku_bundle_table(self,result_orig):
+        result = result_orig.copy()
+        header = result.pop(0)
+        rn = [str(c+1) for c in range(0,len(result))]
+        data = pd.DataFrame(result, columns=header,index=rn)
+        self.model = TableModel(data)
+        self.jfrog_ui.jfrog_all_tableview.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.jfrog_ui.jfrog_all_tableview.setModel(self.model)
+
+    def populate_jfrog_table(self,result):
+        header = result.pop(0)
+        rn = [str(c+1) for c in range(0,len(result))]
+        data = pd.DataFrame(result, columns=header,index=rn)
+        self.model = TableModel(data)
+        self.jfrog_table.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.jfrog_table.setModel(self.model)
 
     #Toggle the package header list view
     def toggle_header_listview(self):

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1123</width>
-    <height>139</height>
+    <width>887</width>
+    <height>613</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -41,39 +41,18 @@
       <number>2</number>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="2">
-       <widget class="QPushButton" name="jfrog_browse_push_button">
-        <property name="text">
-         <string>Browse</string>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="0">
-       <widget class="QLabel" name="jfrog_label">
+       <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>URL</string>
+         <string>Build version</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QLineEdit" name="jfrog_line_edit">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-       </widget>
+       <widget class="QLineEdit" name="jfrog_build_ver_line_edit"/>
       </item>
-      <item row="1" column="0">
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
+      <item row="1" column="0" colspan="2">
+       <widget class="QTableView" name="jfrog_all_tableview"/>
       </item>
      </layout>
     </widget>
@@ -112,5 +91,22 @@
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>jfrog_close_push_button</sender>
+   <signal>clicked()</signal>
+   <receiver>jfrog_widget</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1087</x>
+     <y>121</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>561</x>
+     <y>69</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
