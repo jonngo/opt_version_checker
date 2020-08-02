@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1280</width>
+    <width>1386</width>
     <height>720</height>
    </rect>
   </property>
@@ -19,18 +19,6 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
-     <widget class="QLabel" name="title_label">
-      <property name="font">
-       <font>
-        <pointsize>20</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>VERSION CHECKER</string>
-      </property>
-     </widget>
-    </item>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
@@ -96,7 +84,11 @@
          </widget>
         </item>
         <item>
-         <widget class="QTableView" name="jbz_pkg_ver_table"/>
+         <widget class="QTableView" name="jbz_pkg_ver_table">
+          <property name="sizeAdjustPolicy">
+           <enum>QAbstractScrollArea::AdjustIgnored</enum>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QListView" name="pkg_listview">
@@ -121,9 +113,9 @@
           <property name="frameShadow">
            <enum>QFrame::Raised</enum>
           </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <layout class="QHBoxLayout" name="horizontalLayout_8">
            <item>
-            <spacer name="horizontalSpacer">
+            <spacer name="horizontalSpacer_6">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
@@ -162,28 +154,43 @@
        </layout>
       </item>
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout_6">
+       <layout class="QVBoxLayout" name="verticalLayout_9">
         <item>
-         <widget class="QLabel" name="tms_param_label">
+         <widget class="QLabel" name="first_conf_other_pkg_ver_label">
           <property name="text">
-           <string>TMSLite Parameters</string>
+           <string>1st Conf and Other Version</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QTableView" name="tms_param_table"/>
+         <widget class="QTableView" name="first_conf_other_pkg_ver_table"/>
         </item>
         <item>
-         <widget class="QFrame" name="tms_param_buttom_button_frame">
+         <widget class="QListView" name="first_conf_other_pkg_listview">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="font">
+           <font>
+            <family>Consolas</family>
+           </font>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QFrame" name="first_conf_other_pkg_ver_buttom_button_frame">
           <property name="frameShape">
            <enum>QFrame::Box</enum>
           </property>
           <property name="frameShadow">
            <enum>QFrame::Raised</enum>
           </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <layout class="QHBoxLayout" name="horizontalLayout_9">
            <item>
-            <spacer name="horizontalSpacer_2">
+            <spacer name="horizontalSpacer_7">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
@@ -196,14 +203,171 @@
             </spacer>
            </item>
            <item>
-            <widget class="QPushButton" name="tms_param_hide_pushbutton">
+            <widget class="QPushButton" name="first_conf_other_pkg_header_pushbutton">
+             <property name="text">
+              <string>Header</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="first_conf_other_pkg_version_hide_pushbutton">
              <property name="text">
               <string>Hide</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="tms_param_export_pushbutton">
+            <widget class="QPushButton" name="first_conf_other_pkg_version_export_pushbutton">
+             <property name="text">
+              <string>Export</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_10">
+        <item>
+         <widget class="QLabel" name="second_conf_other_pkg_ver_label">
+          <property name="text">
+           <string>2nd Conf and Other Version</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTableView" name="second_conf_other_pkg_ver_table"/>
+        </item>
+        <item>
+         <widget class="QListView" name="second_conf_other_pkg_listview">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="font">
+           <font>
+            <family>Consolas</family>
+           </font>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QFrame" name="second_conf_other_pkg_ver_buttom_button_frame">
+          <property name="frameShape">
+           <enum>QFrame::Box</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_10">
+           <item>
+            <spacer name="horizontalSpacer_8">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="second_conf_other_pkg_header_pushbutton">
+             <property name="text">
+              <string>Header</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="second_conf_other_pkg_version_hide_pushbutton">
+             <property name="text">
+              <string>Hide</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="second_conf_other_pkg_version_export_pushbutton">
+             <property name="text">
+              <string>Export</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_11">
+        <item>
+         <widget class="QLabel" name="third_conf_other_pkg_ver_label">
+          <property name="text">
+           <string>3rd Conf and Other Version</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTableView" name="third_conf_other_pkg_ver_table"/>
+        </item>
+        <item>
+         <widget class="QListView" name="third_conf_other_pkg_listview">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="font">
+           <font>
+            <family>Consolas</family>
+           </font>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QFrame" name="third_conf_other_pkg_ver_buttom_button_frame">
+          <property name="frameShape">
+           <enum>QFrame::Box</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <item>
+            <spacer name="horizontalSpacer_9">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="third_conf_other_pkg_header_pushbutton">
+             <property name="text">
+              <string>Header</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="third_conf_other_pkg_version_hide_pushbutton">
+             <property name="text">
+              <string>Hide</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="third_conf_other_pkg_version_export_pushbutton">
              <property name="text">
               <string>Export</string>
              </property>
@@ -257,6 +421,59 @@
            </item>
            <item>
             <widget class="QPushButton" name="manifest_export_pushbutton">
+             <property name="text">
+              <string>Export</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_6">
+        <item>
+         <widget class="QLabel" name="tms_param_label">
+          <property name="text">
+           <string>TMSLite Parameters</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTableView" name="tms_param_table"/>
+        </item>
+        <item>
+         <widget class="QFrame" name="tms_param_buttom_button_frame">
+          <property name="frameShape">
+           <enum>QFrame::Box</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <item>
+            <spacer name="horizontalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="tms_param_hide_pushbutton">
+             <property name="text">
+              <string>Hide</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="tms_param_export_pushbutton">
              <property name="text">
               <string>Export</string>
              </property>
@@ -329,7 +546,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1280</width>
+     <width>1386</width>
      <height>18</height>
     </rect>
    </property>
@@ -343,66 +560,29 @@
     <property name="title">
      <string>Source</string>
     </property>
-    <addaction name="jbz_pkg_menuItem"/>
-    <addaction name="tmsLiteMenuItem"/>
-    <addaction name="emvMenuItem"/>
-    <addaction name="jfrogMenuItem"/>
+    <addaction name="jfrog_menu_item"/>
+    <addaction name="jbz_pkg_menu_item"/>
+    <addaction name="tmsLite_menu_item"/>
+    <addaction name="emv_menu_item"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
      <string>View</string>
     </property>
-    <widget class="QMenu" name="menuResult">
+    <widget class="QMenu" name="show_menu">
      <property name="title">
-      <string>JFrog Artifactory</string>
+      <string>Show</string>
      </property>
-     <addaction name="jfrog_show_menu_item"/>
-     <addaction name="jfrog_hide_menu_item"/>
+     <addaction name="show_jfrog_menu_item"/>
+     <addaction name="show_jbz_menu_item"/>
+     <addaction name="show_first_conf_other_menu_item"/>
+     <addaction name="show_second_conf_other_menu_item"/>
+     <addaction name="show_third_conf_other_menu_item"/>
+     <addaction name="show_manifest_menu_item"/>
+     <addaction name="show_tms_menu_item"/>
+     <addaction name="show_emv_menu_item"/>
     </widget>
-    <widget class="QMenu" name="menuJob_Bundle_Package_Version">
-     <property name="title">
-      <string>Job Bundle Package Version</string>
-     </property>
-     <addaction name="jbz_show_menu_item"/>
-     <addaction name="jbz_hide_menu_item"/>
-    </widget>
-    <widget class="QMenu" name="menuTMSParameter">
-     <property name="title">
-      <string>TMSLite Parameters</string>
-     </property>
-     <addaction name="tms_show_menu_item"/>
-     <addaction name="tms_hide_menu_item"/>
-    </widget>
-    <widget class="QMenu" name="menuManifest_File">
-     <property name="title">
-      <string>Manifest File</string>
-     </property>
-     <addaction name="manifest_show_menu_item"/>
-     <addaction name="manifest_hide_menu_item"/>
-    </widget>
-    <widget class="QMenu" name="menuEMV_Kernel_Version">
-     <property name="title">
-      <string>EMV Kernel Version</string>
-     </property>
-     <addaction name="emv_show_menu_item"/>
-     <addaction name="emv_hide_menu_item"/>
-    </widget>
-    <widget class="QMenu" name="menuShow_Only">
-     <property name="title">
-      <string>Show Only</string>
-     </property>
-     <addaction name="show_only_jfrog_menu_item"/>
-     <addaction name="show_only_jbz_menu_item"/>
-     <addaction name="show_only_tms_menu_item"/>
-     <addaction name="show_only_manifest_menu_item"/>
-     <addaction name="show_only_emv_menu_item"/>
-    </widget>
-    <addaction name="menuResult"/>
-    <addaction name="menuJob_Bundle_Package_Version"/>
-    <addaction name="menuTMSParameter"/>
-    <addaction name="menuManifest_File"/>
-    <addaction name="menuEMV_Kernel_Version"/>
-    <addaction name="menuShow_Only"/>
+    <addaction name="show_menu"/>
     <addaction name="show_all_menu_item"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
@@ -421,12 +601,12 @@
     <string>Exit</string>
    </property>
   </action>
-  <action name="jbz_pkg_menuItem">
+  <action name="jbz_pkg_menu_item">
    <property name="text">
     <string>Packages</string>
    </property>
   </action>
-  <action name="tmsLiteMenuItem">
+  <action name="tmsLite_menu_item">
    <property name="text">
     <string>TMSLite</string>
    </property>
@@ -436,7 +616,7 @@
     <string>Manifest</string>
    </property>
   </action>
-  <action name="emvMenuItem">
+  <action name="emv_menu_item">
    <property name="text">
     <string>EMV</string>
    </property>
@@ -491,27 +671,27 @@
     <string>Hide</string>
    </property>
   </action>
-  <action name="show_only_jfrog_menu_item">
+  <action name="show_jfrog_menu_item">
    <property name="text">
     <string>Jfrog Artifactory</string>
    </property>
   </action>
-  <action name="show_only_jbz_menu_item">
+  <action name="show_jbz_menu_item">
    <property name="text">
-    <string>Job Bundle Package Version</string>
+    <string>Job Bundle Version</string>
    </property>
   </action>
-  <action name="show_only_tms_menu_item">
+  <action name="show_tms_menu_item">
    <property name="text">
     <string>TMSLite Parameters</string>
    </property>
   </action>
-  <action name="show_only_manifest_menu_item">
+  <action name="show_manifest_menu_item">
    <property name="text">
     <string>Manifest File</string>
    </property>
   </action>
-  <action name="show_only_emv_menu_item">
+  <action name="show_emv_menu_item">
    <property name="text">
     <string>EMV Kernel Version</string>
    </property>
@@ -521,9 +701,24 @@
     <string>Show All</string>
    </property>
   </action>
-  <action name="jfrogMenuItem">
+  <action name="jfrog_menu_item">
    <property name="text">
     <string>JFrog</string>
+   </property>
+  </action>
+  <action name="show_first_conf_other_menu_item">
+   <property name="text">
+    <string>1 - Conf / Other Version</string>
+   </property>
+  </action>
+  <action name="show_second_conf_other_menu_item">
+   <property name="text">
+    <string>2 - Conf / Other Version</string>
+   </property>
+  </action>
+  <action name="show_third_conf_other_menu_item">
+   <property name="text">
+    <string>3 - Conf / Other Version</string>
    </property>
   </action>
  </widget>

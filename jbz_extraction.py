@@ -16,7 +16,6 @@ class JobBundleExtraction:
         self.regexp_string = r"\d{2}.\d{2}.\d{4}"
         self.use_full_path = False
 
-
     def filenameOnly(self,f):
         return os.path.splitext(f.split('/')[-1])[0]
 
@@ -39,42 +38,47 @@ class JobBundleExtraction:
         else:
             return pkg_name1
 
-    def clear_xtrak_folders(self):
+    def clear_xtrak_folders(self, tag):
         for x in range(self.extract_file_starting_index,self.extract_file_ending_index+1):
-            if os.path.exists(self.base_xtrak_path+self.extract_folder+str(x)):
+            if os.path.exists(self.base_xtrak_path+tag+'/'+self.extract_folder+str(x)):
                 try:
-                    shutil.rmtree(self.base_xtrak_path+self.extract_folder+str(x))
+                    shutil.rmtree(self.base_xtrak_path+tag+'/'+self.extract_folder+str(x))
                 except:
-                    print('Error while deleting directory')
+                    print('Error while deleting directory ... {}'.format(self.base_xtrak_path+tag+'/' + self.extract_folder + str(x)))
 
-    def extract(self, jbz_file):
+    def extract(self, tag=0,jbz_file=None):
         #Remove existing extract folder
-        self.clear_xtrak_folders()
+        self.clear_xtrak_folders(str(tag))
 
         pkg_list = [jbz_file, ]
 
         for x in range(self.extract_file_starting_index,self.extract_file_ending_index+1):
             for p in pkg_list:
                 print (p)
-                process = Popen([self.sevenZ_exe,"x",p,"-o"+self.base_xtrak_path+self.extract_folder+str(x)+'/'+self.filenameOnly(p)+"/","*"], stdout=PIPE, stderr=PIPE)
+                process = Popen([self.sevenZ_exe,"x",p,"-o"+self.base_xtrak_path+str(tag)+'/'+self.extract_folder+str(x)+'/'+self.filenameOnly(p)+"/","*"], stdout=PIPE, stderr=PIPE)
                 stdout, stderr = process.communicate()
                 s = stdout.decode("utf-8")
                 print(s)
 
             #If the extract folder is not created then break from the loop
-            if not os.path.exists(self.base_xtrak_path+self.extract_folder+str(x)):
+            if not os.path.exists(self.base_xtrak_path+str(tag)+'/'+self.extract_folder+str(x)):
                 break;
             #Display only .pkg
-            pkg_list = [os.path.join(root, name) for root, dirs, files in
-                        os.walk(self.base_xtrak_path + self.extract_folder + str(x) + '/') for name in files if os.path.join(root, name).endswith(".pkg")]
+            # pkg_list = [os.path.join(root, name) for root, dirs, files in
+            #             os.walk(self.base_xtrak_path+str(tag)+'/' + self.extract_folder + str(x) + '/') for name in files if os.path.join(root, name).endswith(".pkg")]
+
+            pkg_list = [os.path.join(root, name) for root, dirs, files in os.walk(self.base_xtrak_path+str(tag)+'/' + self.extract_folder + str(x) + '/') for name in files]
+
+            # for i in pkg_list:
+            #     print('... {}'.format(i))
 
         master_pkg_list = []
         master_pkg_list.append(['Package','Version'])
 
         for x in range(self.extract_file_starting_index,self.extract_file_ending_index+1):
-            if os.path.exists(self.base_xtrak_path + self.extract_folder + str(x)):
-                print('processing ... '+str(x))
-                for root, dirs, files in os.walk(self.base_xtrak_path+self.extract_folder+str(x)):
+            if os.path.exists(self.base_xtrak_path+str(tag)+'/' + self.extract_folder + str(x)):
+                print('processing ... {}'.format(x))
+                for root, dirs, files in os.walk(self.base_xtrak_path+str(tag)+'/'+self.extract_folder+str(x)):
                     for name in files:
                         v = self.getVersion(name)
                         print(v)
@@ -91,7 +95,7 @@ class JobBundleExtraction:
         manifest = None
 
         for x in range(self.extract_file_starting_index, self.extract_file_ending_index + 1):
-            for root, dirs, files in os.walk(self.base_xtrak_path + self.extract_folder + str(x)):
+            for root, dirs, files in os.walk(self.base_xtrak_path+str(tag)+'/' + self.extract_folder + str(x)):
                 for name in files:
                     if self.manifest_file == name:
                         manifest_file = "".join(os.path.join(root, name))
@@ -146,3 +150,4 @@ class JobBundleExtraction:
 #     if result_manifest is None:
 #         print('No manifest file found')
 
+# header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)

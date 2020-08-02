@@ -60,55 +60,71 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
 
     #MAIN
     def extendUI(self,version_checker_mainwindow):
-        #Main menu signals
-        self.jbz_pkg_menuItem.triggered.connect(self.openPkgWidget)
-        self.emvMenuItem.triggered.connect(self.openEmvWidget)
-        self.tmsLiteMenuItem.triggered.connect(self.openTmsWidget)
-        self.jfrogMenuItem.triggered.connect(self.openJFrogWidget)
+        #Source Menu
+        self.jbz_pkg_menu_item.triggered.connect(self.openPkgWidget)
+        self.emv_menu_item.triggered.connect(self.openEmvWidget)
+        self.tmsLite_menu_item.triggered.connect(self.openTmsWidget)
+        self.jfrog_menu_item.triggered.connect(self.openJFrogWidget)
 
-        #List Model for the package header list
-        self.pkg_header_list_model = QStandardItemModel(self.pkg_listview)
+        #View Menu - Show Menu
+        #show_only_view
+        self.show_jfrog_menu_item.triggered.connect(lambda state, x={'jfrog':True}: self.show_hide_panel(x))
+        self.show_jbz_menu_item.triggered.connect(lambda state, x={'jbz':True}: self.show_hide_panel(x))
+        self.show_first_conf_other_menu_item.triggered.connect(lambda state, x={'first': True}: self.show_hide_panel(x))
+        self.show_second_conf_other_menu_item.triggered.connect(lambda state, x={'second': True}: self.show_hide_panel(x))
+        self.show_third_conf_other_menu_item.triggered.connect(lambda state, x={'third': True}: self.show_hide_panel(x))
+        self.show_manifest_menu_item.triggered.connect(lambda state, x={'manifest': True}: self.show_hide_panel(x))
+        self.show_tms_menu_item.triggered.connect(lambda state, x={'tms': True}: self.show_hide_panel(x))
+        self.show_emv_menu_item.triggered.connect(lambda state, x={'emv': True}: self.show_hide_panel(x))
+
+        #toggle package header button
+        self.pkg_header_pushbutton.clicked.connect(self.jbz_toggle_header_listview)
+        self.first_conf_other_pkg_header_pushbutton.clicked.connect(self.first_conf_other_toggle_header_listview)
+        self.second_conf_other_pkg_header_pushbutton.clicked.connect(self.second_conf_other_toggle_header_listview)
+        self.third_conf_other_pkg_header_pushbutton.clicked.connect(self.third_conf_other_toggle_header_listview)
 
         #Initialize Widgets
+        self.initJfrogWidget()
         self.initPkgWidget()
         self.initEmvWidget()
         self.initTmsWidget()
-        self.initJfrogWidget()
 
-        #toggle package header button
-        self.pkg_header_pushbutton.clicked.connect(self.toggle_header_listview)
+        #List Model for the package header list
+        self.pkg_header_list_model = QStandardItemModel(self.pkg_listview)
+        self.first_conf_other_pkg_header_list_model = QStandardItemModel(self.first_conf_other_pkg_listview)
+        self.second_conf_other_pkg_header_list_model = QStandardItemModel(self.second_conf_other_pkg_listview)
+        self.third_conf_other_pkg_header_list_model = QStandardItemModel(self.third_conf_other_pkg_listview)
 
         #hide pushbutton
         self.jfrog_hide_pushbutton.clicked.connect(lambda state, x={'jfrog':False}: self.show_hide_panel(x))
         self.jbz_pkg_version_hide_pushbutton.clicked.connect(lambda state, x={'jbz':False}: self.show_hide_panel(x))
+        self.first_conf_other_pkg_version_hide_pushbutton.clicked.connect(lambda state, x={'first':False}: self.show_hide_panel(x))
+        self.second_conf_other_pkg_version_hide_pushbutton.clicked.connect(lambda state, x={'second': False}: self.show_hide_panel(x))
+        self.third_conf_other_pkg_version_hide_pushbutton.clicked.connect(lambda state, x={'third': False}: self.show_hide_panel(x))
         self.tms_param_hide_pushbutton.clicked.connect(lambda state, x={'tms': False}: self.show_hide_panel(x))
         self.manifest_hide_pushbutton.clicked.connect(lambda state, x={'manifest': False}: self.show_hide_panel(x))
         self.emv_kernel_ver_hide_pushbutton.clicked.connect(lambda state, x={'emv': False}: self.show_hide_panel(x))
+
         #show_all view
-        self.show_all_menu_item.triggered.connect(lambda state, x={'jfrog':True,'jbz':True,'tms': True,'manifest': True,'emv': True}: self.show_hide_panel(x))
-        #show_only_view
-        self.show_only_jfrog_menu_item.triggered.connect(lambda state, x={'jfrog':True,'jbz':False,'tms': False,'manifest': False,'emv': False}: self.show_hide_panel(x))
-        self.show_only_jbz_menu_item.triggered.connect(lambda state, x={'jfrog':False,'jbz':True,'tms': False,'manifest': False,'emv': False}: self.show_hide_panel(x))
-        self.show_only_tms_menu_item.triggered.connect(lambda state, x={'jfrog':False,'jbz':False,'tms': True,'manifest': False,'emv': False}: self.show_hide_panel(x))
-        self.show_only_manifest_menu_item.triggered.connect(lambda state, x={'jfrog':False,'jbz':False,'tms': False,'manifest': True,'emv': False}: self.show_hide_panel(x))
-        self.show_only_emv_menu_item.triggered.connect(lambda state, x={'jfrog':False,'jbz':False,'tms': False,'manifest': False,'emv': True}: self.show_hide_panel(x))
-        #show
-        self.jfrog_show_menu_item.triggered.connect(lambda state, x={'jfrog':True}: self.show_hide_panel(x))
-        self.jbz_show_menu_item.triggered.connect(lambda state, x={'jbz':True}: self.show_hide_panel(x))
-        self.tms_show_menu_item.triggered.connect(lambda state, x={'tms': True}: self.show_hide_panel(x))
-        self.manifest_show_menu_item.triggered.connect(lambda state, x={'manifest': True}: self.show_hide_panel(x))
-        self.emv_show_menu_item.triggered.connect(lambda state, x={'emv': True}: self.show_hide_panel(x))
-        #hide
-        self.jfrog_hide_menu_item.triggered.connect(lambda state, x={'jfrog':False}: self.show_hide_panel(x))
-        self.jbz_hide_menu_item.triggered.connect(lambda state, x={'jbz':False}: self.show_hide_panel(x))
-        self.tms_hide_menu_item.triggered.connect(lambda state, x={'tms':False}: self.show_hide_panel(x))
-        self.manifest_hide_menu_item.triggered.connect(lambda state, x={'manifest':False}: self.show_hide_panel(x))
-        self.emv_hide_menu_item.triggered.connect(lambda state, x={'emv':False}: self.show_hide_panel(x))
+        self.show_all_menu_item.triggered.connect(lambda state, x={'jfrog':True,'jbz':True,'first':True,'second':True,'third':True,'tms': True,'manifest': True,'emv': True}: self.show_hide_panel(x))
+
+        #Hide all panel by default, only open when required.
+        self.show_hide_panel({'jfrog':False,'jbz':False,'first':False,'second':False,'third':False,'tms': False,'manifest': False,'emv': False})
 
         #Display the main window
         version_checker_mainwindow.show()
 
     #JBZ PACKAGE VERSION
+    def initPkgWidget(self):
+        self.pkg_widget = QtWidgets.QWidget()
+        self.pkg_ui = Ui_pkg_widget()
+        self.pkg_ui.setupUi(self.pkg_widget)
+        self.pkg_ui.jbzPathPushButton.clicked.connect(self.searchJbzPath)
+        self.pkg_ui.extractPushButton.clicked.connect(self.extractJbz)
+        self.pkg_ui.conf_other_pkg_1_push_button.clicked.connect(self.search_other_pkg_path_1)
+        self.pkg_ui.conf_other_pkg_2_push_button.clicked.connect(self.search_other_pkg_path_2)
+        self.pkg_ui.conf_other_pkg_3_push_button.clicked.connect(self.search_other_pkg_path_3)
+
     def openPkgWidget(self):
         self.pkg_ui.extractionPathLineEdit.setText(self.conf_base_xtrak_path)
         self.pkg_ui.sevenZlineEdit.setText(self.conf_sevenZ_exe)
@@ -144,51 +160,88 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.jbx.manifest_file = self.conf_manifest
         self.jbx.regexp_string = self.conf_regexp_string
 
+        result_jbz = None
+        result_manifest = None
+        result_conf_other_1 = None
+        result_conf_other_2 = None
+        result_conf_other_3 = None
+
         if self.pkg_ui.jbzPathLineEdit.text() != "":
-            result_jbz,result_manifest = self.jbx.extract(self.pkg_ui.jbzPathLineEdit.text())
+            result_jbz,result_manifest = self.jbx.extract(tag=0,jbz_file=self.pkg_ui.jbzPathLineEdit.text())
+            if result_jbz:
+                self.show_hide_panel({'jbz':True})
+            if result_manifest:
+                self.show_hide_panel({'manifest': True})
 
         if self.pkg_ui.conf_other_pkg_1_line_edit.text() != "":
-            result_conf_other_1,_ = self.jbx.extract(self.pkg_ui.conf_other_pkg_1_line_edit.text())
-            result_jbz = result_jbz + result_conf_other_1
+            result_conf_other_1,_ = self.jbx.extract(tag=1,jbz_file=self.pkg_ui.conf_other_pkg_1_line_edit.text())
+            if result_conf_other_1:
+                self.show_hide_panel({'first':True})
 
         if self.pkg_ui.conf_other_pkg_2_line_edit.text() != "":
-            result_conf_other_2,_ = self.jbx.extract(self.pkg_ui.conf_other_pkg_2_line_edit.text())
-            result_jbz = result_jbz + result_conf_other_2
+            result_conf_other_2,_ = self.jbx.extract(tag=2,jbz_file=self.pkg_ui.conf_other_pkg_2_line_edit.text())
+            if result_conf_other_2:
+                self.show_hide_panel({'second': True})
 
         if self.pkg_ui.conf_other_pkg_3_line_edit.text() != "":
-            result_conf_other_3,_ = self.jbx.extract(self.pkg_ui.conf_other_pkg_3_line_edit.text())
-            result_jbz = result_jbz + result_conf_other_3
+            result_conf_other_3,_ = self.jbx.extract(tag=3,jbz_file=self.pkg_ui.conf_other_pkg_3_line_edit.text())
+            if result_conf_other_3:
+                self.show_hide_panel({'third': True})
 
         self.pkg_widget.hide()
-        self.populate_jb_table(result_jbz)
-        if result_manifest is not None:
+
+        if result_jbz:
+            self.populate_jb_table(result_jbz)
+            self.job_bundle_pkg_ver_label.setText("..."+self.pkg_ui.jbzPathLineEdit.text()[-40:])
+        if result_conf_other_1:
+            self.populate_first_conf_table(result_conf_other_1)
+            self.first_conf_other_pkg_ver_label.setText("..."+self.pkg_ui.conf_other_pkg_1_line_edit.text()[-40:])
+        if result_conf_other_2:
+            self.populate_second_conf_table(result_conf_other_2)
+            self.second_conf_other_pkg_ver_label.setText("..."+self.pkg_ui.conf_other_pkg_2_line_edit.text()[-40:])
+        if result_conf_other_3:
+            self.populate_third_conf_table(result_conf_other_3)
+            self.third_conf_other_pkg_ver_label.setText("..."+self.pkg_ui.conf_other_pkg_3_line_edit.text()[-40:])
+        if result_manifest:
             self.populate_manifest_table(result_manifest)
 
-    def populate_jb_table(self,result):
+    def populate_the_package_table(self,table,result):
         header = result.pop(0)
         rn = [str(c+1) for c in range(0,len(result))]
         data = pd.DataFrame(result, columns=header,index=rn)
-        self.model_jbz_pkg_ver = TableModel(data)
-        self.jbz_pkg_ver_table.setSelectionBehavior(QAbstractItemView.SelectRows)
-        self.jbz_pkg_ver_table.setModel(self.model_jbz_pkg_ver)
-        self.jbz_pkg_ver_table.clicked.connect(self.package_info)
+        model = TableModel(data)
+        table.setSelectionBehavior(QAbstractItemView.SelectRows)
+        table.setModel(model)
+        return model
 
+    def populate_jb_table(self,result):
+        self.model_jbz_pkg_ver_table = self.populate_the_package_table(self.jbz_pkg_ver_table,result)
+        self.jbz_pkg_ver_table.clicked.connect(self.jbz_package_info)
+
+    def populate_first_conf_table(self,result):
+        self.model_first_conf_ver_table = self.populate_the_package_table(self.first_conf_other_pkg_ver_table,result)
+        self.first_conf_other_pkg_ver_table.clicked.connect(self.first_conf_package_info)
+
+    def populate_second_conf_table(self,result):
+        self.model_second_conf_ver_table = self.populate_the_package_table(self.second_conf_other_pkg_ver_table,result)
+        self.second_conf_other_pkg_ver_table.clicked.connect(self.second_conf_package_info)
+
+    def populate_third_conf_table(self,result):
+        self.model_third_conf_ver_table = self.populate_the_package_table(self.third_conf_other_pkg_ver_table,result)
+        self.third_conf_other_pkg_ver_table.clicked.connect(self.third_conf_package_info)
 
     def populate_manifest_table(self,result):
-        header = result.pop(0)
-        rn = [str(c+1) for c in range(0,len(result))]
-        data = pd.DataFrame(result, columns=header,index=rn)
-        self.model = TableModel(data)
-        self.manifest_table.setSelectionBehavior(QAbstractItemView.SelectRows)
-        self.manifest_table.setModel(self.model)
+        self.model_manifest_table = self.populate_the_package_table(self.manifest_table,result)
 
-    def package_info(self,signal):
+    #TODO this needs refactoring, too many repeating codes.
+
+    def jbz_package_info(self,signal):
         row = signal.row()
         index = signal.sibling(row, 0)
-        index_dict = self.model_jbz_pkg_ver.itemData(index)
+        index_dict = self.model_jbz_pkg_ver_table.itemData(index)
         index_value = index_dict.get(0)
 
-        pkg_header_list = str(package.header_info(self.get_pkg_full_path(index_value)))
+        pkg_header_list = str(package.header_info(self.get_pkg_full_path(index_value,0)))
 
         self.pkg_header_list_model.clear()
 
@@ -198,24 +251,64 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         # Apply the model to the list view
         self.pkg_listview.setModel(self.pkg_header_list_model)
 
-    def get_pkg_full_path(self,pkg_name):
+    def first_conf_package_info(self,signal):
+        row = signal.row()
+        index = signal.sibling(row, 0)
+        index_dict = self.model_first_conf_ver_table.itemData(index)
+        index_value = index_dict.get(0)
+
+        pkg_header_list = str(package.header_info(self.get_pkg_full_path(index_value,1)))
+
+        self.first_conf_other_pkg_header_list_model.clear()
+
+        for h in pkg_header_list.splitlines():
+            self.first_conf_other_pkg_header_list_model.appendRow(QStandardItem(h))
+
+        # Apply the model to the list view
+        self.first_conf_other_pkg_listview.setModel(self.first_conf_other_pkg_header_list_model)
+
+    def second_conf_package_info(self,signal):
+        row = signal.row()
+        index = signal.sibling(row, 0)
+        index_dict = self.model_second_conf_ver_table.itemData(index)
+        index_value = index_dict.get(0)
+
+        pkg_header_list = str(package.header_info(self.get_pkg_full_path(index_value,2)))
+
+        self.second_conf_other_pkg_header_list_model.clear()
+
+        for h in pkg_header_list.splitlines():
+            self.second_conf_other_pkg_header_list_model.appendRow(QStandardItem(h))
+
+        # Apply the model to the list view
+        self.second_conf_other_pkg_listview.setModel(self.second_conf_other_pkg_header_list_model)
+
+    def third_conf_package_info(self,signal):
+        row = signal.row()
+        index = signal.sibling(row, 0)
+        index_dict = self.model_third_conf_ver_table.itemData(index)
+        index_value = index_dict.get(0)
+
+        pkg_header_list = str(package.header_info(self.get_pkg_full_path(index_value,3)))
+
+        self.third_conf_other_pkg_header_list_model.clear()
+
+        for h in pkg_header_list.splitlines():
+            self.third_conf_other_pkg_header_list_model.appendRow(QStandardItem(h))
+
+        # Apply the model to the list view
+        self.third_conf_other_pkg_listview.setModel(self.third_conf_other_pkg_header_list_model)
+
+
+    def get_pkg_full_path(self,pkg_name,tag):
         for x in range(self.jbx.extract_file_starting_index,self.jbx.extract_file_ending_index+1):
-            if os.path.exists(self.jbx.base_xtrak_path + self.jbx.extract_folder + str(x)):
+            if os.path.exists(self.jbx.base_xtrak_path+str(tag)+'/' + self.jbx.extract_folder + str(x)):
                 print('processing ... {}'.format(x))
-                for root, dirs, files in os.walk(self.jbx.base_xtrak_path+self.jbx.extract_folder+str(x)):
+                for root, dirs, files in os.walk(self.jbx.base_xtrak_path+str(tag)+'/'+self.jbx.extract_folder+str(x)):
                     for name in files:
                         if name == pkg_name:
                             return os.path.join(root,name)
 
-    def initPkgWidget(self):
-        self.pkg_widget = QtWidgets.QWidget()
-        self.pkg_ui = Ui_pkg_widget()
-        self.pkg_ui.setupUi(self.pkg_widget)
-        self.pkg_ui.jbzPathPushButton.clicked.connect(self.searchJbzPath)
-        self.pkg_ui.extractPushButton.clicked.connect(self.extractJbz)
-        self.pkg_ui.conf_other_pkg_1_push_button.clicked.connect(self.search_other_pkg_path_1)
-        self.pkg_ui.conf_other_pkg_2_push_button.clicked.connect(self.search_other_pkg_path_2)
-        self.pkg_ui.conf_other_pkg_3_push_button.clicked.connect(self.search_other_pkg_path_3)
 
     #EMV KERNEL VERSION
     def initEmvWidget(self):
@@ -252,6 +345,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             selected_customer = dc[1]
         result = emvx.login(self.emv_ui.usernameLineEdit.text(),self.emv_ui.passwordLineEdit.text(),selected_device,selected_customer)
         self.populate_emv_table(result)
+        self.show_hide_panel({'emv': True})
         self.emv_widget.hide()
 
     def populate_emv_table(self,result):
@@ -279,6 +373,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         result = tmsx.load_tms_parameters(self.tms_ui.tmslite_param_line_edit.text())
         self.tms_widget.hide()
         self.populate_tms_table(result)
+        self.show_hide_panel({'tms': True})
 
     def search_tms_params_csv(self):
         options = QFileDialog.Options()
@@ -319,7 +414,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         if self.result_of_jfrog_list:
             self.populate_jfrog_table(self.result_of_jfrog_list)
             self.jfrog_widget.hide()
-
+            self.show_hide_panel({'jfrog': True})
 
     def populate_jfrog_sku_bundle_table(self,result_orig):
         result = result_orig.copy()
@@ -339,16 +434,27 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.jfrog_table.setModel(self.model)
 
     #Toggle the package header list view
-    def toggle_header_listview(self):
-        if self.pkg_listview.isVisible():
-            self.pkg_listview.hide()
+    def toggle_header_listview(self,listview):
+        if listview.isVisible():
+            listview.hide()
         else:
-            self.pkg_listview.show()
+            listview.show()
+
+    def jbz_toggle_header_listview(self):
+        self.toggle_header_listview(self.pkg_listview)
+
+    def first_conf_other_toggle_header_listview(self):
+        self.toggle_header_listview(self.first_conf_other_pkg_listview)
+
+    def second_conf_other_toggle_header_listview(self):
+        self.toggle_header_listview(self.second_conf_other_pkg_listview)
+
+    def third_conf_other_toggle_header_listview(self):
+        self.toggle_header_listview(self.third_conf_other_pkg_listview)
 
     #Hide panel
     def show_hide_panel(self, hs_dict):
         for key, value in hs_dict.items():
-            # print(key)
             if key == 'jfrog':
                 if value:
                     #show jfrog
@@ -373,17 +479,48 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
                      self.jbz_pkg_ver_table.hide()
                      self.job_bundle_pkg_ver_label.hide()
                      self.pkg_listview.hide()
-            if key == 'tms':
+
+            if key == 'first':
                  if value:
-                     #show tms
-                     self.tms_param_buttom_button_frame.show()
-                     self.tms_param_table.show()
-                     self.tms_param_label.show()
+                     #show first conf and other
+                     self.first_conf_other_pkg_ver_buttom_button_frame.show()
+                     self.first_conf_other_pkg_ver_table.show()
+                     self.first_conf_other_pkg_ver_label.show()
+                     self.first_conf_other_pkg_listview.show()
                  else:
-                     #hide tms
-                     self.tms_param_buttom_button_frame.hide()
-                     self.tms_param_table.hide()
-                     self.tms_param_label.hide()
+                     #hide first conf and other
+                     self.first_conf_other_pkg_ver_buttom_button_frame.hide()
+                     self.first_conf_other_pkg_ver_table.hide()
+                     self.first_conf_other_pkg_ver_label.hide()
+                     self.first_conf_other_pkg_listview.hide()
+
+            if key == 'second':
+                 if value:
+                     #show second conf and other
+                     self.second_conf_other_pkg_ver_buttom_button_frame.show()
+                     self.second_conf_other_pkg_ver_table.show()
+                     self.second_conf_other_pkg_ver_label.show()
+                     self.second_conf_other_pkg_listview.show()
+                 else:
+                     #hide second conf and other
+                     self.second_conf_other_pkg_ver_buttom_button_frame.hide()
+                     self.second_conf_other_pkg_ver_table.hide()
+                     self.second_conf_other_pkg_ver_label.hide()
+                     self.second_conf_other_pkg_listview.hide()
+
+            if key == 'third':
+                 if value:
+                     #show third conf and other
+                     self.third_conf_other_pkg_ver_buttom_button_frame.show()
+                     self.third_conf_other_pkg_ver_table.show()
+                     self.third_conf_other_pkg_ver_label.show()
+                     self.third_conf_other_pkg_listview.show()
+                 else:
+                     #hide third conf and other
+                     self.third_conf_other_pkg_ver_buttom_button_frame.hide()
+                     self.third_conf_other_pkg_ver_table.hide()
+                     self.third_conf_other_pkg_ver_label.hide()
+                     self.third_conf_other_pkg_listview.hide()
 
             if key == 'manifest':
                 if value:
@@ -396,6 +533,19 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
                     self.manifest_buttom_button_frame.hide()
                     self.manifest_table.hide()
                     self.manifest_file_label.hide()
+
+            if key == 'tms':
+                 if value:
+                     #show tms
+                     self.tms_param_buttom_button_frame.show()
+                     self.tms_param_table.show()
+                     self.tms_param_label.show()
+                 else:
+                     #hide tms
+                     self.tms_param_buttom_button_frame.hide()
+                     self.tms_param_table.hide()
+                     self.tms_param_label.hide()
+
 
             if key == 'emv':
                 if value:
