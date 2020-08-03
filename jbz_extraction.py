@@ -11,7 +11,7 @@ class JobBundleExtraction:
         self.sevenZ_exe = "C:/Program Files/7-Zip/7z.exe"
         self.extract_folder = "xtrak_level_"
         self.extract_file_starting_index = 1
-        self.extract_file_ending_index = 10
+        self.extract_file_ending_index = 5
         self.manifest_file = "manifest.mnf"
         self.regexp_string = r"\d{2}.\d{2}.\d{4}"
         self.use_full_path = False
@@ -80,13 +80,14 @@ class JobBundleExtraction:
                 print('processing ... {}'.format(x))
                 for root, dirs, files in os.walk(self.base_xtrak_path+str(tag)+'/'+self.extract_folder+str(x)):
                     for name in files:
-                        v = self.getVersion(name)
-                        print(v)
-                        if v is not None:
-                            if self.use_full_path:
-                                master_pkg_list.append(["".join(os.path.join(root, name).split('/')[4:]),v])
-                            else:
-                                master_pkg_list.append([name, v])
+                        if name.endswith('.pkg'):
+                            v = self.getVersion(name)
+                            print(v)
+                            if v is not None:
+                                if self.use_full_path:
+                                    master_pkg_list.append(["".join(os.path.join(root, name).split('/')[4:]),v])
+                                else:
+                                    master_pkg_list.append([name, v])
 
         self.display_table(master_pkg_list)
 
