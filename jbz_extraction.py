@@ -38,6 +38,12 @@ class JobBundleExtraction:
         else:
             return pkg_name1
 
+    #Determine whether pkg is v1 or v255
+    def package_version_type(self,file):
+        with open(file, 'rb') as fin:
+            header = fin.read(1)
+            return str(int.from_bytes(header, byteorder='little'))
+
     def clear_xtrak_folders(self, tag):
         for x in range(self.extract_file_starting_index,self.extract_file_ending_index+1):
             if os.path.exists(self.base_xtrak_path+tag+'/'+self.extract_folder+str(x)):
@@ -73,7 +79,7 @@ class JobBundleExtraction:
             #     print('... {}'.format(i))
 
         master_pkg_list = []
-        master_pkg_list.append(['Package','Version'])
+        master_pkg_list.append(['Package','Pkg Ver'])
 
         for x in range(self.extract_file_starting_index,self.extract_file_ending_index+1):
             if os.path.exists(self.base_xtrak_path+str(tag)+'/' + self.extract_folder + str(x)):
@@ -81,8 +87,7 @@ class JobBundleExtraction:
                 for root, dirs, files in os.walk(self.base_xtrak_path+str(tag)+'/'+self.extract_folder+str(x)):
                     for name in files:
                         if name.endswith('.pkg'):
-                            v = self.getVersion(name)
-                            print(v)
+                            v = self.package_version_type(os.path.join(root, name))
                             if v is not None:
                                 if self.use_full_path:
                                     master_pkg_list.append(["".join(os.path.join(root, name).split('/')[4:]),v])
