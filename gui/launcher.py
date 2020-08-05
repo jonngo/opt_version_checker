@@ -9,6 +9,7 @@ from gui import Ui_pkg_widget
 from gui import Ui_emv_widget
 from gui import Ui_tms_widget
 from gui import Ui_jfrog_widget
+from gui import Ui_save_widget
 from PyQt5 import QtCore, QtGui, QtWidgets
 from jbz_extraction import JobBundleExtraction
 from emv_version import EmvExtraction
@@ -19,7 +20,7 @@ from PyQt5.QtCore import Qt
 import pandas as pd
 import json
 
-class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jfrog_widget):
+class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jfrog_widget, Ui_save_widget):
     def __init__(self):
 
         with open("config.json") as json_data_file:
@@ -58,6 +59,15 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
 
             #TODO include in the config the default directory to open
 
+            #Initialize all version result list
+            self.result_jbz = None
+            self.result_conf_other_1 = None
+            self.result_conf_other_2 = None
+            self.result_conf_other_3 = None
+            self.result_manifest = None
+            self.result_emv = None
+            self.result_tms = None
+
     #MAIN
     def extendUI(self,version_checker_mainwindow):
         #Source Menu
@@ -65,6 +75,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.emv_menu_item.triggered.connect(self.openEmvWidget)
         self.tmsLite_menu_item.triggered.connect(self.openTmsWidget)
         self.jfrog_menu_item.triggered.connect(self.openJFrogWidget)
+        self.save_menu_item.triggered.connect(self.openSaveOnScreenWidget)
 
         #View Menu - Show Menu
         #show_only_view
@@ -88,6 +99,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.initPkgWidget()
         self.initEmvWidget()
         self.initTmsWidget()
+        self.initSaveOnScreenWidget()
 
         #List Model for the package header list
         self.pkg_header_list_model = QStandardItemModel(self.pkg_listview)
@@ -113,6 +125,52 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
 
         #Display the main window
         version_checker_mainwindow.show()
+
+    #SAVE ON SCREEN DATA
+    def initSaveOnScreenWidget(self):
+        self.save_on_screen_widget = QtWidgets.QWidget()
+        self.save_on_screen_ui = Ui_save_widget()
+        self.save_on_screen_ui.setupUi(self.save_on_screen_widget)
+        self.save_on_screen_ui.save_save_button.clicked.connect(self.save_on_screen_to_db)
+
+    def openSaveOnScreenWidget(self):
+        self.save_on_screen_widget.show()
+
+    #Capture undefined result variables and set them as None.
+    def validate_results(self):
+        if self.result_jbz is not None:
+            print ('jbz')
+            for rl in self.result_jbz:
+                print (rl)
+        if self.result_conf_other_1 is not None:
+            print('conf or other 1')
+            for rl in self.result_conf_other_1:
+                print (rl)
+        if self.result_conf_other_2 is not None:
+            print('conf or other 2')
+            for rl in self.result_conf_other_2:
+                print(rl)
+        if self.result_conf_other_3 is not None:
+            print('conf or other 3')
+            for rl in self.result_conf_other_3:
+                print(rl)
+        if self.result_manifest is not None:
+            print('manifest')
+            for rl in self.result_manifest:
+                print(rl)
+        if self.result_emv is not None:
+            print('emv')
+            for rl in self.result_emv:
+                print(rl)
+        if self.result_tms is not None:
+            print('tms')
+            for rl in self.result_tms:
+                print(rl)
+
+    def save_on_screen_to_db(self):
+        self.validate_results()
+        self.save_on_screen_widget.hide()
+
 
     #JBZ PACKAGE VERSION
     def initPkgWidget(self):
@@ -160,78 +218,63 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.jbx.manifest_file = self.conf_manifest
         self.jbx.regexp_string = self.conf_regexp_string
 
-        result_jbz = None
-        result_manifest = None
-        result_conf_other_1 = None
-        result_conf_other_2 = None
-        result_conf_other_3 = None
-
         if self.pkg_ui.jbzPathLineEdit.text() != "":
-            result_jbz,result_manifest = self.jbx.extract(tag=0,jbz_file=self.pkg_ui.jbzPathLineEdit.text())
-            if result_jbz:
+            self.result_jbz,self.result_manifest = self.jbx.extract(tag=0,jbz_file=self.pkg_ui.jbzPathLineEdit.text())
+            if self.result_jbz:
                 self.show_hide_panel({'jbz':True})
-            if result_manifest:
+            if self.result_manifest:
                 self.show_hide_panel({'manifest': True})
 
         if self.pkg_ui.conf_other_pkg_1_line_edit.text() != "":
-            result_conf_other_1,_ = self.jbx.extract(tag=1,jbz_file=self.pkg_ui.conf_other_pkg_1_line_edit.text())
-            if result_conf_other_1:
+            self.result_conf_other_1,_ = self.jbx.extract(tag=1,jbz_file=self.pkg_ui.conf_other_pkg_1_line_edit.text())
+            if self.result_conf_other_1:
                 self.show_hide_panel({'first':True})
 
         if self.pkg_ui.conf_other_pkg_2_line_edit.text() != "":
-            result_conf_other_2,_ = self.jbx.extract(tag=2,jbz_file=self.pkg_ui.conf_other_pkg_2_line_edit.text())
-            if result_conf_other_2:
+            self.result_conf_other_2,_ = self.jbx.extract(tag=2,jbz_file=self.pkg_ui.conf_other_pkg_2_line_edit.text())
+            if self.result_conf_other_2:
                 self.show_hide_panel({'second': True})
 
         if self.pkg_ui.conf_other_pkg_3_line_edit.text() != "":
-            result_conf_other_3,_ = self.jbx.extract(tag=3,jbz_file=self.pkg_ui.conf_other_pkg_3_line_edit.text())
-            if result_conf_other_3:
+            self.result_conf_other_3,_ = self.jbx.extract(tag=3,jbz_file=self.pkg_ui.conf_other_pkg_3_line_edit.text())
+            if self.result_conf_other_3:
                 self.show_hide_panel({'third': True})
 
         self.pkg_widget.hide()
 
-        if result_jbz:
-            self.populate_jb_table(result_jbz)
+        if self.result_jbz:
+            self.populate_jb_table(self.result_jbz)
             self.job_bundle_pkg_ver_label.setText("..."+self.pkg_ui.jbzPathLineEdit.text()[-40:])
-        if result_conf_other_1:
-            self.populate_first_conf_table(result_conf_other_1)
+        if self.result_conf_other_1:
+            self.populate_first_conf_table(self.result_conf_other_1)
             self.first_conf_other_pkg_ver_label.setText("..."+self.pkg_ui.conf_other_pkg_1_line_edit.text()[-40:])
-        if result_conf_other_2:
-            self.populate_second_conf_table(result_conf_other_2)
+        if self.result_conf_other_2:
+            self.populate_second_conf_table(self.result_conf_other_2)
             self.second_conf_other_pkg_ver_label.setText("..."+self.pkg_ui.conf_other_pkg_2_line_edit.text()[-40:])
-        if result_conf_other_3:
-            self.populate_third_conf_table(result_conf_other_3)
+        if self.result_conf_other_3:
+            self.populate_third_conf_table(self.result_conf_other_3)
             self.third_conf_other_pkg_ver_label.setText("..."+self.pkg_ui.conf_other_pkg_3_line_edit.text()[-40:])
-        if result_manifest:
-            self.populate_manifest_table(result_manifest)
-
-    def populate_the_package_table(self,table,result):
-        header = result.pop(0)
-        rn = [str(c+1) for c in range(0,len(result))]
-        data = pd.DataFrame(result, columns=header,index=rn)
-        model = TableModel(data)
-        table.setSelectionBehavior(QAbstractItemView.SelectRows)
-        table.setModel(model)
-        return model
+        if self.result_manifest:
+            self.populate_manifest_table(self.result_manifest)
 
     def populate_jb_table(self,result):
-        self.model_jbz_pkg_ver_table = self.populate_the_package_table(self.jbz_pkg_ver_table,result)
+        self.model_jbz_pkg_ver_table = self.populate_generic_table(self.jbz_pkg_ver_table,result)
         self.jbz_pkg_ver_table.clicked.connect(self.jbz_package_info)
 
     def populate_first_conf_table(self,result):
-        self.model_first_conf_ver_table = self.populate_the_package_table(self.first_conf_other_pkg_ver_table,result)
+        self.model_first_conf_ver_table = self.populate_generic_table(self.first_conf_other_pkg_ver_table,result)
         self.first_conf_other_pkg_ver_table.clicked.connect(self.first_conf_package_info)
 
     def populate_second_conf_table(self,result):
-        self.model_second_conf_ver_table = self.populate_the_package_table(self.second_conf_other_pkg_ver_table,result)
+        self.model_second_conf_ver_table = self.populate_generic_table(self.second_conf_other_pkg_ver_table,result)
         self.second_conf_other_pkg_ver_table.clicked.connect(self.second_conf_package_info)
 
     def populate_third_conf_table(self,result):
-        self.model_third_conf_ver_table = self.populate_the_package_table(self.third_conf_other_pkg_ver_table,result)
+        self.model_third_conf_ver_table = self.populate_generic_table(self.third_conf_other_pkg_ver_table,result)
         self.third_conf_other_pkg_ver_table.clicked.connect(self.third_conf_package_info)
 
     def populate_manifest_table(self,result):
-        self.model_manifest_table = self.populate_the_package_table(self.manifest_table,result)
+        self.model_manifest_table = self.populate_generic_table(self.manifest_table,result)
 
     #TODO this needs refactoring, too many repeating codes.
 
@@ -343,19 +386,10 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         else:
             selected_device = dc[0]
             selected_customer = dc[1]
-        result = emvx.login(self.emv_ui.usernameLineEdit.text(),self.emv_ui.passwordLineEdit.text(),selected_device,selected_customer)
-        self.populate_emv_table(result)
+        self.result_emv = emvx.login(self.emv_ui.usernameLineEdit.text(),self.emv_ui.passwordLineEdit.text(),selected_device,selected_customer)
+        self.populate_generic_table(self.emv_kernel_ver_table,self.result_emv)
         self.show_hide_panel({'emv': True})
         self.emv_widget.hide()
-
-    def populate_emv_table(self,result):
-        header = result.pop(0)
-        rn = [str(c+1) for c in range(0,len(result))]
-        data = pd.DataFrame(result, columns=header,index=rn)
-        self.model = TableModel(data)
-        # self.emv_widget.hide()
-        self.emv_kernel_ver_table.setSelectionBehavior(QAbstractItemView.SelectRows)
-        self.emv_kernel_ver_table.setModel(self.model)
 
     #TMSLITE PARAMETERS
     def initTmsWidget(self):
@@ -370,9 +404,9 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
 
     def loadTMS(self):
         tmsx = TmsExtraction()
-        result = tmsx.load_tms_parameters(self.tms_ui.tmslite_param_line_edit.text())
+        self.result_tms = tmsx.load_tms_parameters(self.tms_ui.tmslite_param_line_edit.text())
         self.tms_widget.hide()
-        self.populate_tms_table(result)
+        self.populate_generic_table(self.tms_param_table,self.result_tms)
         self.show_hide_panel({'tms': True})
 
     def search_tms_params_csv(self):
@@ -383,14 +417,6 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         #file = str(QFileDialog.getExistingDirectory())
         if file:
             self.tms_ui.tmslite_param_line_edit.setText(file)
-
-    def populate_tms_table(self,result):
-        header = result.pop(0)
-        rn = [str(c+1) for c in range(0,len(result))]
-        data = pd.DataFrame(result, columns=header,index=rn)
-        self.model = TableModel(data)
-        self.tms_param_table.setSelectionBehavior(QAbstractItemView.SelectRows)
-        self.tms_param_table.setModel(self.model)
 
     #JFROG ARTIFACTORY
     def initJfrogWidget(self):
@@ -432,6 +458,16 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.model = TableModel(data)
         self.jfrog_table.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.jfrog_table.setModel(self.model)
+
+    #Common table renderer using basic table model
+    def populate_generic_table(self,table,result):
+        header = result.pop(0)
+        rn = [str(c+1) for c in range(0,len(result))]
+        data = pd.DataFrame(result, columns=header,index=rn)
+        model = TableModel(data)
+        table.setSelectionBehavior(QAbstractItemView.SelectRows)
+        table.setModel(model)
+        return model
 
     #Toggle the package header list view
     def toggle_header_listview(self,listview):
@@ -598,6 +634,7 @@ if __name__ == "__main__":
 # pyuic5 tms_param.ui -o tms_param.py
 # pyuic5 jbz_pkg.ui -o jbz_pkg.py
 # pyuic5 jfrog.ui -o jfrog.py
+# pyuic5 save_on_screen_data.ui -o save_on_screen_data.py
 
 # To make .exe
 # pyinstaller --noconsole --onefile --windowed --icon=../vc.ico launcher.py

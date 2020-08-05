@@ -554,7 +554,8 @@
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="exit_MenuItem"/>
+    <addaction name="save_menu_item"/>
+    <addaction name="exit_menu_item"/>
    </widget>
    <widget class="QMenu" name="menuSource">
     <property name="title">
@@ -596,7 +597,7 @@
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="exit_MenuItem">
+  <action name="exit_menu_item">
    <property name="text">
     <string>Exit</string>
    </property>
@@ -721,11 +722,16 @@
     <string>3 - Conf / Other Version</string>
    </property>
   </action>
+  <action name="save_menu_item">
+   <property name="text">
+    <string>Save</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections>
   <connection>
-   <sender>exit_MenuItem</sender>
+   <sender>exit_menu_item</sender>
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
    <slot>close()</slot>
