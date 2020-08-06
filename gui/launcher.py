@@ -276,72 +276,34 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
     def populate_manifest_table(self,result):
         self.model_manifest_table = self.populate_generic_table(self.manifest_table,result)
 
-    #TODO this needs refactoring, too many repeating codes.
+    #This is called by package info functions to display the header information
+    def common_package_info_table_setter(self,signal,model,list_model,list_view, folder_index):
+        row = signal.row()
+        index = signal.sibling(row, 0)
+        index_dict = model.itemData(index)
+        index_value = index_dict.get(0)
+
+        pkg_header_string = str(package.header_info(self.get_pkg_full_path(index_value,folder_index)))
+
+        list_model.clear()
+
+        for h in pkg_header_string.splitlines():
+            list_model.appendRow(QStandardItem(h))
+
+        # Apply the model to the list view
+        list_view.setModel(list_model)
 
     def jbz_package_info(self,signal):
-        row = signal.row()
-        index = signal.sibling(row, 0)
-        index_dict = self.model_jbz_pkg_ver_table.itemData(index)
-        index_value = index_dict.get(0)
-
-        pkg_header_list = str(package.header_info(self.get_pkg_full_path(index_value,0)))
-
-        self.pkg_header_list_model.clear()
-
-        for h in pkg_header_list.splitlines():
-            self.pkg_header_list_model.appendRow(QStandardItem(h))
-
-        # Apply the model to the list view
-        self.pkg_listview.setModel(self.pkg_header_list_model)
+        self.common_package_info_table_setter(signal, self.model_jbz_pkg_ver_table, self.pkg_header_list_model, self.pkg_listview, 0)
 
     def first_conf_package_info(self,signal):
-        row = signal.row()
-        index = signal.sibling(row, 0)
-        index_dict = self.model_first_conf_ver_table.itemData(index)
-        index_value = index_dict.get(0)
-
-        pkg_header_list = str(package.header_info(self.get_pkg_full_path(index_value,1)))
-
-        self.first_conf_other_pkg_header_list_model.clear()
-
-        for h in pkg_header_list.splitlines():
-            self.first_conf_other_pkg_header_list_model.appendRow(QStandardItem(h))
-
-        # Apply the model to the list view
-        self.first_conf_other_pkg_listview.setModel(self.first_conf_other_pkg_header_list_model)
+        self.common_package_info_table_setter(signal, self.model_first_conf_ver_table, self.first_conf_other_pkg_header_list_model, self.first_conf_other_pkg_listview,1)
 
     def second_conf_package_info(self,signal):
-        row = signal.row()
-        index = signal.sibling(row, 0)
-        index_dict = self.model_second_conf_ver_table.itemData(index)
-        index_value = index_dict.get(0)
-
-        pkg_header_list = str(package.header_info(self.get_pkg_full_path(index_value,2)))
-
-        self.second_conf_other_pkg_header_list_model.clear()
-
-        for h in pkg_header_list.splitlines():
-            self.second_conf_other_pkg_header_list_model.appendRow(QStandardItem(h))
-
-        # Apply the model to the list view
-        self.second_conf_other_pkg_listview.setModel(self.second_conf_other_pkg_header_list_model)
+        self.common_package_info_table_setter(signal, self.model_second_conf_ver_table, self.second_conf_other_pkg_header_list_model, self.second_conf_other_pkg_listview,2)
 
     def third_conf_package_info(self,signal):
-        row = signal.row()
-        index = signal.sibling(row, 0)
-        index_dict = self.model_third_conf_ver_table.itemData(index)
-        index_value = index_dict.get(0)
-
-        pkg_header_list = str(package.header_info(self.get_pkg_full_path(index_value,3)))
-
-        self.third_conf_other_pkg_header_list_model.clear()
-
-        for h in pkg_header_list.splitlines():
-            self.third_conf_other_pkg_header_list_model.appendRow(QStandardItem(h))
-
-        # Apply the model to the list view
-        self.third_conf_other_pkg_listview.setModel(self.third_conf_other_pkg_header_list_model)
-
+        self.common_package_info_table_setter(signal, self.model_third_conf_ver_table, self.third_conf_other_pkg_header_list_model, self.third_conf_other_pkg_listview, 3)
 
     def get_pkg_full_path(self,pkg_name,tag):
         for x in range(self.jbx.extract_file_starting_index,self.jbx.extract_file_ending_index+1):
@@ -351,7 +313,6 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
                     for name in files:
                         if name == pkg_name:
                             return os.path.join(root,name)
-
 
     #EMV KERNEL VERSION
     def initEmvWidget(self):
