@@ -516,5 +516,18 @@ def header_info(pkg_filename):
             return "Could not recognise package version of '{}'".format(peek_u32(f))
     return header
 
+def version_num(pkg_filename):
+    with open(pkg_filename, "rb") as f:
+        if peek_u32(f) == 1:
+            header = PackageHeaderV1()
+            f.readinto(header)
+        elif peek_u32(f) == 255:
+            header = PackageHeaderV255()
+            f.readinto(header)
+        else:
+            # sys.exit("Could not recognise package version of '{}'".format(peek_u32(f)))
+            return "Could not recognise package version of '{}'".format(peek_u32(f))
+    return header.version_string()
+
 if __name__ == "__main__":
     print_pkg_header()

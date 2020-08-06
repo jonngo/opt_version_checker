@@ -213,11 +213,13 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
     def extractJbz(self):
         self.jbx = JobBundleExtraction()
 
+        #Initialize from configuration
         self.jbx.base_xtrak_path = self.conf_base_xtrak_path
         self.jbx.sevenZ_exe = self.conf_sevenZ_exe
         self.jbx.manifest_file = self.conf_manifest
         self.jbx.regexp_string = self.conf_regexp_string
 
+        #Do extraction if there is an entry from the line edit field.
         if self.pkg_ui.jbzPathLineEdit.text() != "":
             self.result_jbz,self.result_manifest = self.jbx.extract(tag=0,jbz_file=self.pkg_ui.jbzPathLineEdit.text())
             if self.result_jbz:
@@ -242,6 +244,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
 
         self.pkg_widget.hide()
 
+        #Display the result from extraction
         if self.result_jbz:
             self.populate_jb_table(self.result_jbz)
             self.job_bundle_pkg_ver_label.setText("..."+self.pkg_ui.jbzPathLineEdit.text()[-40:])

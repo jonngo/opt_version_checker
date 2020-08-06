@@ -4,6 +4,7 @@ import shutil
 
 from texttable import Texttable
 from subprocess import Popen,PIPE
+import package
 
 class JobBundleExtraction:
     def __init__(self):
@@ -44,6 +45,9 @@ class JobBundleExtraction:
             header = fin.read(1)
             return str(int.from_bytes(header, byteorder='little'))
 
+    def packman_version(self,file):
+        package.header_info()
+
     def clear_xtrak_folders(self, tag):
         for x in range(self.extract_file_starting_index,self.extract_file_ending_index+1):
             if os.path.exists(self.base_xtrak_path+tag+'/'+self.extract_folder+str(x)):
@@ -51,6 +55,24 @@ class JobBundleExtraction:
                     shutil.rmtree(self.base_xtrak_path+tag+'/'+self.extract_folder+str(x))
                 except:
                     print('Error while deleting directory ... {}'.format(self.base_xtrak_path+tag+'/' + self.extract_folder + str(x)))
+
+    #The return version string of Packman code is inconsistent, this will detect the type and convert to string.
+    def string_version(self, v):
+        if type(v) is str:
+            return v
+        elif type(v) is bytes:
+            return v.decode()
+        else:
+            print('Neither str or bytes type: '+v)
+            return v
+
+    #returns the package name only
+    def parse_package_name(self, p):
+        return "_".join(p.split('_')[:-2])
+
+    #returns the KVC from the package name string
+    def parse_package_kvc(self, p):
+        return p.split('_')[-1].split('.')[-2]
 
     def extract(self, tag=0,jbz_file=None):
         #Remove existing extract folder
@@ -75,9 +97,6 @@ class JobBundleExtraction:
 
             pkg_list = [os.path.join(root, name) for root, dirs, files in os.walk(self.base_xtrak_path+str(tag)+'/' + self.extract_folder + str(x) + '/') for name in files]
 
-            # for i in pkg_list:
-            #     print('... {}'.format(i))
-
         master_pkg_list = []
         master_pkg_list.append(['Package','Pkg Ver'])
 
@@ -88,11 +107,14 @@ class JobBundleExtraction:
                     for name in files:
                         if name.endswith('.pkg'):
                             v = self.package_version_type(os.path.join(root, name))
+                            #pmv - version from packman
+                            # pmv = self.string_version(package.version_num(os.path.join(root, name)))
                             if v is not None:
                                 if self.use_full_path:
                                     master_pkg_list.append(["".join(os.path.join(root, name).split('/')[4:]),v])
                                 else:
                                     master_pkg_list.append([name, v])
+                                    # master_pkg_list.append([self.parse_package_name(name),pmv,self.parse_package_kvc(name), v])
 
         self.display_table(master_pkg_list)
 
@@ -155,5 +177,3 @@ class JobBundleExtraction:
 #     result_jbz, result_manifest = jbx.extract(file_to_extract)
 #     if result_manifest is None:
 #         print('No manifest file found')
-
-# header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
