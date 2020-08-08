@@ -57,7 +57,9 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
                 elif 'chrome_driver_filepath' in conf:
                     self.conf_chrome_driver_filepath = conf['chrome_driver_filepath']
 
-            #TODO include in the config the default directory to open
+            #TODO include in the config the default directory to open (jfrog)
+
+            #TODO config of destination folder for saving
 
             #Initialize all version result list
             self.result_jbz = None
@@ -139,15 +141,8 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.save_on_screen_ui.setupUi(self.save_on_screen_widget)
         self.save_on_screen_ui.save_save_button.clicked.connect(self.save_on_screen_to_json)
 
-    # import json
-    # >> > s = '{"success": "true", "status": 200, "message": "Hello"}'
-    # >> > d = json.loads(s)
-    # >> > print
-    # d["success"], d["status"]
-    # true
-    # 200
-
     def openSaveOnScreenWidget(self):
+        self.save_on_screen_ui.save_filename_line_edit.setText('')
         self.save_on_screen_widget.show()
 
     #common jsonify pattern
@@ -159,7 +154,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         result_json_string = result_json_string + '],'
         return result_json_string
 
-    #Capture undefined result variables and set them as None.
+    #Convert the results to json string
     def results_to_json(self):
         #Outer bracket
         result_json_string = "{"
@@ -192,20 +187,17 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         if self.result_tms is not None:
             result_json_string = self.common_jsonify_of_result_list(result_json_string, 'tms', self.result_tms)
 
-        #JFROG
-        if self.result_of_jfrog_list is not None:
-            result_json_string = self.common_jsonify_of_result_list(result_json_string, 'jfrog', self.result_of_jfrog_list)
-
         result_json_string = result_json_string[:-1]
         result_json_string = result_json_string+"}"
 
         return result_json_string
 
     def save_on_screen_to_json(self):
-        print('result json string')
-        print(self.results_to_json())
-        print('result json object')
-        print(json.loads(self.results_to_json()))
+        filename = self.save_on_screen_ui.save_filename_line_edit.text()
+        print(filename)
+        if filename != '':
+            with open(filename+'.json', 'w') as outfile:
+                json.dump(json.loads(self.results_to_json()), outfile)
 
         self.save_on_screen_widget.hide()
 
