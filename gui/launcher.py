@@ -158,7 +158,139 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             self.load_to_screen_ui.load_filename_line_edit.setText(file)
 
     def load_display_to_screen(self):
-        print('do the loading logic here')
+        #Initialize the result list
+        self.result_jbz = None
+        self.result_conf_other_1 = None
+        self.result_conf_other_2 = None
+        self.result_conf_other_3 = None
+        self.result_manifest = None
+        self.result_emv = None
+        self.result_tms = None
+
+        #Hide the panels
+        self.show_hide_panel({'jbz': False})
+        self.show_hide_panel({'first': False})
+        self.show_hide_panel({'second': False})
+        self.show_hide_panel({'third': False})
+        self.show_hide_panel({'manifest': False})
+        self.show_hide_panel({'tms': False})
+        self.show_hide_panel({'emv': False})
+
+        filename = self.load_to_screen_ui.load_filename_line_edit.text()
+        with open(filename) as results_json:
+            data = json.load(results_json)
+
+            #Retrieve content from jbz dictionary and assign to jbz result list
+            try:
+                temp_result_list = []
+                temp_result_list.append(['Package', 'Pkg Ver'])
+                for result in data['jbz']:
+                    for k, v in result.items():
+                        temp_result_list.append([k,v])
+                self.result_jbz = temp_result_list
+            except Exception as e:
+                print (str(e)+' does not exist')
+
+            #Retrieve content from conf others 1 dictionary and assign to conf others 1 result list
+            try:
+                temp_result_list = []
+                temp_result_list.append(['Package', 'Pkg Ver'])
+                for result in data['conf_other_1']:
+                    for k, v in result.items():
+                        temp_result_list.append([k,v])
+                self.result_conf_other_1 = temp_result_list
+            except Exception as e:
+                print (str(e)+' does not exist')
+
+            #Retrieve content from conf others 2 dictionary and assign to conf others 2 result list
+            try:
+                temp_result_list = []
+                temp_result_list.append(['Package', 'Pkg Ver'])
+                for result in data['conf_other_2']:
+                    for k, v in result.items():
+                        temp_result_list.append([k,v])
+                self.result_conf_other_2 = temp_result_list
+            except Exception as e:
+                print (str(e)+' does not exist')
+
+            #Retrieve content from conf others 3 dictionary and assign to conf others 3 result list
+            try:
+                temp_result_list = []
+                temp_result_list.append(['Package', 'Pkg Ver'])
+                for result in data['conf_other_3']:
+                    for k, v in result.items():
+                        temp_result_list.append([k,v])
+                self.result_conf_other_3 = temp_result_list
+            except Exception as e:
+                print (str(e)+' does not exist')
+
+            #Retrieve content from manifest dictionary and assign to manifest result list
+            try:
+                temp_result_list = []
+                temp_result_list.append(['Package', 'Pkg Ver'])
+                for result in data['manifest']:
+                    for k, v in result.items():
+                        temp_result_list.append([k,v])
+                self.result_manifest = temp_result_list
+            except Exception as e:
+                print (str(e)+' does not exist')
+
+            #Retrieve content from tms dictionary and assign to tms result list
+            try:
+                temp_result_list = []
+                temp_result_list.append(['Package', 'Pkg Ver'])
+                for result in data['tms']:
+                    for k, v in result.items():
+                        temp_result_list.append([k,v])
+                self.result_tms = temp_result_list
+            except Exception as e:
+                print (str(e)+' does not exist')
+
+            #Retrieve content from emv dictionary and assign to emv result list
+            try:
+                temp_result_list = []
+                temp_result_list.append(['Package', 'Pkg Ver'])
+                for result in data['emv']:
+                    for k, v in result.items():
+                        temp_result_list.append([k,v])
+                self.result_emv = temp_result_list
+            except Exception as e:
+                print (str(e)+' does not exist')
+
+            #Populate the tables from the loaded list
+
+            if self.result_jbz:
+                self.populate_generic_table(self.jbz_pkg_ver_table, self.result_jbz)
+                self.show_hide_panel({'jbz':True})
+                self.pkg_listview.hide()
+
+            if self.result_conf_other_1:
+                self.populate_generic_table(self.first_conf_other_pkg_ver_table, self.result_conf_other_1)
+                self.show_hide_panel({'first':True})
+                self.first_conf_other_pkg_listview.hide()
+
+            if self.result_conf_other_2:
+                self.populate_generic_table(self.second_conf_other_pkg_ver_table, self.result_conf_other_2)
+                self.show_hide_panel({'second':True})
+                self.second_conf_other_pkg_listview.hide()
+
+            if self.result_conf_other_3:
+                self.populate_generic_table(self.third_conf_other_pkg_ver_table, self.result_conf_other_3)
+                self.show_hide_panel({'third':True})
+                self.third_conf_other_pkg_listview.hide()
+
+            if self.result_manifest:
+                self.populate_generic_table(self.manifest_table, self.result_manifest)
+                self.show_hide_panel({'manifest': True})
+
+            if self.result_tms:
+                self.populate_generic_table(self.tms_param_table, self.result_tms)
+                self.show_hide_panel({'tms': True})
+
+            if self.result_emv:
+                self.populate_generic_table(self.emv_kernel_ver_table, self.result_emv)
+                self.show_hide_panel({'emv': True})
+
         self.load_to_screen_widget.hide()
 
     #SAVE ON SCREEN DATA
