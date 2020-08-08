@@ -10,6 +10,7 @@ from gui import Ui_emv_widget
 from gui import Ui_tms_widget
 from gui import Ui_jfrog_widget
 from gui import Ui_save_widget
+from gui import Ui_load_widget
 from PyQt5 import QtCore, QtGui, QtWidgets
 from jbz_extraction import JobBundleExtraction
 from emv_version import EmvExtraction
@@ -20,7 +21,7 @@ from PyQt5.QtCore import Qt
 import pandas as pd
 import json
 
-class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jfrog_widget, Ui_save_widget):
+class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jfrog_widget, Ui_save_widget, Ui_load_widget):
     def __init__(self):
 
         with open("config.json") as json_data_file:
@@ -57,7 +58,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
                 elif 'chrome_driver_filepath' in conf:
                     self.conf_chrome_driver_filepath = conf['chrome_driver_filepath']
 
-            #TODO include in the config the default directory to open (jfrog)
+            #TODO include in the config the default directory to open, this is for all file dialog
 
             #TODO config of destination folder for saving
 
@@ -84,6 +85,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.tmsLite_menu_item.triggered.connect(self.openTmsWidget)
         self.jfrog_menu_item.triggered.connect(self.openJFrogWidget)
         self.save_menu_item.triggered.connect(self.openSaveOnScreenWidget)
+        self.load_menu_item.triggered.connect(self.openLoadToScreenWidget)
 
         #View Menu - Show Menu
         #show_only_view
@@ -108,6 +110,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.initEmvWidget()
         self.initTmsWidget()
         self.initSaveOnScreenWidget()
+        self.initLoadToScreenWidget()
 
         #List Model for the package header list
         self.pkg_header_list_model = QStandardItemModel(self.pkg_listview)
@@ -133,6 +136,30 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
 
         #Display the main window
         version_checker_mainwindow.show()
+
+    #LOAD TO SCREEN
+    def initLoadToScreenWidget(self):
+        self.load_to_screen_widget = QtWidgets.QWidget()
+        self.load_to_screen_ui = Ui_load_widget()
+        self.load_to_screen_ui.setupUi(self.load_to_screen_widget)
+        self.load_to_screen_ui.load_browse_filename_push_button.clicked.connect(self.browse_filename_to_load)
+        self.load_to_screen_ui.load_load_push_button.clicked.connect(self.load_display_to_screen)
+
+    def openLoadToScreenWidget(self):
+        self.load_to_screen_widget.show()
+
+    def browse_filename_to_load(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        file, _ = QFileDialog.getOpenFileName(None,'Open file','C:\\Users\\jonathann\\invenco',"json files (*.json))")
+
+        #file = str(QFileDialog.getExistingDirectory())
+        if file:
+            self.load_to_screen_ui.load_filename_line_edit.setText(file)
+
+    def load_display_to_screen(self):
+        print('do the loading logic here')
+        self.load_to_screen_widget.hide()
 
     #SAVE ON SCREEN DATA
     def initSaveOnScreenWidget(self):
@@ -628,6 +655,7 @@ if __name__ == "__main__":
 # pyuic5 jbz_pkg.ui -o jbz_pkg.py
 # pyuic5 jfrog.ui -o jfrog.py
 # pyuic5 save_on_screen_data.ui -o save_on_screen_data.py
+# pyuic5 load_to_screen.ui -o load_to_screen.py
 
 # To make .exe
 # pyinstaller --noconsole --onefile --windowed --icon=../vc.ico launcher.py

@@ -555,6 +555,7 @@
      <string>File</string>
     </property>
     <addaction name="save_menu_item"/>
+    <addaction name="load_menu_item"/>
     <addaction name="exit_menu_item"/>
    </widget>
    <widget class="QMenu" name="menuSource">
@@ -725,6 +726,11 @@
   <action name="save_menu_item">
    <property name="text">
     <string>Save</string>
+   </property>
+  </action>
+  <action name="load_menu_item">
+   <property name="text">
+    <string>Load</string>
    </property>
   </action>
  </widget>
