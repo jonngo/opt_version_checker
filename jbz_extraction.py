@@ -100,6 +100,9 @@ class JobBundleExtraction:
         master_pkg_list = []
         master_pkg_list.append(['Package','Pkg Ver'])
 
+        #This list is used when saving packages, include in this other header information if needed.
+        ref_pkg_list = []
+
         for x in range(self.extract_file_starting_index,self.extract_file_ending_index+1):
             if os.path.exists(self.base_xtrak_path+str(tag)+'/' + self.extract_folder + str(x)):
                 print('processing ... {}'.format(x))
@@ -107,13 +110,14 @@ class JobBundleExtraction:
                     for name in files:
                         if name.endswith('.pkg'):
                             v = self.package_version_type(os.path.join(root, name))
-                            #pmv - version from packman
-                            # pmv = self.string_version(package.version_num(os.path.join(root, name)))
+                            # pmv - version from packman
+                            pmv = self.string_version(package.version_num(os.path.join(root, name)))
                             if v is not None:
                                 if self.use_full_path:
                                     master_pkg_list.append(["".join(os.path.join(root, name).split('/')[4:]),v])
                                 else:
                                     master_pkg_list.append([name, v])
+                                    ref_pkg_list.append([name,pmv])
                                     # master_pkg_list.append([self.parse_package_name(name),pmv,self.parse_package_kvc(name), v])
 
         self.display_table(master_pkg_list)
@@ -157,7 +161,7 @@ class JobBundleExtraction:
         if manifest is not None:
             self.display_table(manifest)
 
-        return master_pkg_list, manifest
+        return master_pkg_list, manifest, ref_pkg_list
 
     def display_table(self, content):
         table = Texttable()

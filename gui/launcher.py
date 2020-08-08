@@ -67,6 +67,12 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             self.result_manifest = None
             self.result_emv = None
             self.result_tms = None
+            self.result_of_jfrog_list = None
+
+            self.result_jbz_ref = None
+            self.result_conf_other_1_ref = None
+            self.result_conf_other_2_ref = None
+            self.result_conf_other_3_ref = None
 
     #MAIN
     def extendUI(self,version_checker_mainwindow):
@@ -131,46 +137,77 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.save_on_screen_widget = QtWidgets.QWidget()
         self.save_on_screen_ui = Ui_save_widget()
         self.save_on_screen_ui.setupUi(self.save_on_screen_widget)
-        self.save_on_screen_ui.save_save_button.clicked.connect(self.save_on_screen_to_db)
+        self.save_on_screen_ui.save_save_button.clicked.connect(self.save_on_screen_to_json)
+
+    # import json
+    # >> > s = '{"success": "true", "status": 200, "message": "Hello"}'
+    # >> > d = json.loads(s)
+    # >> > print
+    # d["success"], d["status"]
+    # true
+    # 200
 
     def openSaveOnScreenWidget(self):
         self.save_on_screen_widget.show()
 
+    #common jsonify pattern
+    def common_jsonify_of_result_list(self,result_json_string,source,result_ref):
+        result_json_string = result_json_string +'"'+source+'":['
+        for rl in result_ref:
+            result_json_string = result_json_string + '{"'+rl[0]+'":"'+rl[1]+'"},'
+        result_json_string = result_json_string[:-1]
+        result_json_string = result_json_string + '],'
+        return result_json_string
+
     #Capture undefined result variables and set them as None.
-    def validate_results(self):
-        if self.result_jbz is not None:
-            print ('jbz')
-            for rl in self.result_jbz:
-                print (rl)
-        if self.result_conf_other_1 is not None:
-            print('conf or other 1')
-            for rl in self.result_conf_other_1:
-                print (rl)
-        if self.result_conf_other_2 is not None:
-            print('conf or other 2')
-            for rl in self.result_conf_other_2:
-                print(rl)
-        if self.result_conf_other_3 is not None:
-            print('conf or other 3')
-            for rl in self.result_conf_other_3:
-                print(rl)
+    def results_to_json(self):
+        #Outer bracket
+        result_json_string = "{"
+
+        #JBZ
+        if self.result_jbz_ref is not None:
+            result_json_string = self.common_jsonify_of_result_list(result_json_string, 'jbz', self.result_jbz_ref)
+
+        #CONF OR OTHER 1
+        if self.result_conf_other_1_ref is not None:
+            result_json_string = self.common_jsonify_of_result_list(result_json_string,'conf_other_1',self.result_conf_other_1_ref)
+
+        #CONF OR OTHER 2
+        if self.result_conf_other_2_ref is not None:
+            result_json_string = self.common_jsonify_of_result_list(result_json_string, 'conf_other_2', self.result_conf_other_2_ref)
+
+        #CONF OR OTHER 3
+        if self.result_conf_other_3_ref is not None:
+            result_json_string = self.common_jsonify_of_result_list(result_json_string, 'conf_other_3', self.result_conf_other_3_ref)
+
+        #MANIFEST
         if self.result_manifest is not None:
-            print('manifest')
-            for rl in self.result_manifest:
-                print(rl)
+            result_json_string = self.common_jsonify_of_result_list(result_json_string, 'manifest', self.result_manifest)
+
+        #EMV
         if self.result_emv is not None:
-            print('emv')
-            for rl in self.result_emv:
-                print(rl)
+            result_json_string = self.common_jsonify_of_result_list(result_json_string, 'emv', self.result_emv)
+
+        #TMS
         if self.result_tms is not None:
-            print('tms')
-            for rl in self.result_tms:
-                print(rl)
+            result_json_string = self.common_jsonify_of_result_list(result_json_string, 'tms', self.result_tms)
 
-    def save_on_screen_to_db(self):
-        self.validate_results()
+        #JFROG
+        if self.result_of_jfrog_list is not None:
+            result_json_string = self.common_jsonify_of_result_list(result_json_string, 'jfrog', self.result_of_jfrog_list)
+
+        result_json_string = result_json_string[:-1]
+        result_json_string = result_json_string+"}"
+
+        return result_json_string
+
+    def save_on_screen_to_json(self):
+        print('result json string')
+        print(self.results_to_json())
+        print('result json object')
+        print(json.loads(self.results_to_json()))
+
         self.save_on_screen_widget.hide()
-
 
     #JBZ PACKAGE VERSION
     def initPkgWidget(self):
@@ -221,24 +258,24 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
 
         #Do extraction if there is an entry from the line edit field.
         if self.pkg_ui.jbzPathLineEdit.text() != "":
-            self.result_jbz,self.result_manifest = self.jbx.extract(tag=0,jbz_file=self.pkg_ui.jbzPathLineEdit.text())
+            self.result_jbz,self.result_manifest,self.result_jbz_ref = self.jbx.extract(tag=0,jbz_file=self.pkg_ui.jbzPathLineEdit.text())
             if self.result_jbz:
                 self.show_hide_panel({'jbz':True})
             if self.result_manifest:
                 self.show_hide_panel({'manifest': True})
 
         if self.pkg_ui.conf_other_pkg_1_line_edit.text() != "":
-            self.result_conf_other_1,_ = self.jbx.extract(tag=1,jbz_file=self.pkg_ui.conf_other_pkg_1_line_edit.text())
+            self.result_conf_other_1,_,self.result_conf_other_1_ref = self.jbx.extract(tag=1,jbz_file=self.pkg_ui.conf_other_pkg_1_line_edit.text())
             if self.result_conf_other_1:
                 self.show_hide_panel({'first':True})
 
         if self.pkg_ui.conf_other_pkg_2_line_edit.text() != "":
-            self.result_conf_other_2,_ = self.jbx.extract(tag=2,jbz_file=self.pkg_ui.conf_other_pkg_2_line_edit.text())
+            self.result_conf_other_2,_,self.result_conf_other_2_ref = self.jbx.extract(tag=2,jbz_file=self.pkg_ui.conf_other_pkg_2_line_edit.text())
             if self.result_conf_other_2:
                 self.show_hide_panel({'second': True})
 
         if self.pkg_ui.conf_other_pkg_3_line_edit.text() != "":
-            self.result_conf_other_3,_ = self.jbx.extract(tag=3,jbz_file=self.pkg_ui.conf_other_pkg_3_line_edit.text())
+            self.result_conf_other_3,_,self.result_conf_other_3_ref = self.jbx.extract(tag=3,jbz_file=self.pkg_ui.conf_other_pkg_3_line_edit.text())
             if self.result_conf_other_3:
                 self.show_hide_panel({'third': True})
 
