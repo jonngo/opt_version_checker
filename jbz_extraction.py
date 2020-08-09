@@ -117,7 +117,7 @@ class JobBundleExtraction:
                                     master_pkg_list.append(["".join(os.path.join(root, name).split('/')[4:]),v])
                                 else:
                                     master_pkg_list.append([name, v])
-                                    ref_pkg_list.append([name,pmv])
+                                    ref_pkg_list.append([name, v, pmv])
                                     # master_pkg_list.append([self.parse_package_name(name),pmv,self.parse_package_kvc(name), v])
 
         self.display_table(master_pkg_list)

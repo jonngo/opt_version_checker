@@ -158,6 +158,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             self.load_to_screen_ui.load_filename_line_edit.setText(file)
 
     def load_display_to_screen(self):
+        #TODO refactor the load function, too many duplicate code
         #Initialize the result list
         self.result_jbz = None
         self.result_conf_other_1 = None
@@ -183,44 +184,56 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             #Retrieve content from jbz dictionary and assign to jbz result list
             try:
                 temp_result_list = []
+                temp_ref_result_list = []
                 temp_result_list.append(['Package', 'Pkg Ver'])
                 for result in data['jbz']:
                     for k, v in result.items():
-                        temp_result_list.append([k,v])
+                        temp_result_list.append([k,v[0]])
+                        temp_ref_result_list.append([k,v[0],v[1]])
                 self.result_jbz = temp_result_list
+                self.result_jbz_ref = temp_ref_result_list
             except Exception as e:
                 print (str(e)+' does not exist')
 
             #Retrieve content from conf others 1 dictionary and assign to conf others 1 result list
             try:
                 temp_result_list = []
+                temp_ref_result_list = []
                 temp_result_list.append(['Package', 'Pkg Ver'])
                 for result in data['conf_other_1']:
                     for k, v in result.items():
-                        temp_result_list.append([k,v])
+                        temp_result_list.append([k,v[0]])
+                        temp_ref_result_list.append([k,v[0],v[1]])
                 self.result_conf_other_1 = temp_result_list
+                self.result_conf_other_1_ref = temp_ref_result_list
             except Exception as e:
                 print (str(e)+' does not exist')
 
             #Retrieve content from conf others 2 dictionary and assign to conf others 2 result list
             try:
                 temp_result_list = []
+                temp_ref_result_list = []
                 temp_result_list.append(['Package', 'Pkg Ver'])
                 for result in data['conf_other_2']:
                     for k, v in result.items():
-                        temp_result_list.append([k,v])
+                        temp_result_list.append([k,v[0]])
+                        temp_ref_result_list.append([k,v[0],v[1]])
                 self.result_conf_other_2 = temp_result_list
+                self.result_conf_other_2_ref = temp_ref_result_list
             except Exception as e:
                 print (str(e)+' does not exist')
 
             #Retrieve content from conf others 3 dictionary and assign to conf others 3 result list
             try:
                 temp_result_list = []
+                temp_ref_result_list = []
                 temp_result_list.append(['Package', 'Pkg Ver'])
                 for result in data['conf_other_3']:
                     for k, v in result.items():
-                        temp_result_list.append([k,v])
+                        temp_result_list.append([k,v[0]])
+                        temp_ref_result_list.append([k,v[0],v[1]])
                 self.result_conf_other_3 = temp_result_list
+                self.result_conf_other_3_ref = temp_ref_result_list
             except Exception as e:
                 print (str(e)+' does not exist')
 
@@ -313,6 +326,14 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         result_json_string = result_json_string + '],'
         return result_json_string
 
+    def common_jsonify_of_result_list_with_header_info(self,result_json_string,source,result_ref):
+        result_json_string = result_json_string +'"'+source+'":['
+        for rl in result_ref:
+            result_json_string = result_json_string + '{"'+rl[0]+'":["'+rl[1]+'","'+rl[2]+'"]},'
+        result_json_string = result_json_string[:-1]
+        result_json_string = result_json_string + '],'
+        return result_json_string
+
     #Convert the results to json string
     def results_to_json(self):
         #Outer bracket
@@ -320,19 +341,19 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
 
         #JBZ
         if self.result_jbz_ref is not None:
-            result_json_string = self.common_jsonify_of_result_list(result_json_string, 'jbz', self.result_jbz_ref)
+            result_json_string = self.common_jsonify_of_result_list_with_header_info(result_json_string, 'jbz', self.result_jbz_ref)
 
         #CONF OR OTHER 1
         if self.result_conf_other_1_ref is not None:
-            result_json_string = self.common_jsonify_of_result_list(result_json_string,'conf_other_1',self.result_conf_other_1_ref)
+            result_json_string = self.common_jsonify_of_result_list_with_header_info(result_json_string,'conf_other_1',self.result_conf_other_1_ref)
 
         #CONF OR OTHER 2
         if self.result_conf_other_2_ref is not None:
-            result_json_string = self.common_jsonify_of_result_list(result_json_string, 'conf_other_2', self.result_conf_other_2_ref)
+            result_json_string = self.common_jsonify_of_result_list_with_header_info(result_json_string, 'conf_other_2', self.result_conf_other_2_ref)
 
         #CONF OR OTHER 3
         if self.result_conf_other_3_ref is not None:
-            result_json_string = self.common_jsonify_of_result_list(result_json_string, 'conf_other_3', self.result_conf_other_3_ref)
+            result_json_string = self.common_jsonify_of_result_list_with_header_info(result_json_string, 'conf_other_3', self.result_conf_other_3_ref)
 
         #MANIFEST
         if self.result_manifest is not None:
