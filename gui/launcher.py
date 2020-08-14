@@ -81,13 +81,13 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
     #MAIN
     def extendUI(self,version_checker_mainwindow):
         #Source Menu
-        self.jbz_pkg_menu_item.triggered.connect(self.openPkgWidget)
-        self.emv_menu_item.triggered.connect(self.openEmvWidget)
-        self.tmsLite_menu_item.triggered.connect(self.openTmsWidget)
-        self.jfrog_menu_item.triggered.connect(self.openJFrogWidget)
-        self.save_menu_item.triggered.connect(self.openSaveOnScreenWidget)
-        self.load_menu_item.triggered.connect(self.openLoadToScreenWidget)
-        self.map_menu_item.triggered.connect(self.openMapWidget)
+        self.jbz_pkg_menu_item.triggered.connect(self.open_pkg_widget)
+        self.emv_menu_item.triggered.connect(self.open_emv_widget)
+        self.tmsLite_menu_item.triggered.connect(self.open_tms_widget)
+        self.jfrog_menu_item.triggered.connect(self.open_jfrog_widget)
+        self.save_menu_item.triggered.connect(self.open_save_widget)
+        self.load_menu_item.triggered.connect(self.open_load_widget)
+        self.map_menu_item.triggered.connect(self.open_map_widget)
 
         #View Menu - Show Menu
         #show_only_view
@@ -107,13 +107,13 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.third_conf_other_pkg_header_pushbutton.clicked.connect(self.third_conf_other_toggle_header_listview)
 
         #Initialize Widgets
-        self.initJfrogWidget()
-        self.initPkgWidget()
-        self.initEmvWidget()
-        self.initTmsWidget()
-        self.initSaveOnScreenWidget()
-        self.initLoadToScreenWidget()
-        self.initMapWidget()
+        self.init_jfrog_widget()
+        self.init_pkg_widget()
+        self.init_emv_widget()
+        self.init_tms_widget()
+        self.init_save_widget()
+        self.init_load_widget()
+        self.init_map_widget()
 
         #List Model for the package header list
         self.pkg_header_list_model = QStandardItemModel(self.pkg_listview)
@@ -141,23 +141,23 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         version_checker_mainwindow.show()
 
     #MAP (This is to map the key name from different sources which will be used for the filter rules)
-    def initMapWidget(self):
+    def init_map_widget(self):
         self.map_widget = QtWidgets.QWidget()
         self.map_ui = Ui_map_widget()
         self.map_ui.setupUi(self.map_widget)
 
-    def openMapWidget(self):
+    def open_map_widget(self):
         self.map_widget.show()
 
     #LOAD TO SCREEN
-    def initLoadToScreenWidget(self):
+    def init_load_widget(self):
         self.load_to_screen_widget = QtWidgets.QWidget()
         self.load_to_screen_ui = Ui_load_widget()
         self.load_to_screen_ui.setupUi(self.load_to_screen_widget)
         self.load_to_screen_ui.load_browse_filename_push_button.clicked.connect(self.browse_filename_to_load)
         self.load_to_screen_ui.load_load_push_button.clicked.connect(self.load_display_to_screen)
 
-    def openLoadToScreenWidget(self):
+    def open_load_widget(self):
         self.load_to_screen_widget.show()
 
     def browse_filename_to_load(self):
@@ -319,13 +319,13 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.load_to_screen_widget.hide()
 
     #SAVE ON SCREEN DATA
-    def initSaveOnScreenWidget(self):
+    def init_save_widget(self):
         self.save_on_screen_widget = QtWidgets.QWidget()
         self.save_on_screen_ui = Ui_save_widget()
         self.save_on_screen_ui.setupUi(self.save_on_screen_widget)
         self.save_on_screen_ui.save_save_button.clicked.connect(self.save_on_screen_to_json)
 
-    def openSaveOnScreenWidget(self):
+    def open_save_widget(self):
         self.save_on_screen_ui.save_filename_line_edit.setText('')
         self.save_on_screen_widget.show()
 
@@ -394,17 +394,17 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.save_on_screen_widget.hide()
 
     #JBZ PACKAGE VERSION
-    def initPkgWidget(self):
+    def init_pkg_widget(self):
         self.pkg_widget = QtWidgets.QWidget()
         self.pkg_ui = Ui_pkg_widget()
         self.pkg_ui.setupUi(self.pkg_widget)
-        self.pkg_ui.jbzPathPushButton.clicked.connect(self.searchJbzPath)
-        self.pkg_ui.extractPushButton.clicked.connect(self.extractJbz)
+        self.pkg_ui.jbzPathPushButton.clicked.connect(self.search_jbz_path)
+        self.pkg_ui.extractPushButton.clicked.connect(self.extract_jbz_and_other_pkg)
         self.pkg_ui.conf_other_pkg_1_push_button.clicked.connect(self.search_other_pkg_path_1)
         self.pkg_ui.conf_other_pkg_2_push_button.clicked.connect(self.search_other_pkg_path_2)
         self.pkg_ui.conf_other_pkg_3_push_button.clicked.connect(self.search_other_pkg_path_3)
 
-    def openPkgWidget(self):
+    def open_pkg_widget(self):
         self.pkg_ui.extractionPathLineEdit.setText(self.conf_base_xtrak_path)
         self.pkg_ui.sevenZlineEdit.setText(self.conf_sevenZ_exe)
         self.pkg_ui.jbz_manifest_line_edit.setText(self.conf_manifest)
@@ -419,7 +419,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         if file:
             line_edit.setText(file)
 
-    def searchJbzPath(self):
+    def search_jbz_path(self):
         self.open_file_dialog(self.pkg_ui.jbzPathLineEdit)
 
     def search_other_pkg_path_1(self):
@@ -431,7 +431,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
     def search_other_pkg_path_3(self):
         self.open_file_dialog(self.pkg_ui.conf_other_pkg_3_line_edit)
 
-    def extractJbz(self):
+    def extract_jbz_and_other_pkg(self):
         self.jbx = JobBundleExtraction()
 
         #Initialize from configuration
@@ -539,21 +539,21 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
                             return os.path.join(root,name)
 
     #EMV KERNEL VERSION
-    def initEmvWidget(self):
+    def init_emv_widget(self):
         self.emv_widget = QtWidgets.QWidget()
         self.emv_ui = Ui_emv_widget()
         self.emv_ui.setupUi(self.emv_widget)
-        self.emv_ui.extractEMVPushButton.clicked.connect(self.extractEMV)
+        self.emv_ui.extractEMVPushButton.clicked.connect(self.extract_emv)
         self.device_customer_list = ["G6-300","G7-100 NCR","G7-100 Canada","G6-200"]
         self.emv_ui.emv_device_comboBox.addItems(self.device_customer_list)
 
-    def openEmvWidget(self):
+    def open_emv_widget(self):
         emvx = EmvExtraction()
         self.emv_ui.emv_ver_url_lineedit.setText(self.conf_emv_ver_url)
         self.emv_ui.chrome_driver_lineEdit.setText(self.conf_chrome_driver_filepath)
         self.emv_widget.show()
 
-    def extractEMV(self):
+    def extract_emv(self):
         if self.emv_ui.usernameLineEdit.text() == '' or self.emv_ui.passwordLineEdit.text() == '':
             return
 
@@ -577,17 +577,17 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.emv_widget.hide()
 
     #TMSLITE PARAMETERS
-    def initTmsWidget(self):
+    def init_tms_widget(self):
         self.tms_widget = QtWidgets.QWidget()
         self.tms_ui = Ui_tms_widget()
         self.tms_ui.setupUi(self.tms_widget)
         self.tms_ui.tms_param_search_push_button.clicked.connect(self.search_tms_params_csv)
-        self.tms_ui.tms_param_load_push_button.clicked.connect(self.loadTMS)
+        self.tms_ui.tms_param_load_push_button.clicked.connect(self.load_tms)
 
-    def openTmsWidget(self):
+    def open_tms_widget(self):
         self.tms_widget.show()
 
-    def loadTMS(self):
+    def load_tms(self):
         tmsx = TmsExtraction()
         self.result_tms = tmsx.load_tms_parameters(self.tms_ui.tmslite_param_line_edit.text())
         self.tms_widget.hide()
@@ -604,7 +604,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             self.tms_ui.tmslite_param_line_edit.setText(file)
 
     #JFROG ARTIFACTORY
-    def initJfrogWidget(self):
+    def init_jfrog_widget(self):
         self.jfrog_widget = QtWidgets.QWidget()
         self.jfrog_ui = Ui_jfrog_widget()
         self.jfrog_ui.setupUi(self.jfrog_widget)
@@ -612,7 +612,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.jfrog_ui.jfrog_load_push_button.clicked.connect(self.load_selected_sku_bundle)
         self.jfrog_ui.jfrog_build_ver_line_edit.returnPressed.connect(self.load_build_list)
 
-    def openJFrogWidget(self):
+    def open_jfrog_widget(self):
         self.jfrog_widget.show()
 
     #Jfrog Artifactory slot when Load button is clicked
