@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1386</width>
+    <width>1874</width>
     <height>720</height>
    </rect>
   </property>
@@ -546,8 +546,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1386</width>
-     <height>18</height>
+     <width>1874</width>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -592,9 +592,17 @@
      <string>Help</string>
     </property>
    </widget>
+   <widget class="QMenu" name="menuCheck">
+    <property name="title">
+     <string>Check</string>
+    </property>
+    <addaction name="map_menu_item"/>
+    <addaction name="actionFilter"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuSource"/>
    <addaction name="menuView"/>
+   <addaction name="menuCheck"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -731,6 +739,16 @@
   <action name="load_menu_item">
    <property name="text">
     <string>Load</string>
+   </property>
+  </action>
+  <action name="map_menu_item">
+   <property name="text">
+    <string>Map</string>
+   </property>
+  </action>
+  <action name="actionFilter">
+   <property name="text">
+    <string>Filter</string>
    </property>
   </action>
  </widget>

@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>map_widget</class>
+ <widget class="QWidget" name="map_widget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1103</width>
+    <height>673</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Map Filter Rules</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="2">
+    <layout class="QVBoxLayout" name="verticalLayout_4">
+     <item>
+      <widget class="QLabel" name="map_emv_label">
+       <property name="text">
+        <string>EMV Kernel Version</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTableView" name="map_emv_table"/>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="map_emv_line_edit"/>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="1">
+    <layout class="QVBoxLayout" name="verticalLayout_21">
+     <item>
+      <widget class="QLabel" name="map_manifest_label">
+       <property name="text">
+        <string>Manifest File</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTableView" name="map_manifest_table"/>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="map_manifest_line_edit"/>
+     </item>
+    </layout>
+   </item>
+   <item row="1" column="0" colspan="5">
+    <widget class="QTableView" name="map_rule_table"/>
+   </item>
+   <item row="2" column="0" colspan="5">
+    <widget class="QFrame" name="frame">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLabel" name="map_rule_name_label">
+        <property name="text">
+         <string>Name</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="map_rule_name_line_edit"/>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="map_save_push_button">
+        <property name="text">
+         <string>Save</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="map_close_push_button">
+        <property name="text">
+         <string>Close</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <layout class="QVBoxLayout" name="verticalLayout_22">
+     <item>
+      <widget class="QLabel" name="map_pkg_ver_label">
+       <property name="text">
+        <string>Package Version</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTableView" name="map_pkg_table">
+       <property name="sizeAdjustPolicy">
+        <enum>QAbstractScrollArea::AdjustIgnored</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="map_pkg_ver_line_edit"/>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="3" colspan="2">
+    <layout class="QVBoxLayout" name="verticalLayout_20">
+     <item>
+      <widget class="QLabel" name="map_tms_label">
+       <property name="text">
+        <string>TMSLite Parameters</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTableView" name="map_tms_table"/>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="map_tms_line_edit"/>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>map_close_push_button</sender>
+   <signal>clicked()</signal>
+   <receiver>map_widget</receiver>
+   <slot>hide()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1046</x>
+     <y>642</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>551</x>
+     <y>336</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

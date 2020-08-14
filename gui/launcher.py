@@ -11,6 +11,7 @@ from gui import Ui_tms_widget
 from gui import Ui_jfrog_widget
 from gui import Ui_save_widget
 from gui import Ui_load_widget
+from gui import Ui_map_widget
 from PyQt5 import QtCore, QtGui, QtWidgets
 from jbz_extraction import JobBundleExtraction
 from emv_version import EmvExtraction
@@ -21,7 +22,7 @@ from PyQt5.QtCore import Qt
 import pandas as pd
 import json
 
-class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jfrog_widget, Ui_save_widget, Ui_load_widget):
+class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jfrog_widget, Ui_save_widget, Ui_load_widget, Ui_map_widget):
     def __init__(self):
 
         with open("config.json") as json_data_file:
@@ -86,6 +87,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.jfrog_menu_item.triggered.connect(self.openJFrogWidget)
         self.save_menu_item.triggered.connect(self.openSaveOnScreenWidget)
         self.load_menu_item.triggered.connect(self.openLoadToScreenWidget)
+        self.map_menu_item.triggered.connect(self.openMapWidget)
 
         #View Menu - Show Menu
         #show_only_view
@@ -111,6 +113,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.initTmsWidget()
         self.initSaveOnScreenWidget()
         self.initLoadToScreenWidget()
+        self.initMapWidget()
 
         #List Model for the package header list
         self.pkg_header_list_model = QStandardItemModel(self.pkg_listview)
@@ -136,6 +139,15 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
 
         #Display the main window
         version_checker_mainwindow.show()
+
+    #MAP (This is to map the key name from different sources which will be used for the filter rules)
+    def initMapWidget(self):
+        self.map_widget = QtWidgets.QWidget()
+        self.map_ui = Ui_map_widget()
+        self.map_ui.setupUi(self.map_widget)
+
+    def openMapWidget(self):
+        self.map_widget.show()
 
     #LOAD TO SCREEN
     def initLoadToScreenWidget(self):
@@ -809,6 +821,7 @@ if __name__ == "__main__":
 # pyuic5 jfrog.ui -o jfrog.py
 # pyuic5 save_on_screen_data.ui -o save_on_screen_data.py
 # pyuic5 load_to_screen.ui -o load_to_screen.py
+# pyuic5 map.ui -o map.py
 
 # To make .exe
 # pyinstaller --noconsole --onefile --windowed --icon=../vc.ico launcher.py
