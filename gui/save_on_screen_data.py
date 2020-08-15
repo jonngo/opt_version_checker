@@ -13,7 +13,10 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_save_widget(object):
     def setupUi(self, save_widget):
         save_widget.setObjectName("save_widget")
-        save_widget.resize(763, 79)
+        save_widget.resize(763, 99)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("vc.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        save_widget.setWindowIcon(icon)
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(save_widget)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()

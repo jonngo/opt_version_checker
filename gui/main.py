@@ -11,6 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class Ui_MainWindow(object):
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1874, 720)
@@ -29,6 +30,7 @@ class Ui_MainWindow(object):
         self.jfrog_label.setObjectName("jfrog_label")
         self.verticalLayout_8.addWidget(self.jfrog_label)
         self.jfrog_table = QtWidgets.QTableView(self.centralwidget)
+        self.jfrog_table.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
         self.jfrog_table.setObjectName("jfrog_table")
         self.verticalLayout_8.addWidget(self.jfrog_table)
         self.jfrog_buttom_button_frame = QtWidgets.QFrame(self.centralwidget)
@@ -53,7 +55,12 @@ class Ui_MainWindow(object):
         self.job_bundle_pkg_ver_label.setObjectName("job_bundle_pkg_ver_label")
         self.verticalLayout_7.addWidget(self.job_bundle_pkg_ver_label)
         self.jbz_pkg_ver_table = QtWidgets.QTableView(self.centralwidget)
-        self.jbz_pkg_ver_table.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustIgnored)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.jbz_pkg_ver_table.sizePolicy().hasHeightForWidth())
+        self.jbz_pkg_ver_table.setSizePolicy(sizePolicy)
+        self.jbz_pkg_ver_table.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
         self.jbz_pkg_ver_table.setObjectName("jbz_pkg_ver_table")
         self.verticalLayout_7.addWidget(self.jbz_pkg_ver_table)
         self.pkg_listview = QtWidgets.QListView(self.centralwidget)
@@ -92,6 +99,11 @@ class Ui_MainWindow(object):
         self.first_conf_other_pkg_ver_label.setObjectName("first_conf_other_pkg_ver_label")
         self.verticalLayout_9.addWidget(self.first_conf_other_pkg_ver_label)
         self.first_conf_other_pkg_ver_table = QtWidgets.QTableView(self.centralwidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.first_conf_other_pkg_ver_table.sizePolicy().hasHeightForWidth())
+        self.first_conf_other_pkg_ver_table.setSizePolicy(sizePolicy)
         self.first_conf_other_pkg_ver_table.setObjectName("first_conf_other_pkg_ver_table")
         self.verticalLayout_9.addWidget(self.first_conf_other_pkg_ver_table)
         self.first_conf_other_pkg_listview = QtWidgets.QListView(self.centralwidget)

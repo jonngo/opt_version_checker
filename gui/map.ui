@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Map Filter Rules</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>vc.ico</normaloff>vc.ico</iconset>
+  </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="2">
     <layout class="QVBoxLayout" name="verticalLayout_4">

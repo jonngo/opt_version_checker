@@ -31,7 +31,11 @@
          </widget>
         </item>
         <item>
-         <widget class="QTableView" name="jfrog_table"/>
+         <widget class="QTableView" name="jfrog_table">
+          <property name="sizeAdjustPolicy">
+           <enum>QAbstractScrollArea::AdjustToContents</enum>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QFrame" name="jfrog_buttom_button_frame">
@@ -85,8 +89,14 @@
         </item>
         <item>
          <widget class="QTableView" name="jbz_pkg_ver_table">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="sizeAdjustPolicy">
-           <enum>QAbstractScrollArea::AdjustIgnored</enum>
+           <enum>QAbstractScrollArea::AdjustToContents</enum>
           </property>
          </widget>
         </item>
@@ -163,7 +173,14 @@
          </widget>
         </item>
         <item>
-         <widget class="QTableView" name="first_conf_other_pkg_ver_table"/>
+         <widget class="QTableView" name="first_conf_other_pkg_ver_table">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QListView" name="first_conf_other_pkg_listview">

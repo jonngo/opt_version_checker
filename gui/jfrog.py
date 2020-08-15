@@ -14,6 +14,9 @@ class Ui_jfrog_widget(object):
     def setupUi(self, jfrog_widget):
         jfrog_widget.setObjectName("jfrog_widget")
         jfrog_widget.resize(887, 613)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("vc.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        jfrog_widget.setWindowIcon(icon)
         self.verticalLayout = QtWidgets.QVBoxLayout(jfrog_widget)
         self.verticalLayout.setObjectName("verticalLayout")
         self.label = QtWidgets.QLabel(jfrog_widget)

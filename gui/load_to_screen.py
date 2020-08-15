@@ -13,7 +13,10 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_load_widget(object):
     def setupUi(self, load_widget):
         load_widget.setObjectName("load_widget")
-        load_widget.resize(768, 77)
+        load_widget.resize(768, 100)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("vc.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        load_widget.setWindowIcon(icon)
         self.verticalLayout = QtWidgets.QVBoxLayout(load_widget)
         self.verticalLayout.setObjectName("verticalLayout")
         self.frame = QtWidgets.QFrame(load_widget)

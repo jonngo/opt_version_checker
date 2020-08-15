@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>JFrog Artifactory</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>vc.ico</normaloff>vc.ico</iconset>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="label">

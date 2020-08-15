@@ -12,7 +12,7 @@ from gui import Ui_jfrog_widget
 from gui import Ui_save_widget
 from gui import Ui_load_widget
 from gui import Ui_map_widget
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtWidgets
 from jbz_extraction import JobBundleExtraction
 from emv_version import EmvExtraction
 from tms_parameters import TmsExtraction
@@ -24,7 +24,6 @@ import json
 
 class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jfrog_widget, Ui_save_widget, Ui_load_widget, Ui_map_widget):
     def __init__(self):
-
         with open("config.json") as json_data_file:
             data = json.load(json_data_file)
             for conf in data['pkg_version_cfg']:
@@ -77,6 +76,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             self.result_conf_other_1_ref = None
             self.result_conf_other_2_ref = None
             self.result_conf_other_3_ref = None
+
 
     #MAIN
     def extendUI(self,version_checker_mainwindow):
@@ -136,6 +136,9 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
 
         #Hide all panel by default, only open when required.
         self.show_hide_panel({'jfrog':False,'jbz':False,'first':False,'second':False,'third':False,'tms': False,'manifest': False,'emv': False})
+
+        # version_checker_mainwindow.destroyed.connect(self.terminate_app)
+
 
         #Display the main window
         version_checker_mainwindow.show()
@@ -635,6 +638,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.model = TableModel(data)
         self.jfrog_ui.jfrog_all_tableview.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.jfrog_ui.jfrog_all_tableview.setModel(self.model)
+        self.jfrog_ui.jfrog_all_tableview.resizeColumnsToContents()
 
     def populate_jfrog_table(self,result):
         header = result.pop(0)
@@ -643,6 +647,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.model = TableModel(data)
         self.jfrog_table.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.jfrog_table.setModel(self.model)
+        self.jfrog_table.resizeColumnsToContents()
 
     #Common table renderer using basic table model
     def populate_generic_table(self,table,result):
@@ -652,6 +657,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         model = TableModel(data)
         table.setSelectionBehavior(QAbstractItemView.SelectRows)
         table.setModel(model)
+        table.resizeColumnsToContents()
         return model
 
     #Toggle the package header list view
@@ -672,6 +678,9 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
 
     def third_conf_other_toggle_header_listview(self):
         self.toggle_header_listview(self.third_conf_other_pkg_listview)
+
+    def terminate_app(self):
+        print('terminate app')
 
     #Hide panel
     def show_hide_panel(self, hs_dict):
@@ -807,7 +816,14 @@ class TableModel(QtCore.QAbstractTableModel):
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
-    version_checker_mainwindow = QtWidgets.QMainWindow()
+
+    #Override closeEvent so all other widgets will close if Main Window is exited.
+    class CustomMainWindow(QtWidgets.QMainWindow):
+        def closeEvent(self, *args, **kwargs):
+            sys.exit(app.exec_())
+
+    # version_checker_mainwindow = QtWidgets.QMainWindow()
+    version_checker_mainwindow = CustomMainWindow()
     ui = Launcher()
     ui.setupUi(version_checker_mainwindow)
     ui.extendUI(version_checker_mainwindow)

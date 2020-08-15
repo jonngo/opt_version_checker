@@ -7,11 +7,15 @@
     <x>0</x>
     <y>0</y>
     <width>763</width>
-    <height>79</height>
+    <height>99</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Save</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>vc.ico</normaloff>vc.ico</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>

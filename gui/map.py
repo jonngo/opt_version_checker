@@ -14,6 +14,9 @@ class Ui_map_widget(object):
     def setupUi(self, map_widget):
         map_widget.setObjectName("map_widget")
         map_widget.resize(1103, 673)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("vc.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        map_widget.setWindowIcon(icon)
         self.gridLayout = QtWidgets.QGridLayout(map_widget)
         self.gridLayout.setObjectName("gridLayout")
         self.verticalLayout_4 = QtWidgets.QVBoxLayout()
