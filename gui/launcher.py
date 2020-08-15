@@ -137,9 +137,6 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         #Hide all panel by default, only open when required.
         self.show_hide_panel({'jfrog':False,'jbz':False,'first':False,'second':False,'third':False,'tms': False,'manifest': False,'emv': False})
 
-        # version_checker_mainwindow.destroyed.connect(self.terminate_app)
-
-
         #Display the main window
         version_checker_mainwindow.show()
 
@@ -150,6 +147,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.map_ui.setupUi(self.map_widget)
 
     def open_map_widget(self):
+        self.map_widget.hide()
         self.map_widget.show()
 
     #LOAD TO SCREEN
@@ -161,6 +159,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.load_to_screen_ui.load_load_push_button.clicked.connect(self.load_display_to_screen)
 
     def open_load_widget(self):
+        self.load_to_screen_widget.hide()
         self.load_to_screen_widget.show()
 
     def browse_filename_to_load(self):
@@ -330,6 +329,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
 
     def open_save_widget(self):
         self.save_on_screen_ui.save_filename_line_edit.setText('')
+        self.save_on_screen_widget.hide()
         self.save_on_screen_widget.show()
 
     #common jsonify pattern
@@ -412,6 +412,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.pkg_ui.sevenZlineEdit.setText(self.conf_sevenZ_exe)
         self.pkg_ui.jbz_manifest_line_edit.setText(self.conf_manifest)
         self.pkg_ui.jbz_regex_match_ver_line_edit.setText(self.conf_regexp_string)
+        self.pkg_widget.hide()
         self.pkg_widget.show()
 
     def open_file_dialog(self,line_edit):
@@ -554,6 +555,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         emvx = EmvExtraction()
         self.emv_ui.emv_ver_url_lineedit.setText(self.conf_emv_ver_url)
         self.emv_ui.chrome_driver_lineEdit.setText(self.conf_chrome_driver_filepath)
+        self.emv_widget.hide()
         self.emv_widget.show()
 
     def extract_emv(self):
@@ -588,7 +590,9 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.tms_ui.tms_param_load_push_button.clicked.connect(self.load_tms)
 
     def open_tms_widget(self):
+        self.tms_widget.hide()
         self.tms_widget.show()
+
 
     def load_tms(self):
         tmsx = TmsExtraction()
@@ -616,6 +620,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.jfrog_ui.jfrog_build_ver_line_edit.returnPressed.connect(self.load_build_list)
 
     def open_jfrog_widget(self):
+        self.jfrog_widget.hide()
         self.jfrog_widget.show()
 
     #Jfrog Artifactory slot when Load button is clicked
@@ -678,9 +683,6 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
 
     def third_conf_other_toggle_header_listview(self):
         self.toggle_header_listview(self.third_conf_other_pkg_listview)
-
-    def terminate_app(self):
-        print('terminate app')
 
     #Hide panel
     def show_hide_panel(self, hs_dict):
@@ -822,7 +824,6 @@ if __name__ == "__main__":
         def closeEvent(self, *args, **kwargs):
             sys.exit(app.exec_())
 
-    # version_checker_mainwindow = QtWidgets.QMainWindow()
     version_checker_mainwindow = CustomMainWindow()
     ui = Launcher()
     ui.setupUi(version_checker_mainwindow)
