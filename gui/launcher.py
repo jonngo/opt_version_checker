@@ -333,22 +333,22 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             #Populate the tables from the loaded list
 
             if self.result_jbz:
-                self.populate_generic_table(self.jbz_pkg_ver_table, self.result_jbz)
+                self.populate_generic_table(self.jbz_pkg_ver_table, self.result_jbz, color_code='jbz')
                 self.show_hide_panel({'jbz':True})
                 self.pkg_listview.hide()
 
             if self.result_conf_other_1:
-                self.populate_generic_table(self.first_conf_other_pkg_ver_table, self.result_conf_other_1)
+                self.populate_generic_table(self.first_conf_other_pkg_ver_table, self.result_conf_other_1, color_code='conf_other_1')
                 self.show_hide_panel({'first':True})
                 self.first_conf_other_pkg_listview.hide()
 
             if self.result_conf_other_2:
-                self.populate_generic_table(self.second_conf_other_pkg_ver_table, self.result_conf_other_2)
+                self.populate_generic_table(self.second_conf_other_pkg_ver_table, self.result_conf_other_2, color_code='conf_other_2')
                 self.show_hide_panel({'second':True})
                 self.second_conf_other_pkg_listview.hide()
 
             if self.result_conf_other_3:
-                self.populate_generic_table(self.third_conf_other_pkg_ver_table, self.result_conf_other_3)
+                self.populate_generic_table(self.third_conf_other_pkg_ver_table, self.result_conf_other_3, color_code='conf_other_3')
                 self.show_hide_panel({'third':True})
                 self.third_conf_other_pkg_listview.hide()
 
@@ -532,19 +532,19 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             self.populate_manifest_table(self.result_manifest)
 
     def populate_jb_table(self,result):
-        self.model_jbz_pkg_ver_table = self.populate_generic_table(self.jbz_pkg_ver_table,result)
+        self.model_jbz_pkg_ver_table = self.populate_generic_table(self.jbz_pkg_ver_table,result,color_code='jbz')
         self.jbz_pkg_ver_table.clicked.connect(self.jbz_package_info)
 
     def populate_first_conf_table(self,result):
-        self.model_first_conf_ver_table = self.populate_generic_table(self.first_conf_other_pkg_ver_table,result)
+        self.model_first_conf_ver_table = self.populate_generic_table(self.first_conf_other_pkg_ver_table,result,color_code='conf_other_1')
         self.first_conf_other_pkg_ver_table.clicked.connect(self.first_conf_package_info)
 
     def populate_second_conf_table(self,result):
-        self.model_second_conf_ver_table = self.populate_generic_table(self.second_conf_other_pkg_ver_table,result)
+        self.model_second_conf_ver_table = self.populate_generic_table(self.second_conf_other_pkg_ver_table,result,color_code='conf_other_2')
         self.second_conf_other_pkg_ver_table.clicked.connect(self.second_conf_package_info)
 
     def populate_third_conf_table(self,result):
-        self.model_third_conf_ver_table = self.populate_generic_table(self.third_conf_other_pkg_ver_table,result)
+        self.model_third_conf_ver_table = self.populate_generic_table(self.third_conf_other_pkg_ver_table,result,color_code='conf_other_3')
         self.third_conf_other_pkg_ver_table.clicked.connect(self.third_conf_package_info)
 
     def populate_manifest_table(self,result):
@@ -701,11 +701,11 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.jfrog_table.resizeColumnsToContents()
 
     #Common table renderer using basic table model
-    def populate_generic_table(self,table,result):
+    def populate_generic_table(self,table,result,color_code=None):
         header = result.pop(0)
         rn = [str(c+1) for c in range(0,len(result))]
         data = pd.DataFrame(result, columns=header,index=rn)
-        model = TableModel(data)
+        model = TableModel(data,color_code)
         table.setSelectionBehavior(QAbstractItemView.SelectRows)
         table.setModel(model)
         table.resizeColumnsToContents()
@@ -855,14 +855,29 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
                     self.emv_kernel_version_label.hide()
 
 class TableModel(QtCore.QAbstractTableModel):
-    def __init__(self, data):
+    def __init__(self, data, color_code = None):
         super(TableModel, self).__init__()
         self._data = data
+        self._color_code = color_code
 
     def data(self, index, role):
         if role == Qt.DisplayRole:
             value = self._data.iloc[index.row(), index.column()]
             return str(value)
+        elif role == Qt.BackgroundRole:
+            if self._color_code is None:
+                return
+            if self._color_code == 'jbz':
+                return QColor(230, 230, 255) if index.row() % 2 == 0 else QColor(204, 204, 255)
+            elif self._color_code == 'conf_other_1':
+                #light red for conf 1 if even row else lighter red
+                return QColor(255, 235, 230) if index.row() % 2 == 0 else QColor(255,214,204)
+            elif self._color_code == 'conf_other_2':
+                #lighter yellow for conf 2 if even row else light yellow
+                return QColor(255, 255, 230) if index.row() % 2 == 0 else QColor(255, 255, 204)
+            elif self._color_code == 'conf_other_3':
+                #lighter green for conf 3 if even row else light green
+                return QColor(230,255,230) if index.row() % 2 == 0 else QColor(204, 255, 204)
 
     def rowCount(self, index):
         return self._data.shape[0]
