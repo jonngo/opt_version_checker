@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1103</width>
+    <width>1076</width>
     <height>673</height>
    </rect>
   </property>
@@ -18,44 +18,7 @@
     <normaloff>vc.ico</normaloff>vc.ico</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="2">
-    <layout class="QVBoxLayout" name="verticalLayout_4">
-     <item>
-      <widget class="QLabel" name="map_emv_label">
-       <property name="text">
-        <string>EMV Kernel Version</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QTableView" name="map_emv_table"/>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="map_emv_line_edit"/>
-     </item>
-    </layout>
-   </item>
-   <item row="0" column="1">
-    <layout class="QVBoxLayout" name="verticalLayout_21">
-     <item>
-      <widget class="QLabel" name="map_manifest_label">
-       <property name="text">
-        <string>Manifest File</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QTableView" name="map_manifest_table"/>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="map_manifest_line_edit"/>
-     </item>
-    </layout>
-   </item>
-   <item row="1" column="0" colspan="5">
-    <widget class="QTableView" name="map_rule_table"/>
-   </item>
-   <item row="2" column="0" colspan="5">
+   <item row="3" column="0" colspan="7">
     <widget class="QFrame" name="frame">
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
@@ -75,6 +38,61 @@
        <widget class="QLineEdit" name="map_rule_name_line_edit"/>
       </item>
       <item>
+       <widget class="QPushButton" name="map_save_push_button">
+        <property name="text">
+         <string>Save</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="map_add_push_button">
+        <property name="text">
+         <string>Add</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="map_edit_push_button">
+        <property name="text">
+         <string>Edit</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="map_remove_push_button">
+        <property name="text">
+         <string>Remove</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="map_up_push_button">
+        <property name="text">
+         <string>Up</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="map_down_push_button">
+        <property name="text">
+         <string>Down</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <spacer name="horizontalSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -88,13 +106,6 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="map_save_push_button">
-        <property name="text">
-         <string>Save</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QPushButton" name="map_close_push_button">
         <property name="text">
          <string>Close</string>
@@ -104,8 +115,75 @@
      </layout>
     </widget>
    </item>
+   <item row="0" column="4">
+    <layout class="QVBoxLayout" name="verticalLayout_4">
+     <item>
+      <widget class="QLabel" name="map_emv_label">
+       <property name="text">
+        <string>EMV Kernel Version</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="map_emv_filter_line_edit"/>
+     </item>
+     <item>
+      <widget class="QTableView" name="map_emv_table"/>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="map_emv_line_edit"/>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="3">
+    <layout class="QVBoxLayout" name="verticalLayout_21">
+     <item>
+      <widget class="QLabel" name="map_manifest_label">
+       <property name="text">
+        <string>Manifest File</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="map_manifest_filter_line_edit"/>
+     </item>
+     <item>
+      <widget class="QTableView" name="map_manifest_table"/>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="map_manifest_line_edit"/>
+     </item>
+    </layout>
+   </item>
+   <item row="2" column="0" colspan="7">
+    <widget class="QTableView" name="map_rule_table"/>
+   </item>
    <item row="0" column="0">
     <layout class="QVBoxLayout" name="verticalLayout_22">
+     <item>
+      <widget class="QLabel" name="map_reference_label">
+       <property name="text">
+        <string>Name Reference</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="map_ref_filter_line_edit"/>
+     </item>
+     <item>
+      <widget class="QTableView" name="map_reference_table">
+       <property name="sizeAdjustPolicy">
+        <enum>QAbstractScrollArea::AdjustIgnored</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="map_reference_line_edit"/>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="2">
+    <layout class="QVBoxLayout" name="verticalLayout">
      <item>
       <widget class="QLabel" name="map_pkg_ver_label">
        <property name="text">
@@ -114,18 +192,17 @@
       </widget>
      </item>
      <item>
-      <widget class="QTableView" name="map_pkg_table">
-       <property name="sizeAdjustPolicy">
-        <enum>QAbstractScrollArea::AdjustIgnored</enum>
-       </property>
-      </widget>
+      <widget class="QLineEdit" name="map_pkg_filter_Line_edit"/>
+     </item>
+     <item>
+      <widget class="QTableView" name="map_pkg_table"/>
      </item>
      <item>
       <widget class="QLineEdit" name="map_pkg_ver_line_edit"/>
      </item>
     </layout>
    </item>
-   <item row="0" column="3" colspan="2">
+   <item row="0" column="5" colspan="2">
     <layout class="QVBoxLayout" name="verticalLayout_20">
      <item>
       <widget class="QLabel" name="map_tms_label">
@@ -133,6 +210,9 @@
         <string>TMSLite Parameters</string>
        </property>
       </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="map_tms_filter_line_edit"/>
      </item>
      <item>
       <widget class="QTableView" name="map_tms_table"/>

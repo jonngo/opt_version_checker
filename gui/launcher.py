@@ -1,6 +1,6 @@
 import os
 
-from PyQt5.QtGui import QStandardItemModel, QStandardItem
+from PyQt5.QtGui import QStandardItemModel, QStandardItem, QColor
 from PyQt5.QtWidgets import QFileDialog, QAbstractItemView
 
 import package
@@ -12,7 +12,7 @@ from gui import Ui_jfrog_widget
 from gui import Ui_save_widget
 from gui import Ui_load_widget
 from gui import Ui_map_widget
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import QtCore, QtWidgets, QtGui
 from jbz_extraction import JobBundleExtraction
 from emv_version import EmvExtraction
 from tms_parameters import TmsExtraction
@@ -80,6 +80,15 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
 
     #MAIN
     def extendUI(self,version_checker_mainwindow):
+        #Initialize Widgets
+        self.init_jfrog_widget()
+        self.init_pkg_widget()
+        self.init_emv_widget()
+        self.init_tms_widget()
+        self.init_save_widget()
+        self.init_load_widget()
+        self.init_map_widget()
+
         #Source Menu
         self.jbz_pkg_menu_item.triggered.connect(self.open_pkg_widget)
         self.emv_menu_item.triggered.connect(self.open_emv_widget)
@@ -106,14 +115,6 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.second_conf_other_pkg_header_pushbutton.clicked.connect(self.second_conf_other_toggle_header_listview)
         self.third_conf_other_pkg_header_pushbutton.clicked.connect(self.third_conf_other_toggle_header_listview)
 
-        #Initialize Widgets
-        self.init_jfrog_widget()
-        self.init_pkg_widget()
-        self.init_emv_widget()
-        self.init_tms_widget()
-        self.init_save_widget()
-        self.init_load_widget()
-        self.init_map_widget()
 
         #List Model for the package header list
         self.pkg_header_list_model = QStandardItemModel(self.pkg_listview)
@@ -148,6 +149,51 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
 
     def open_map_widget(self):
         self.map_widget.hide()
+
+        #Merge the packages sources to one table and color code it.
+
+        merged_pkg_result = []
+
+        if self.result_jbz:
+            for p in self.result_jbz:
+                merged_pkg_result.append(['0',p[0]])
+            # merged_pkg_result = self.result_jbz.copy()
+
+        if self.result_conf_other_1:
+            for p in self.result_conf_other_1:
+                merged_pkg_result.append(['1',p[0]])
+            # merged_pkg_result = merged_pkg_result + self.result_conf_other_1.copy()
+
+        if self.result_conf_other_2:
+            for p in self.result_conf_other_2:
+                merged_pkg_result.append(['2',p[0]])
+            # merged_pkg_result = merged_pkg_result + self.result_conf_other_2.copy()
+
+        if self.result_conf_other_3:
+            for p in self.result_conf_other_3:
+                merged_pkg_result.append(['3',p[0]])
+            # merged_pkg_result = merged_pkg_result + self.result_conf_other_3.copy()
+
+        if merged_pkg_result:
+            # merged_pkg_result.insert(0, ['Package', 'Pkg Ver'])
+            merged_pkg_result.insert(0, ['#', 'Pkg'])
+            self.populate_map_pkg_table(self.map_ui.map_pkg_table, merged_pkg_result)
+
+        if self.result_manifest:
+            self.map_manifest_result_list = self.result_manifest.copy()
+            self.map_manifest_result_list.insert(0, ['TAG', 'VERSION'])
+            self.populate_generic_table(self.map_ui.map_manifest_table, self.map_manifest_result_list)
+
+        if self.result_tms:
+            self.map_tms_result_list = self.result_tms.copy()
+            self.map_tms_result_list.insert(0, ['TAG', 'VALUE'])
+            self.populate_generic_table(self.map_ui.map_tms_table, self.map_tms_result_list)
+
+        if self.result_emv:
+            self.map_emv_result_list = self.result_emv.copy()
+            self.map_emv_result_list.insert(0,["TAG", "VERSION"])
+            self.populate_generic_table(self.map_ui.map_emv_table, self.map_emv_result_list)
+
         self.map_widget.show()
 
     #LOAD TO SCREEN
@@ -665,6 +711,23 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         table.resizeColumnsToContents()
         return model
 
+    #change background color as per pkg group
+    def populate_map_pkg_table(self,table,result):
+        try:
+            header = result.pop(0)
+            rn = [str(c + 1) for c in range(0, len(result))]
+            data = pd.DataFrame(result, columns=header, index=rn)
+            model = MapPkgTableModel(data)
+            table.setSelectionBehavior(QAbstractItemView.SelectRows)
+            table.setModel(model)
+            table.resizeColumnsToContents()
+            #Hide the number column
+            table.setColumnHidden(0, True)
+            return model
+        except Exception as e:
+            print (str(e))
+
+
     #Toggle the package header list view
     def toggle_header_listview(self,listview):
         if listview.isVisible():
@@ -815,6 +878,46 @@ class TableModel(QtCore.QAbstractTableModel):
 
             if orientation == Qt.Vertical:
                 return str(self._data.index[section])
+
+class MapPkgTableModel(QtCore.QAbstractTableModel):
+    def __init__(self, data):
+        super(MapPkgTableModel, self).__init__()
+        self._data = data
+
+    def data(self, index, role):
+        if role == Qt.DisplayRole:
+            value = self._data.iloc[index.row(), index.column()]
+            return str(value)
+        elif role == Qt.BackgroundRole:
+            value = self._data.iloc[index.row(), 0]
+            if index.column() == 1 and int(value) == 0:
+                #lighter blue for jbz if even row else light blue
+                return QColor(230,230,255) if index.row() % 2 == 0 else QColor(204,204,255)
+            elif index.column() == 1 and int(value) == 1:
+                #light red for conf 1 if even row else lighter red
+                return QColor(255, 235, 230) if index.row() % 2 == 0 else QColor(255,214,204)
+            elif index.column() == 1 and int(value) == 2:
+                #lighter yellow for conf 2 if even row else light yellow
+                return QColor(255, 255, 230) if index.row() % 2 == 0 else QColor(255, 255, 204)
+            elif index.column() == 1 and int(value) == 3:
+                #lighter green for conf 3 if even row else light green
+                return QColor(230,255,230) if index.row() % 2 == 0 else QColor(204, 255, 204)
+
+    def rowCount(self, index):
+        return self._data.shape[0]
+
+    def columnCount(self, index):
+        return self._data.shape[1]
+
+    def headerData(self, section, orientation, role):
+        # section is the index of the column/row.
+        if role == Qt.DisplayRole:
+            if orientation == Qt.Horizontal:
+                return str(self._data.columns[section])
+
+            if orientation == Qt.Vertical:
+                return str(self._data.index[section])
+
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
