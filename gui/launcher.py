@@ -199,58 +199,34 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
     def parse_package_name(self, p):
         return "_".join(p.split('_')[:-2])
 
+    def common_map_stage(self,signal,col,model,line_edit,pn):
+        try:
+            row = signal.row()
+            index = signal.sibling(row, col) # col is the name column
+            index_dict = model.itemData(index)
+            index_value = index_dict.get(0)
+            t = line_edit.text()
+            delimeter = '' if t == '' else '|'
+            if pn: #parse name or not
+                line_edit.setText(self.parse_package_name(index_value)+delimeter+t)
+            else:
+                line_edit.setText(index_value+delimeter+t)
+        except Exception as e:
+            print('function: common_map_stage')
+            print (str(e))
+
     #Double clicking the table will put it in the staging field, ready to commit to the table below.
     def map_stage_the_pkg_name(self, signal):
-        try:
-            row = signal.row()
-            index = signal.sibling(row, 1) # 1 is the pkg name column
-            index_dict = self.model_map_pkg_table.itemData(index)
-            index_value = index_dict.get(0)
-            t = self.map_ui.map_pkg_ver_line_edit.text()
-            delimeter = '' if t == '' else '|'
-            self.map_ui.map_pkg_ver_line_edit.setText(self.parse_package_name(index_value)+delimeter+t)
-        except Exception as e:
-            print('function: set_pkg_name_to_match')
-            print (str(e))
+        self.common_map_stage(signal,1,self.model_map_pkg_table,self.map_ui.map_pkg_ver_line_edit,True)
 
     def map_stage_manifest(self, signal):
-        try:
-            row = signal.row()
-            index = signal.sibling(row, 0) # 0 is the manifest name column
-            index_dict = self.model_map_manifest_table.itemData(index)
-            index_value = index_dict.get(0)
-            t = self.map_ui.map_manifest_line_edit.text()
-            delimeter = '' if t == '' else '|'
-            self.map_ui.map_manifest_line_edit.setText(index_value+delimeter+t)
-        except Exception as e:
-            print('function: set_manifest_to_match')
-            print (str(e))
+        self.common_map_stage(signal,0,self.model_map_manifest_table,self.map_ui.map_manifest_line_edit,False)
 
     def map_stage_tms(self, signal):
-        try:
-            row = signal.row()
-            index = signal.sibling(row, 0) # 0 is the manifest name column
-            index_dict = self.model_map_tms_table.itemData(index)
-            index_value = index_dict.get(0)
-            t = self.map_ui.map_tms_line_edit.text()
-            delimeter = '' if t == '' else '|'
-            self.map_ui.map_tms_line_edit.setText(index_value+delimeter+t)
-        except Exception as e:
-            print('function: set_tms_to_match')
-            print (str(e))
+        self.common_map_stage(signal,0,self.model_map_tms_table,self.map_ui.map_tms_line_edit,False)
 
     def map_stage_emv(self, signal):
-        try:
-            row = signal.row()
-            index = signal.sibling(row, 0) # 0 is the emv name column
-            index_dict = self.model_map_emv_table.itemData(index)
-            index_value = index_dict.get(0)
-            t = self.map_ui.map_emv_line_edit.text()
-            delimeter = '' if t == '' else '|'
-            self.map_ui.map_emv_line_edit.setText(index_value+delimeter+t)
-        except Exception as e:
-            print('function: set_emv_to_match')
-            print (str(e))
+        self.common_map_stage(signal,0,self.model_map_emv_table,self.map_ui.map_emv_line_edit,False)
 
     #LOAD TO SCREEN
     def init_load_widget(self):
