@@ -152,49 +152,105 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
 
         #Merge the packages sources to one table and color code it.
 
-        merged_pkg_result = []
+        self.map_merged_pkg_result = []
 
         if self.result_jbz:
             for p in self.result_jbz:
-                merged_pkg_result.append(['0',p[0]])
-            # merged_pkg_result = self.result_jbz.copy()
+                self.map_merged_pkg_result.append(['0',p[0]])
 
         if self.result_conf_other_1:
             for p in self.result_conf_other_1:
-                merged_pkg_result.append(['1',p[0]])
-            # merged_pkg_result = merged_pkg_result + self.result_conf_other_1.copy()
+                self.map_merged_pkg_result.append(['1',p[0]])
 
         if self.result_conf_other_2:
             for p in self.result_conf_other_2:
-                merged_pkg_result.append(['2',p[0]])
-            # merged_pkg_result = merged_pkg_result + self.result_conf_other_2.copy()
+                self.map_merged_pkg_result.append(['2',p[0]])
 
         if self.result_conf_other_3:
             for p in self.result_conf_other_3:
-                merged_pkg_result.append(['3',p[0]])
-            # merged_pkg_result = merged_pkg_result + self.result_conf_other_3.copy()
+                self.map_merged_pkg_result.append(['3',p[0]])
 
-        if merged_pkg_result:
-            # merged_pkg_result.insert(0, ['Package', 'Pkg Ver'])
-            merged_pkg_result.insert(0, ['#', 'Pkg'])
-            self.populate_map_pkg_table(self.map_ui.map_pkg_table, merged_pkg_result)
+        if self.map_merged_pkg_result:
+            self.map_merged_pkg_result.insert(0, ['#', 'Pkg'])
+            self.model_map_pkg_table = self.populate_map_pkg_table(self.map_ui.map_pkg_table, self.map_merged_pkg_result)
+            self.map_ui.map_pkg_table.doubleClicked.connect(self.map_stage_the_pkg_name)
 
         if self.result_manifest:
             self.map_manifest_result_list = self.result_manifest.copy()
             self.map_manifest_result_list.insert(0, ['TAG', 'VERSION'])
-            self.populate_generic_table(self.map_ui.map_manifest_table, self.map_manifest_result_list)
+            self.model_map_manifest_table = self.populate_generic_table(self.map_ui.map_manifest_table, self.map_manifest_result_list)
+            self.map_ui.map_manifest_table.doubleClicked.connect(self.map_stage_manifest)
 
         if self.result_tms:
             self.map_tms_result_list = self.result_tms.copy()
             self.map_tms_result_list.insert(0, ['TAG', 'VALUE'])
-            self.populate_generic_table(self.map_ui.map_tms_table, self.map_tms_result_list)
+            self.model_map_tms_table = self.populate_generic_table(self.map_ui.map_tms_table, self.map_tms_result_list)
+            self.map_ui.map_tms_table.doubleClicked.connect(self.map_stage_tms)
 
         if self.result_emv:
             self.map_emv_result_list = self.result_emv.copy()
             self.map_emv_result_list.insert(0,["TAG", "VERSION"])
-            self.populate_generic_table(self.map_ui.map_emv_table, self.map_emv_result_list)
+            self.model_map_emv_table = self.populate_generic_table(self.map_ui.map_emv_table, self.map_emv_result_list)
+            self.map_ui.map_emv_table.doubleClicked.connect(self.map_stage_emv)
 
         self.map_widget.show()
+
+    #return the package name only from the package file name + version + KVC.
+    def parse_package_name(self, p):
+        return "_".join(p.split('_')[:-2])
+
+    #Double clicking the table will put it in the staging field, ready to commit to the table below.
+    def map_stage_the_pkg_name(self, signal):
+        try:
+            row = signal.row()
+            index = signal.sibling(row, 1) # 1 is the pkg name column
+            index_dict = self.model_map_pkg_table.itemData(index)
+            index_value = index_dict.get(0)
+            t = self.map_ui.map_pkg_ver_line_edit.text()
+            delimeter = '' if t == '' else '|'
+            self.map_ui.map_pkg_ver_line_edit.setText(self.parse_package_name(index_value)+delimeter+t)
+        except Exception as e:
+            print('function: set_pkg_name_to_match')
+            print (str(e))
+
+    def map_stage_manifest(self, signal):
+        try:
+            row = signal.row()
+            index = signal.sibling(row, 0) # 0 is the manifest name column
+            index_dict = self.model_map_manifest_table.itemData(index)
+            index_value = index_dict.get(0)
+            t = self.map_ui.map_manifest_line_edit.text()
+            delimeter = '' if t == '' else '|'
+            self.map_ui.map_manifest_line_edit.setText(index_value+delimeter+t)
+        except Exception as e:
+            print('function: set_manifest_to_match')
+            print (str(e))
+
+    def map_stage_tms(self, signal):
+        try:
+            row = signal.row()
+            index = signal.sibling(row, 0) # 0 is the manifest name column
+            index_dict = self.model_map_tms_table.itemData(index)
+            index_value = index_dict.get(0)
+            t = self.map_ui.map_tms_line_edit.text()
+            delimeter = '' if t == '' else '|'
+            self.map_ui.map_tms_line_edit.setText(index_value+delimeter+t)
+        except Exception as e:
+            print('function: set_tms_to_match')
+            print (str(e))
+
+    def map_stage_emv(self, signal):
+        try:
+            row = signal.row()
+            index = signal.sibling(row, 0) # 0 is the emv name column
+            index_dict = self.model_map_emv_table.itemData(index)
+            index_value = index_dict.get(0)
+            t = self.map_ui.map_emv_line_edit.text()
+            delimeter = '' if t == '' else '|'
+            self.map_ui.map_emv_line_edit.setText(index_value+delimeter+t)
+        except Exception as e:
+            print('function: set_emv_to_match')
+            print (str(e))
 
     #LOAD TO SCREEN
     def init_load_widget(self):
@@ -534,6 +590,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
     def populate_jb_table(self,result):
         self.model_jbz_pkg_ver_table = self.populate_generic_table(self.jbz_pkg_ver_table,result,color_code='jbz')
         self.jbz_pkg_ver_table.clicked.connect(self.jbz_package_info)
+
 
     def populate_first_conf_table(self,result):
         self.model_first_conf_ver_table = self.populate_generic_table(self.first_conf_other_pkg_ver_table,result,color_code='conf_other_1')
@@ -963,3 +1020,4 @@ if __name__ == "__main__":
 
 # does not work
 # pyinstaller --noconsole --onefile --windowed --icon=vc.ico gui/launcher.py
+
