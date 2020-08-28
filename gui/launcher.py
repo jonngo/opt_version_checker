@@ -201,39 +201,30 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
 
         self.map_widget.show()
 
-    # mlist = [i.strip() for i in raw_manifest if 'version' in i or 'name' in i]
+    #Filters the list in every character entered in the filter field
+    def common_map_filter_field(self, is_pkg, orig_result_list,line_edit, header_list, table):
+        try:
+            result_list = [tag for tag in orig_result_list if tag[1 if is_pkg else 0].lower().find(line_edit.text().lower()) != -1]
+            result_list.insert(0, header_list)
+            if is_pkg:
+                model = self.populate_map_pkg_table(table, result_list)
+            else:
+                model = self.populate_generic_table(table, result_list)
+            return result_list, model
+        except Exception as e:
+            print (str(e))
 
     def map_filter_pkg_field(self):
-        try:
-            self.map_merged_pkg_result = [tag for tag in self.map_merged_pkg_result_orig if tag[1].lower().find(self.map_ui.map_pkg_filter_Line_edit.text().lower()) != -1]
-            self.map_merged_pkg_result.insert(0, ['#', 'Pkg'])
-            self.model_map_pkg_table = self.populate_map_pkg_table(self.map_ui.map_pkg_table, self.map_merged_pkg_result)
-        except Exception as e:
-            print (str(e))
+        self.map_merged_pkg_result, self.model_map_pkg_table = self.common_map_filter_field(True, self.map_merged_pkg_result_orig, self.map_ui.map_pkg_filter_Line_edit, ['#', 'Pkg'], self.map_ui.map_pkg_table)
 
     def map_filter_manifest_field(self):
-        try:
-            self.map_manifest_result_list = [tag for tag in self.result_manifest if tag[0].lower().find(self.map_ui.map_manifest_filter_line_edit.text().lower()) != -1]
-            self.map_manifest_result_list.insert(0, ['TAG', 'VERSION'])
-            self.model_map_manifest_table = self.populate_generic_table(self.map_ui.map_manifest_table, self.map_manifest_result_list)
-        except Exception as e:
-            print (str(e))
+        self.map_manifest_result_list, self.model_map_manifest_table = self.common_map_filter_field(False, self.result_manifest, self.map_ui.map_manifest_filter_line_edit, ['TAG', 'VERSION'], self.map_ui.map_manifest_table)
 
     def map_filter_emv_field(self):
-        try:
-            self.map_emv_result_list = [tag for tag in self.result_emv if tag[0].lower().find(self.map_ui.map_emv_filter_line_edit.text().lower()) != -1]
-            self.map_emv_result_list.insert(0,["TAG", "VERSION"])
-            self.model_map_emv_table = self.populate_generic_table(self.map_ui.map_emv_table, self.map_emv_result_list)
-        except Exception as e:
-            print (str(e))
+        self.map_emv_result_list, self.model_map_emv_table = self.common_map_filter_field(False, self.result_emv, self.map_ui.map_emv_filter_line_edit, ["TAG", "VERSION"], self.map_ui.map_emv_table)
 
     def map_filter_tms_field(self):
-        try:
-            self.map_tms_result_list = [tag for tag in self.result_tms if tag[0].lower().find(self.map_ui.map_tms_filter_line_edit.text().lower()) != -1]
-            self.map_tms_result_list.insert(0, ['TAG', 'VALUE'])
-            self.model_map_tms_table = self.populate_generic_table(self.map_ui.map_tms_table, self.map_tms_result_list)
-        except Exception as e:
-            print (str(e))
+        self.map_tms_result_list, self.model_map_tms_table = self.common_map_filter_field(False, self.result_tms, self.map_ui.map_tms_filter_line_edit, ['TAG', 'VALUE'], self.map_ui.map_tms_table)
 
     #return the package name only from the package file name + version + KVC.
     def parse_package_name(self, p):
