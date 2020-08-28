@@ -152,11 +152,15 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.map_ui.map_emv_filter_line_edit.textChanged['QString'].connect(self.map_filter_emv_field)
         self.map_ui.map_tms_filter_line_edit.textChanged['QString'].connect(self.map_filter_tms_field)
 
+        self.map_ui.map_add_push_button.clicked.connect(self.add_to_rule_table)
+
     def open_map_widget(self):
         self.map_widget.hide()
 
-        #Merge the packages sources to one table and color code it.
+        #Init the rule result list, selected pkg/tag will be placed here
+        self.rule_result_list = []
 
+        #Merge the packages sources to one table and color code it.
         self.map_merged_pkg_result_orig = []
 
         if self.result_jbz:
@@ -201,6 +205,34 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
 
         self.map_widget.show()
 
+    def add_to_rule_table(self):
+        try:
+            ref_text = self.map_ui.map_reference_line_edit.text()
+            if self.map_ui.map_reference_line_edit.text() == '':
+                return
+
+            pkg_text = self.map_ui.map_pkg_ver_line_edit.text()
+            mnf_text = self.map_ui.map_manifest_line_edit.text()
+            tms_text = self.map_ui.map_tms_line_edit.text()
+            emv_text = self.map_ui.map_emv_line_edit.text()
+            single_line_rule_result_list = [ref_text, pkg_text, mnf_text, tms_text, emv_text]
+
+            #Add to rule table
+            self.rule_result_list.append(single_line_rule_result_list)
+            self.rule_result_list.insert(0, ['Name', 'Package', 'Manifest', 'TMS', 'EMV'])
+            self.populate_generic_table(self.map_ui.map_rule_table, self.rule_result_list)
+
+            #Clear the stage line edit
+            self.map_ui.map_reference_line_edit.setText('')
+            self.map_ui.map_pkg_ver_line_edit.setText('')
+            self.map_ui.map_manifest_line_edit.setText('')
+            self.map_ui.map_tms_line_edit.setText('')
+            self.map_ui.map_emv_line_edit.setText('')
+
+        except Exception as e:
+            print('function: add_to_rule_table')
+            print (str(e))
+
     #Filters the list in every character entered in the filter field
     def common_map_filter_field(self, is_pkg, orig_result_list,line_edit, header_list, table):
         try:
@@ -212,6 +244,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
                 model = self.populate_generic_table(table, result_list)
             return result_list, model
         except Exception as e:
+            print('function: common map filter field')
             print (str(e))
 
     def map_filter_pkg_field(self):
