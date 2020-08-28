@@ -147,30 +147,36 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.map_ui = Ui_map_widget()
         self.map_ui.setupUi(self.map_widget)
 
+        self.map_ui.map_pkg_filter_Line_edit.textChanged['QString'].connect(self.map_filter_pkg_field)
+        self.map_ui.map_manifest_filter_line_edit.textChanged['QString'].connect(self.map_filter_manifest_field)
+        self.map_ui.map_emv_filter_line_edit.textChanged['QString'].connect(self.map_filter_emv_field)
+        self.map_ui.map_tms_filter_line_edit.textChanged['QString'].connect(self.map_filter_tms_field)
+
     def open_map_widget(self):
         self.map_widget.hide()
 
         #Merge the packages sources to one table and color code it.
 
-        self.map_merged_pkg_result = []
+        self.map_merged_pkg_result_orig = []
 
         if self.result_jbz:
             for p in self.result_jbz:
-                self.map_merged_pkg_result.append(['0',p[0]])
+                self.map_merged_pkg_result_orig.append(['0',p[0]])
 
         if self.result_conf_other_1:
             for p in self.result_conf_other_1:
-                self.map_merged_pkg_result.append(['1',p[0]])
+                self.map_merged_pkg_result_orig.append(['1',p[0]])
 
         if self.result_conf_other_2:
             for p in self.result_conf_other_2:
-                self.map_merged_pkg_result.append(['2',p[0]])
+                self.map_merged_pkg_result_orig.append(['2',p[0]])
 
         if self.result_conf_other_3:
             for p in self.result_conf_other_3:
-                self.map_merged_pkg_result.append(['3',p[0]])
+                self.map_merged_pkg_result_orig.append(['3',p[0]])
 
-        if self.map_merged_pkg_result:
+        if self.map_merged_pkg_result_orig:
+            self.map_merged_pkg_result = self.map_merged_pkg_result_orig.copy()
             self.map_merged_pkg_result.insert(0, ['#', 'Pkg'])
             self.model_map_pkg_table = self.populate_map_pkg_table(self.map_ui.map_pkg_table, self.map_merged_pkg_result)
             self.map_ui.map_pkg_table.doubleClicked.connect(self.map_stage_the_pkg_name)
@@ -194,6 +200,40 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             self.map_ui.map_emv_table.doubleClicked.connect(self.map_stage_emv)
 
         self.map_widget.show()
+
+    # mlist = [i.strip() for i in raw_manifest if 'version' in i or 'name' in i]
+
+    def map_filter_pkg_field(self):
+        try:
+            self.map_merged_pkg_result = [tag for tag in self.map_merged_pkg_result_orig if tag[1].lower().find(self.map_ui.map_pkg_filter_Line_edit.text().lower()) != -1]
+            self.map_merged_pkg_result.insert(0, ['#', 'Pkg'])
+            self.model_map_pkg_table = self.populate_map_pkg_table(self.map_ui.map_pkg_table, self.map_merged_pkg_result)
+        except Exception as e:
+            print (str(e))
+
+    def map_filter_manifest_field(self):
+        try:
+            self.map_manifest_result_list = [tag for tag in self.result_manifest if tag[0].lower().find(self.map_ui.map_manifest_filter_line_edit.text().lower()) != -1]
+            self.map_manifest_result_list.insert(0, ['TAG', 'VERSION'])
+            self.model_map_manifest_table = self.populate_generic_table(self.map_ui.map_manifest_table, self.map_manifest_result_list)
+        except Exception as e:
+            print (str(e))
+
+    def map_filter_emv_field(self):
+        try:
+            self.map_emv_result_list = [tag for tag in self.result_emv if tag[0].lower().find(self.map_ui.map_emv_filter_line_edit.text().lower()) != -1]
+            self.map_emv_result_list.insert(0,["TAG", "VERSION"])
+            self.model_map_emv_table = self.populate_generic_table(self.map_ui.map_emv_table, self.map_emv_result_list)
+        except Exception as e:
+            print (str(e))
+
+    def map_filter_tms_field(self):
+        try:
+            self.map_tms_result_list = [tag for tag in self.result_tms if tag[0].lower().find(self.map_ui.map_tms_filter_line_edit.text().lower()) != -1]
+            self.map_tms_result_list.insert(0, ['TAG', 'VALUE'])
+            self.model_map_tms_table = self.populate_generic_table(self.map_ui.map_tms_table, self.map_tms_result_list)
+        except Exception as e:
+            print (str(e))
 
     #return the package name only from the package file name + version + KVC.
     def parse_package_name(self, p):
