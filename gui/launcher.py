@@ -113,13 +113,6 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.show_tms_menu_item.triggered.connect(lambda state, x={'tms': True}: self.show_hide_panel(x))
         self.show_emv_menu_item.triggered.connect(lambda state, x={'emv': True}: self.show_hide_panel(x))
 
-        #toggle package header button
-        self.pkg_header_pushbutton.clicked.connect(self.jbz_toggle_header_listview)
-        self.first_conf_other_pkg_header_pushbutton.clicked.connect(self.first_conf_other_toggle_header_listview)
-        self.second_conf_other_pkg_header_pushbutton.clicked.connect(self.second_conf_other_toggle_header_listview)
-        self.third_conf_other_pkg_header_pushbutton.clicked.connect(self.third_conf_other_toggle_header_listview)
-
-
         #List Model for the package header list
         self.pkg_header_list_model = QStandardItemModel(self.pkg_listview)
         self.first_conf_other_pkg_header_list_model = QStandardItemModel(self.first_conf_other_pkg_listview)
@@ -630,6 +623,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             self.result_jbz,self.result_manifest,self.result_jbz_ref = self.jbx.extract(tag=0,jbz_file=self.pkg_ui.jbzPathLineEdit.text())
             if self.result_jbz:
                 self.show_hide_panel({'jbz':True})
+                self.pkg_listview.hide()
             if self.result_manifest:
                 self.show_hide_panel({'manifest': True})
 
@@ -637,16 +631,20 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             self.result_conf_other_1,_,self.result_conf_other_1_ref = self.jbx.extract(tag=1,jbz_file=self.pkg_ui.conf_other_pkg_1_line_edit.text())
             if self.result_conf_other_1:
                 self.show_hide_panel({'first':True})
+                self.first_conf_other_pkg_listview.hide()
+
 
         if self.pkg_ui.conf_other_pkg_2_line_edit.text() != "":
             self.result_conf_other_2,_,self.result_conf_other_2_ref = self.jbx.extract(tag=2,jbz_file=self.pkg_ui.conf_other_pkg_2_line_edit.text())
             if self.result_conf_other_2:
                 self.show_hide_panel({'second': True})
+                self.second_conf_other_pkg_listview.hide()
 
         if self.pkg_ui.conf_other_pkg_3_line_edit.text() != "":
             self.result_conf_other_3,_,self.result_conf_other_3_ref = self.jbx.extract(tag=3,jbz_file=self.pkg_ui.conf_other_pkg_3_line_edit.text())
             if self.result_conf_other_3:
                 self.show_hide_panel({'third': True})
+                self.third_conf_other_pkg_listview.hide()
 
         self.pkg_widget.hide()
 
@@ -704,15 +702,19 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         list_view.setModel(list_model)
 
     def jbz_package_info(self,signal):
+        self.pkg_listview.show()
         self.common_package_info_table_setter(signal, self.model_jbz_pkg_ver_table, self.pkg_header_list_model, self.pkg_listview, 0)
 
     def first_conf_package_info(self,signal):
+        self.first_conf_other_pkg_listview.show()
         self.common_package_info_table_setter(signal, self.model_first_conf_ver_table, self.first_conf_other_pkg_header_list_model, self.first_conf_other_pkg_listview,1)
 
     def second_conf_package_info(self,signal):
+        self.second_conf_other_pkg_listview.show()
         self.common_package_info_table_setter(signal, self.model_second_conf_ver_table, self.second_conf_other_pkg_header_list_model, self.second_conf_other_pkg_listview,2)
 
     def third_conf_package_info(self,signal):
+        self.third_conf_other_pkg_listview.show()
         self.common_package_info_table_setter(signal, self.model_third_conf_ver_table, self.third_conf_other_pkg_header_list_model, self.third_conf_other_pkg_listview, 3)
 
     def get_pkg_full_path(self,pkg_name,tag):
@@ -786,7 +788,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
     def search_tms_params_csv(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        file, _ = QFileDialog.getOpenFileName(None,'Open file','D:\\JonNgoStorage',"csv files (*.csv))")
+        file, _ = QFileDialog.getOpenFileName(None,'Open file',str(Path.home()),"csv files (*.csv))")
 
         #file = str(QFileDialog.getExistingDirectory())
         if file:
@@ -862,26 +864,6 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             return model
         except Exception as e:
             print (str(e))
-
-
-    #Toggle the package header list view
-    def toggle_header_listview(self,listview):
-        if listview.isVisible():
-            listview.hide()
-        else:
-            listview.show()
-
-    def jbz_toggle_header_listview(self):
-        self.toggle_header_listview(self.pkg_listview)
-
-    def first_conf_other_toggle_header_listview(self):
-        self.toggle_header_listview(self.first_conf_other_pkg_listview)
-
-    def second_conf_other_toggle_header_listview(self):
-        self.toggle_header_listview(self.second_conf_other_pkg_listview)
-
-    def third_conf_other_toggle_header_listview(self):
-        self.toggle_header_listview(self.third_conf_other_pkg_listview)
 
     #Hide panel
     def show_hide_panel(self, hs_dict):
@@ -1079,7 +1061,6 @@ if __name__ == "__main__":
             sys.exit(app.exec_())
 
     version_checker_mainwindow = CustomMainWindow()
-    version_checker_mainwindow.showMaximized()
     ui = Launcher()
     ui.setupUi(version_checker_mainwindow)
     ui.extendUI(version_checker_mainwindow)

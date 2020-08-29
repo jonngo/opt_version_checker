@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1076</width>
+    <width>1032</width>
     <height>673</height>
    </rect>
   </property>
@@ -115,7 +115,6 @@
      </layout>
     </widget>
    </item>
-
    <item row="0" column="0">
     <layout class="QVBoxLayout" name="verticalLayout_22">
      <item>
@@ -140,7 +139,6 @@
      </item>
     </layout>
    </item>
-
    <item row="0" column="2">
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
@@ -161,7 +159,6 @@
      </item>
     </layout>
    </item>
-
    <item row="0" column="3">
     <layout class="QVBoxLayout" name="verticalLayout_21">
      <item>
@@ -185,7 +182,6 @@
    <item row="2" column="0" colspan="7">
     <widget class="QTableView" name="map_rule_table"/>
    </item>
-
    <item row="0" column="4">
     <layout class="QVBoxLayout" name="verticalLayout_20">
      <item>
@@ -206,7 +202,6 @@
      </item>
     </layout>
    </item>
-   
    <item row="0" column="5">
     <layout class="QVBoxLayout" name="verticalLayout_4">
      <item>
@@ -227,7 +222,6 @@
      </item>
     </layout>
    </item>
-
   </layout>
  </widget>
  <resources/>
