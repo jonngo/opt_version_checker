@@ -12,6 +12,7 @@ from gui import Ui_jfrog_widget
 from gui import Ui_save_widget
 from gui import Ui_load_widget
 from gui import Ui_map_widget
+from gui import Ui_compare_widget
 from PyQt5 import QtCore, QtWidgets, QtGui
 from jbz_extraction import JobBundleExtraction
 from emv_version import EmvExtraction
@@ -22,7 +23,7 @@ from PyQt5.QtCore import Qt
 import pandas as pd
 import json
 
-class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jfrog_widget, Ui_save_widget, Ui_load_widget, Ui_map_widget):
+class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jfrog_widget, Ui_save_widget, Ui_load_widget, Ui_map_widget, Ui_compare_widget):
     def __init__(self):
         with open("config.json") as json_data_file:
             data = json.load(json_data_file)
@@ -88,6 +89,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.init_save_widget()
         self.init_load_widget()
         self.init_map_widget()
+        self.init_compare_widget()
 
         #Source Menu
         self.jbz_pkg_menu_item.triggered.connect(self.open_pkg_widget)
@@ -97,6 +99,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.save_menu_item.triggered.connect(self.open_save_widget)
         self.load_menu_item.triggered.connect(self.open_load_widget)
         self.map_menu_item.triggered.connect(self.open_map_widget)
+        self.compare_menu_item.triggered.connect(self.open_compare_widget)
 
         #View Menu - Show Menu
         #show_only_view
@@ -140,6 +143,16 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
 
         #Display the main window
         version_checker_mainwindow.show()
+
+    #COMPARE (After making the filter rule in MAP, this option will compare the version using the rule made)
+    def init_compare_widget(self):
+        self.compare_widget = QtWidgets.QWidget()
+        self.compare_ui = Ui_compare_widget()
+        self.compare_ui.setupUi(self.compare_widget)
+
+    def open_compare_widget(self):
+        self.compare_widget.hide()
+        self.compare_widget.show()
 
     #MAP (This is to map the key name from different sources which will be used for the filter rules)
     def init_map_widget(self):
