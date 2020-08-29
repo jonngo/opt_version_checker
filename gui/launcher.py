@@ -1077,6 +1077,7 @@ if __name__ == "__main__":
 # pyuic5 save_on_screen_data.ui -o save_on_screen_data.py
 # pyuic5 load_to_screen.ui -o load_to_screen.py
 # pyuic5 map.ui -o map.py
+# pyuic5 compare.ui -o compare.py
 
 # To make .exe
 # pyinstaller --noconsole --onefile --windowed --icon=../vc.ico launcher.py
