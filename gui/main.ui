@@ -611,15 +611,21 @@
    </widget>
    <widget class="QMenu" name="menuCheck">
     <property name="title">
-     <string>Check</string>
+     <string>Map</string>
     </property>
     <addaction name="map_menu_item"/>
-    <addaction name="actionFilter"/>
+   </widget>
+   <widget class="QMenu" name="menuFilter">
+    <property name="title">
+     <string>Filter</string>
+    </property>
+    <addaction name="compare_menu_item"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuSource"/>
    <addaction name="menuView"/>
    <addaction name="menuCheck"/>
+   <addaction name="menuFilter"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -760,12 +766,17 @@
   </action>
   <action name="map_menu_item">
    <property name="text">
-    <string>Map</string>
+    <string>New</string>
    </property>
   </action>
   <action name="actionFilter">
    <property name="text">
     <string>Filter</string>
+   </property>
+  </action>
+  <action name="compare_menu_item">
+   <property name="text">
+    <string>Compare</string>
    </property>
   </action>
  </widget>

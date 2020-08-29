@@ -11,7 +11,6 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class Ui_MainWindow(object):
-
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1874, 720)
@@ -301,6 +300,8 @@ class Ui_MainWindow(object):
         self.menuHelp.setObjectName("menuHelp")
         self.menuCheck = QtWidgets.QMenu(self.menubar)
         self.menuCheck.setObjectName("menuCheck")
+        self.menuFilter = QtWidgets.QMenu(self.menubar)
+        self.menuFilter.setObjectName("menuFilter")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -363,6 +364,8 @@ class Ui_MainWindow(object):
         self.map_menu_item.setObjectName("map_menu_item")
         self.actionFilter = QtWidgets.QAction(MainWindow)
         self.actionFilter.setObjectName("actionFilter")
+        self.compare_menu_item = QtWidgets.QAction(MainWindow)
+        self.compare_menu_item.setObjectName("compare_menu_item")
         self.menuFile.addAction(self.save_menu_item)
         self.menuFile.addAction(self.load_menu_item)
         self.menuFile.addAction(self.exit_menu_item)
@@ -381,11 +384,12 @@ class Ui_MainWindow(object):
         self.menuView.addAction(self.show_menu.menuAction())
         self.menuView.addAction(self.show_all_menu_item)
         self.menuCheck.addAction(self.map_menu_item)
-        self.menuCheck.addAction(self.actionFilter)
+        self.menuFilter.addAction(self.compare_menu_item)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuSource.menuAction())
         self.menubar.addAction(self.menuView.menuAction())
         self.menubar.addAction(self.menuCheck.menuAction())
+        self.menubar.addAction(self.menuFilter.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())
 
         self.retranslateUi(MainWindow)
@@ -428,7 +432,8 @@ class Ui_MainWindow(object):
         self.menuView.setTitle(_translate("MainWindow", "View"))
         self.show_menu.setTitle(_translate("MainWindow", "Show"))
         self.menuHelp.setTitle(_translate("MainWindow", "Help"))
-        self.menuCheck.setTitle(_translate("MainWindow", "Check"))
+        self.menuCheck.setTitle(_translate("MainWindow", "Map"))
+        self.menuFilter.setTitle(_translate("MainWindow", "Filter"))
         self.exit_menu_item.setText(_translate("MainWindow", "Exit"))
         self.jbz_pkg_menu_item.setText(_translate("MainWindow", "Packages"))
         self.tmsLite_menu_item.setText(_translate("MainWindow", "TMSLite"))
@@ -456,5 +461,6 @@ class Ui_MainWindow(object):
         self.show_third_conf_other_menu_item.setText(_translate("MainWindow", "3 - Conf / Other Version"))
         self.save_menu_item.setText(_translate("MainWindow", "Save"))
         self.load_menu_item.setText(_translate("MainWindow", "Load"))
-        self.map_menu_item.setText(_translate("MainWindow", "Map"))
+        self.map_menu_item.setText(_translate("MainWindow", "New"))
         self.actionFilter.setText(_translate("MainWindow", "Filter"))
+        self.compare_menu_item.setText(_translate("MainWindow", "Compare"))
