@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 from PyQt5.QtGui import QStandardItemModel, QStandardItem, QColor
 from PyQt5.QtWidgets import QFileDialog, QAbstractItemView
@@ -340,10 +341,12 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.load_to_screen_widget.hide()
         self.load_to_screen_widget.show()
 
+
+
     def browse_filename_to_load(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        file, _ = QFileDialog.getOpenFileName(None,'Open file','C:\\Users\\jonathann\\invenco',"json files (*.json))")
+        file, _ = QFileDialog.getOpenFileName(None,'Open file',str(Path.home()),"json files (*.json))")
 
         #file = str(QFileDialog.getExistingDirectory())
         if file:
@@ -1076,6 +1079,7 @@ if __name__ == "__main__":
             sys.exit(app.exec_())
 
     version_checker_mainwindow = CustomMainWindow()
+    version_checker_mainwindow.showMaximized()
     ui = Launcher()
     ui.setupUi(version_checker_mainwindow)
     ui.extendUI(version_checker_mainwindow)
