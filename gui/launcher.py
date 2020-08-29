@@ -153,6 +153,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.map_ui.map_tms_filter_line_edit.textChanged['QString'].connect(self.map_filter_tms_field)
 
         self.map_ui.map_add_push_button.clicked.connect(self.add_to_rule_table)
+        self.map_ui.map_save_push_button.clicked.connect(self.save_rule_table)
 
     def open_map_widget(self):
         self.map_widget.hide()
@@ -204,6 +205,28 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             self.map_ui.map_emv_table.doubleClicked.connect(self.map_stage_emv)
 
         self.map_widget.show()
+
+    def save_rule_table(self):
+        try:
+            if self.rule_result_list:
+                filename = self.map_ui.map_rule_name_line_edit.text()
+                if filename != '':
+                    with open(filename + '.json', 'w') as outfile:
+                        json.dump(json.loads(self.rule_result_to_json_string()), outfile)
+        except Exception as e:
+            print('function: save_rule_table')
+            print (str(e))
+
+    #Convert the rule results to json string
+    def rule_result_to_json_string(self):
+        #open json array
+        result_json_string = "["
+        for rl in self.rule_result_list:
+            result_json_string = result_json_string + '{"ref":"'+rl[0]+'","pkg":"'+rl[1]+'","mnf":"'+rl[2]+'","tms":"'+rl[3]+'","emv":"'+rl[4]+'"},'
+        result_json_string = result_json_string[:-1]
+        #close json array
+        result_json_string = result_json_string + ']'
+        return result_json_string
 
     def add_to_rule_table(self):
         try:
