@@ -58,9 +58,9 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="compare_load_push_button">
+       <widget class="QPushButton" name="compare_push_button">
         <property name="text">
-         <string>Load</string>
+         <string>Compare</string>
         </property>
        </widget>
       </item>

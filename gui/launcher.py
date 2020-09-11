@@ -24,6 +24,7 @@ from PyQt5.QtCore import Qt
 import pandas as pd
 import json
 
+
 class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jfrog_widget, Ui_save_widget, Ui_load_widget, Ui_map_widget, Ui_compare_widget):
     def __init__(self):
         with open("config.json") as json_data_file:
@@ -143,10 +144,96 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.compare_widget = QtWidgets.QWidget()
         self.compare_ui = Ui_compare_widget()
         self.compare_ui.setupUi(self.compare_widget)
+        self.compare_ui.compare_browse_push_button.clicked.connect(lambda state, x=self.compare_ui.compare_line_edit: self.browse_filename_to_load(x))
+        self.compare_ui.compare_push_button.clicked.connect(self.compare_the_versions)
 
     def open_compare_widget(self):
         self.compare_widget.hide()
         self.compare_widget.show()
+
+    def compare_the_versions(self):
+        try:
+            #Load the rule
+            filename = self.compare_ui.compare_line_edit.text()
+            print(filename)
+
+            with open(filename) as results_json:
+                data = json.load(results_json)
+
+                self.active_comparison_list = []
+                self.active_comparison_list.append(['Name','Package','Manifest','TMS','EMV'])
+
+                for tag in data:
+                    self.active_comparison_list.append([tag['ref'],self.find_package_version(tag['pkg']), self.find_manifest_version(tag['mnf']), self.find_tms_version(tag['tms']), self.find_emv_version(tag['emv'])])
+
+                self.populate_generic_table(self.compare_ui.compare_table, self.active_comparison_list)
+
+        except Exception as e:
+            print (str(e))
+
+    def find_emv_version(self,tag):
+        if tag == '':
+            return 'NA'
+        try:
+            for emv_list in self.result_tms:
+                if tag in emv_list[0]:
+                    return emv_list[1]
+            return 'NA'
+        except Exception as e:
+            print (str(e))
+
+    def find_tms_version(self,tag):
+        if tag == '':
+            return 'NA'
+        try:
+            for tms_list in self.result_tms:
+                if tag in tms_list[0]:
+                    return tms_list[1]
+            return 'NA'
+        except Exception as e:
+            print (str(e))
+
+    def find_manifest_version(self,tag):
+        if tag == '':
+            return 'NA'
+        try:
+            for mnf_list in self.result_manifest:
+                if tag in mnf_list[0]:
+                    return mnf_list[1]
+            return 'NA'
+        except Exception as e:
+            print (str(e))
+
+    def search_from_all_pkg_list(self, pkg):
+        try:
+            for jbz_list in self.result_jbz_ref:
+                if pkg in jbz_list[0]:
+                    return jbz_list[2]
+            for conf_other_list_1 in self.result_conf_other_1_ref:
+                if pkg in conf_other_list_1[0]:
+                    return conf_other_list_1[2]
+            for conf_other_list_2 in self.result_conf_other_2_ref:
+                if pkg in conf_other_list_2[0]:
+                    return conf_other_list_2[2]
+            for conf_other_list_3 in self.result_conf_other_3_ref:
+                if pkg in conf_other_list_3[0]:
+                    return conf_other_list_3[2]
+            return 'NA'
+        except Exception as e:
+            print (str(e))
+
+    def find_package_version(self,tag):
+        if tag == '':
+            return 'NA'
+        try:
+            if '|' in tag:
+                each_pkg = tag.split('|')
+                print(each_pkg)
+                return str(self.search_from_all_pkg_list(each_pkg[0]))+'\n'+str(self.search_from_all_pkg_list(each_pkg[1]))
+            else:
+                return self.search_from_all_pkg_list(tag)
+        except Exception as e:
+            print (str(e))
 
     #MAP (This is to map the key name from different sources which will be used for the filter rules)
     def init_map_widget(self):
@@ -327,23 +414,21 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.load_to_screen_widget = QtWidgets.QWidget()
         self.load_to_screen_ui = Ui_load_widget()
         self.load_to_screen_ui.setupUi(self.load_to_screen_widget)
-        self.load_to_screen_ui.load_browse_filename_push_button.clicked.connect(self.browse_filename_to_load)
+        self.load_to_screen_ui.load_browse_filename_push_button.clicked.connect(lambda state, x=self.load_to_screen_ui.load_filename_line_edit: self.browse_filename_to_load(x))
         self.load_to_screen_ui.load_load_push_button.clicked.connect(self.load_display_to_screen)
 
     def open_load_widget(self):
         self.load_to_screen_widget.hide()
         self.load_to_screen_widget.show()
 
-
-
-    def browse_filename_to_load(self):
+    def browse_filename_to_load(self, line_edit):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
         file, _ = QFileDialog.getOpenFileName(None,'Open file',str(Path.home()),"json files (*.json))")
 
         #file = str(QFileDialog.getExistingDirectory())
         if file:
-            self.load_to_screen_ui.load_filename_line_edit.setText(file)
+            line_edit.setText(file)
 
     def load_display_to_screen(self):
         #TODO refactor the load function, too many duplicate code
