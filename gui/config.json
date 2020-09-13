@@ -11,6 +11,9 @@
     ],
     "load_cfg": [
         {"load_path": "home"}
+    ],
+    "tms_cfg": [
+        {"tms_path": "home"}
     ]
 
 }

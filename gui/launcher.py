@@ -30,7 +30,6 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             with open("config.json") as json_data_file:
                 data = json.load(json_data_file)
                 for conf in data['pkg_version_cfg']:
-
                     """
                         Configuration variables of package version
                             - conf_base_xtrak_path
@@ -49,7 +48,6 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
                         self.conf_default_pkg_folder = self.end_with_slash(self.determine_path(conf['default_pkg_location']))
 
                 for conf in data['emv_version_cfg']:
-
                     """
                     Configuration variables of EMV version
                         - conf_emv_ver_url
@@ -62,7 +60,6 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
                         self.conf_chrome_driver_filepath = conf['chrome_driver_filepath']
 
                 for conf in data['load_cfg']:
-
                     """
                     Configuration variables of Load
                         - conf_load_path
@@ -70,6 +67,15 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
 
                     if 'load_path' in conf:
                         self.conf_load_path = self.end_with_slash(self.determine_path(conf['load_path']))
+
+                for conf in data['tms_cfg']:
+                    """
+                    Configuration variables of TMSLite parameters
+                        - conf_tms_path
+                    """
+
+                    if 'tms_path' in conf:
+                        self.conf_tms_path = self.end_with_slash(self.determine_path(conf['tms_path']))
 
                 #TODO include in the config the default directory to open, this is for all file dialog
 
@@ -1043,7 +1049,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         try:
             options = QFileDialog.Options()
             options |= QFileDialog.DontUseNativeDialog
-            file, _ = QFileDialog.getOpenFileName(None,'Open file',str(Path.home()),"csv files (*.csv))")
+            file, _ = QFileDialog.getOpenFileName(None,'Open file',self.conf_tms_path,"csv files (*.csv))")
 
             #file = str(QFileDialog.getExistingDirectory())
             if file:
