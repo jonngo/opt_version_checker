@@ -77,7 +77,14 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
                     if 'tms_path' in conf:
                         self.conf_tms_path = self.end_with_slash(self.determine_path(conf['tms_path']))
 
-                #TODO include in the config the default directory to open, this is for all file dialog
+                for conf in data['compare_cfg']:
+                    """
+                    Configuration variables of compare version
+                        - conf_compare_path
+                    """
+
+                    if 'compare_path' in conf:
+                        self.conf_compare_path = self.end_with_slash(self.determine_path(conf['compare_path']))
 
                 #TODO config of destination folder for saving
 
@@ -179,8 +186,18 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             self.compare_widget = QtWidgets.QWidget()
             self.compare_ui = Ui_compare_widget()
             self.compare_ui.setupUi(self.compare_widget)
-            self.compare_ui.compare_browse_push_button.clicked.connect(lambda state, x=self.compare_ui.compare_line_edit: self.browse_filename_to_load(x))
+            self.compare_ui.compare_browse_push_button.clicked.connect(lambda state, x=self.compare_ui.compare_line_edit: self.browse_compare_rule_file(x))
             self.compare_ui.compare_push_button.clicked.connect(self.compare_the_versions)
+        except Exception as e:
+            print (str(e))
+
+    def browse_compare_rule_file(self, line_edit):
+        try:
+            options = QFileDialog.Options()
+            options |= QFileDialog.DontUseNativeDialog
+            file, _ = QFileDialog.getOpenFileName(None,'Open file',self.conf_compare_path,"json files (*.json))")
+            if file:
+                line_edit.setText(file)
         except Exception as e:
             print (str(e))
 
