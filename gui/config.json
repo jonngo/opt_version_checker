@@ -1,14 +1,13 @@
 {
     "pkg_version_cfg": [
-        {"base_xtrak_path":"D:/JonNgoStorage/my_hack_project/opt_version_checker/extract/"},
+        {"base_xtrak_path":"home"},
         {"sevenZ_exe":"C:/Program Files/7-Zip/7z.exe"},
         {"manifest_file":"manifest.mnf"},
-        {"regexp_string":"\\d{2}.\\d{2}.\\d{4}"}
+        {"default_pkg_location":"home"}
     ],
     "emv_version_cfg": [
         {"emv_ver_url": "https://conf.invenco.com/display/CC/EMV+Versions"},
-        {"chrome_driver_filepath":"D:/JonNgoStorage/my_hack_project/opt_version_checker/chromedriver_win32/chromedriver.exe"}
+        {"chrome_driver_filepath":"C:/Users/jonathann/invenco/my_hack_project/opt_version_checker/chromedriver_win32/chromedriver.exe"}
     ]
 }
-
 

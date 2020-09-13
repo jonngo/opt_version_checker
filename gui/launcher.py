@@ -36,17 +36,17 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
                             - conf_base_xtrak_path
                             - conf_sevenZ_exe
                             - conf_manifest
-                            - conf_regexp_string
+                            - conf_default_pkg_folder
                     """
 
                     if 'base_xtrak_path' in conf:
-                        self.conf_base_xtrak_path = conf['base_xtrak_path']
+                        self.conf_base_xtrak_path = self.end_with_slash(self.determine_path(conf['base_xtrak_path']))
                     elif 'sevenZ_exe' in conf:
                         self.conf_sevenZ_exe = conf['sevenZ_exe']
                     elif 'manifest_file' in conf:
                         self.conf_manifest = conf['manifest_file']
-                    elif 'regexp_string' in conf:
-                        self.conf_regexp_string = conf['regexp_string']
+                    elif 'default_pkg_location' in conf:
+                        self.conf_default_pkg_folder = self.end_with_slash(self.determine_path(conf['default_pkg_location']))
 
                 for conf in data['emv_version_cfg']:
 
@@ -79,6 +79,20 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
                 self.result_conf_other_1_ref = None
                 self.result_conf_other_2_ref = None
                 self.result_conf_other_3_ref = None
+        except Exception as e:
+            print (str(e))
+
+    #return the home path if 'home' is used as path folder, otherwise, use the path in the config.
+    def determine_path(self, path):
+        try:
+            return str(Path.home()).replace("\\","/") if path.lower() == 'home' else path.replace("\\","/")
+        except Exception as e:
+            print (str(e))
+
+    #put a slash at the end of the path if it doesn't have.
+    def end_with_slash(self, path):
+        try:
+            return path if path.endswith('/') else path+"/"
         except Exception as e:
             print (str(e))
 
@@ -723,7 +737,11 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             self.pkg_ui.extractionPathLineEdit.setText(self.conf_base_xtrak_path)
             self.pkg_ui.sevenZlineEdit.setText(self.conf_sevenZ_exe)
             self.pkg_ui.jbz_manifest_line_edit.setText(self.conf_manifest)
-            self.pkg_ui.jbz_regex_match_ver_line_edit.setText(self.conf_regexp_string)
+            self.pkg_ui.jbzPathLineEdit.setFocus()
+            self.pkg_ui.jbzPathLineEdit.setText('')
+            self.pkg_ui.conf_other_pkg_1_line_edit.setText('')
+            self.pkg_ui.conf_other_pkg_2_line_edit.setText('')
+            self.pkg_ui.conf_other_pkg_3_line_edit.setText('')
             self.pkg_widget.hide()
             self.pkg_widget.show()
         except Exception as e:
@@ -733,7 +751,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         try:
             options = QFileDialog.Options()
             options |= QFileDialog.DontUseNativeDialog
-            file, _ = QFileDialog.getOpenFileName()
+            file, _ = QFileDialog.getOpenFileName(None,caption='Open file',directory=self.conf_default_pkg_folder)
 
             if file:
                 line_edit.setText(file)
@@ -772,7 +790,6 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             self.jbx.base_xtrak_path = self.conf_base_xtrak_path
             self.jbx.sevenZ_exe = self.conf_sevenZ_exe
             self.jbx.manifest_file = self.conf_manifest
-            self.jbx.regexp_string = self.conf_regexp_string
 
             #Do extraction if there is an entry from the line edit field.
             if self.pkg_ui.jbzPathLineEdit.text() != "":

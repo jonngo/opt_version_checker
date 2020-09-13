@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>989</width>
-    <height>359</height>
+    <width>985</width>
+    <height>310</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -45,8 +45,45 @@
       <number>2</number>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="2">
-       <widget class="QPushButton" name="jbzPathPushButton">
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="conf_other_pkg_1_line_edit"/>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="conf_other_pkg_label_3">
+        <property name="text">
+         <string>Conf or Other Pkg 3</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="QPushButton" name="conf_other_pkg_3_push_button">
+        <property name="text">
+         <string>Browse</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QPushButton" name="conf_other_pkg_2_push_button">
+        <property name="text">
+         <string>Browse</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLineEdit" name="conf_other_pkg_2_line_edit"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="conf_other_pkg_label_1">
+        <property name="text">
+         <string>Conf or Other Pkg 1</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QLineEdit" name="conf_other_pkg_3_line_edit"/>
+      </item>
+      <item row="1" column="2">
+       <widget class="QPushButton" name="conf_other_pkg_1_push_button">
         <property name="text">
          <string>Browse</string>
         </property>
@@ -56,6 +93,13 @@
        <widget class="QLabel" name="jbz_file_path_label">
         <property name="text">
          <string>Job Bundle File Path</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QPushButton" name="jbzPathPushButton">
+        <property name="text">
+         <string>Browse</string>
         </property>
        </widget>
       </item>
@@ -73,17 +117,10 @@
         </property>
        </widget>
       </item>
-      <item row="6" column="0">
-       <widget class="QLabel" name="label_5">
-        <property name="text">
-         <string>Manifest File</string>
-        </property>
-       </widget>
-      </item>
       <item row="6" column="1">
        <widget class="QLineEdit" name="jbz_manifest_line_edit"/>
       </item>
-      <item row="8" column="0">
+      <item row="7" column="0">
        <spacer name="verticalSpacer">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
@@ -96,21 +133,15 @@
         </property>
        </spacer>
       </item>
-      <item row="5" column="1">
-       <widget class="QLineEdit" name="sevenZlineEdit"/>
-      </item>
-      <item row="4" column="1">
-       <widget class="QLineEdit" name="extractionPathLineEdit"/>
-      </item>
-      <item row="7" column="0">
-       <widget class="QLabel" name="label_6">
+      <item row="6" column="0">
+       <widget class="QLabel" name="label_5">
         <property name="text">
-         <string>Version Regex</string>
+         <string>Manifest File</string>
         </property>
        </widget>
       </item>
-      <item row="7" column="1">
-       <widget class="QLineEdit" name="jbz_regex_match_ver_line_edit"/>
+      <item row="4" column="1">
+       <widget class="QLineEdit" name="extractionPathLineEdit"/>
       </item>
       <item row="4" column="2">
        <widget class="QPushButton" name="extractionPushButton">
@@ -119,24 +150,13 @@
         </property>
        </widget>
       </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="label_3">
-        <property name="text">
-         <string>Extraction File Path</string>
-        </property>
-       </widget>
+      <item row="5" column="1">
+       <widget class="QLineEdit" name="sevenZlineEdit"/>
       </item>
       <item row="0" column="1">
        <widget class="QLineEdit" name="jbzPathLineEdit">
         <property name="enabled">
          <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="2">
-       <widget class="QPushButton" name="conf_other_pkg_1_push_button">
-        <property name="text">
-         <string>Browse</string>
         </property>
        </widget>
       </item>
@@ -147,54 +167,10 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="conf_other_pkg_label_1">
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_3">
         <property name="text">
-         <string>Conf or Other Pkg 1</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QLineEdit" name="conf_other_pkg_2_line_edit"/>
-      </item>
-      <item row="2" column="2">
-       <widget class="QPushButton" name="conf_other_pkg_2_push_button">
-        <property name="text">
-         <string>Browse</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="QLineEdit" name="conf_other_pkg_3_line_edit"/>
-      </item>
-      <item row="3" column="2">
-       <widget class="QPushButton" name="conf_other_pkg_3_push_button">
-        <property name="text">
-         <string>Browse</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="conf_other_pkg_label_3">
-        <property name="text">
-         <string>Conf or Other Pkg 3</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QLineEdit" name="conf_other_pkg_1_line_edit"/>
-      </item>
-      <item row="9" column="0">
-       <widget class="QLabel" name="label_10">
-        <property name="text">
-         <string>Show Path</string>
-        </property>
-       </widget>
-      </item>
-      <item row="9" column="1">
-       <widget class="QCheckBox" name="show_path_checkbox">
-        <property name="text">
-         <string>Enable</string>
+         <string>Extraction File Path</string>
         </property>
        </widget>
       </item>

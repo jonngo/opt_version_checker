@@ -14,23 +14,9 @@ class JobBundleExtraction:
         self.extract_file_starting_index = 1
         self.extract_file_ending_index = 5
         self.manifest_file = "manifest.mnf"
-        self.regexp_string = r"\d{2}.\d{2}.\d{4}"
-        self.use_full_path = False
 
     def filenameOnly(self,f):
         return os.path.splitext(f.split('/')[-1])[0]
-
-    def set_regex_to_find_version(self,regex_in):
-        self.regexp_string = re.compile(regex_in)
-
-    def getVersion(self,v):
-        match_ver = re.findall(self.regexp_string, v)
-        ret_ver = None
-        try:
-            ret_ver = match_ver[-1]
-        except IndexError:
-            print("Invalid match - "+v)
-        return ret_ver
 
     def remove_path(self,pkg_name1):
         index_to = pkg_name1.rfind('\\')
@@ -113,12 +99,9 @@ class JobBundleExtraction:
                             # pmv - version from packman
                             pmv = self.string_version(package.version_num(os.path.join(root, name)))
                             if v is not None:
-                                if self.use_full_path:
-                                    master_pkg_list.append(["".join(os.path.join(root, name).split('/')[4:]),v])
-                                else:
-                                    master_pkg_list.append([name, v])
-                                    ref_pkg_list.append([name, v, pmv])
-                                    # master_pkg_list.append([self.parse_package_name(name),pmv,self.parse_package_kvc(name), v])
+                                master_pkg_list.append([name, v])
+                                ref_pkg_list.append([name, v, pmv])
+                                # master_pkg_list.append([self.parse_package_name(name),pmv,self.parse_package_kvc(name), v])
 
         self.display_table(master_pkg_list)
 
