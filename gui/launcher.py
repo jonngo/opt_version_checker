@@ -61,6 +61,16 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
                     elif 'chrome_driver_filepath' in conf:
                         self.conf_chrome_driver_filepath = conf['chrome_driver_filepath']
 
+                for conf in data['load_cfg']:
+
+                    """
+                    Configuration variables of Load
+                        - conf_load_path
+                    """
+
+                    if 'load_path' in conf:
+                        self.conf_load_path = self.end_with_slash(self.determine_path(conf['load_path']))
+
                 #TODO include in the config the default directory to open, this is for all file dialog
 
                 #TODO config of destination folder for saving
@@ -487,7 +497,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         try:
             options = QFileDialog.Options()
             options |= QFileDialog.DontUseNativeDialog
-            file, _ = QFileDialog.getOpenFileName(None,'Open file',str(Path.home()),"json files (*.json))")
+            file, _ = QFileDialog.getOpenFileName(None,'Open file',self.conf_load_path,"json files (*.json))")
 
             #file = str(QFileDialog.getExistingDirectory())
             if file:
@@ -521,72 +531,93 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
                 data = json.load(results_json)
 
                 #Retrieve content from jbz dictionary and assign to jbz result list
-                temp_result_list = []
-                temp_ref_result_list = []
-                temp_result_list.append(['Package', 'Pkg Ver'])
-                for result in data['jbz']:
-                    for k, v in result.items():
-                        temp_result_list.append([k,v[0]])
-                        temp_ref_result_list.append([k,v[0],v[1]])
-                self.result_jbz = temp_result_list
-                self.result_jbz_ref = temp_ref_result_list
+                try:
+                    temp_result_list = []
+                    temp_ref_result_list = []
+                    temp_result_list.append(['Package', 'Pkg Ver'])
+                    for result in data['jbz']:
+                        for k, v in result.items():
+                            temp_result_list.append([k,v[0]])
+                            temp_ref_result_list.append([k,v[0],v[1]])
+                    self.result_jbz = temp_result_list
+                    self.result_jbz_ref = temp_ref_result_list
+                except Exception as e:
+                    print(str(e))
 
                 #Retrieve content from conf others 1 dictionary and assign to conf others 1 result list
-                temp_result_list = []
-                temp_ref_result_list = []
-                temp_result_list.append(['Package', 'Pkg Ver'])
-                for result in data['conf_other_1']:
-                    for k, v in result.items():
-                        temp_result_list.append([k,v[0]])
-                        temp_ref_result_list.append([k,v[0],v[1]])
-                self.result_conf_other_1 = temp_result_list
-                self.result_conf_other_1_ref = temp_ref_result_list
+                try:
+                    temp_result_list = []
+                    temp_ref_result_list = []
+                    temp_result_list.append(['Package', 'Pkg Ver'])
+                    for result in data['conf_other_1']:
+                        for k, v in result.items():
+                            temp_result_list.append([k,v[0]])
+                            temp_ref_result_list.append([k,v[0],v[1]])
+                    self.result_conf_other_1 = temp_result_list
+                    self.result_conf_other_1_ref = temp_ref_result_list
+                except Exception as e:
+                    print(str(e))
 
                 #Retrieve content from conf others 2 dictionary and assign to conf others 2 result list
-                temp_result_list = []
-                temp_ref_result_list = []
-                temp_result_list.append(['Package', 'Pkg Ver'])
-                for result in data['conf_other_2']:
-                    for k, v in result.items():
-                        temp_result_list.append([k,v[0]])
-                        temp_ref_result_list.append([k,v[0],v[1]])
-                self.result_conf_other_2 = temp_result_list
-                self.result_conf_other_2_ref = temp_ref_result_list
+                try:
+                    temp_result_list = []
+                    temp_ref_result_list = []
+                    temp_result_list.append(['Package', 'Pkg Ver'])
+                    for result in data['conf_other_2']:
+                        for k, v in result.items():
+                            temp_result_list.append([k,v[0]])
+                            temp_ref_result_list.append([k,v[0],v[1]])
+                    self.result_conf_other_2 = temp_result_list
+                    self.result_conf_other_2_ref = temp_ref_result_list
+                except Exception as e:
+                    print(str(e))
 
                 #Retrieve content from conf others 3 dictionary and assign to conf others 3 result list
-                temp_result_list = []
-                temp_ref_result_list = []
-                temp_result_list.append(['Package', 'Pkg Ver'])
-                for result in data['conf_other_3']:
-                    for k, v in result.items():
-                        temp_result_list.append([k,v[0]])
-                        temp_ref_result_list.append([k,v[0],v[1]])
-                self.result_conf_other_3 = temp_result_list
-                self.result_conf_other_3_ref = temp_ref_result_list
+                try:
+                    temp_result_list = []
+                    temp_ref_result_list = []
+                    temp_result_list.append(['Package', 'Pkg Ver'])
+                    for result in data['conf_other_3']:
+                        for k, v in result.items():
+                            temp_result_list.append([k,v[0]])
+                            temp_ref_result_list.append([k,v[0],v[1]])
+                    self.result_conf_other_3 = temp_result_list
+                    self.result_conf_other_3_ref = temp_ref_result_list
+                except Exception as e:
+                    print(str(e))
 
                 #Retrieve content from manifest dictionary and assign to manifest result list
-                temp_result_list = []
-                temp_result_list.append(['Package', 'Pkg Ver'])
-                for result in data['manifest']:
-                    for k, v in result.items():
-                        temp_result_list.append([k,v])
-                self.result_manifest = temp_result_list
+                try:
+                    temp_result_list = []
+                    temp_result_list.append(['Package', 'Pkg Ver'])
+                    for result in data['manifest']:
+                        for k, v in result.items():
+                            temp_result_list.append([k,v])
+                    self.result_manifest = temp_result_list
+                except Exception as e:
+                    print(str(e))
 
                 #Retrieve content from tms dictionary and assign to tms result list
-                temp_result_list = []
-                temp_result_list.append(['Package', 'Pkg Ver'])
-                for result in data['tms']:
-                    for k, v in result.items():
-                        temp_result_list.append([k,v])
-                self.result_tms = temp_result_list
+                try:
+                    temp_result_list = []
+                    temp_result_list.append(['Package', 'Pkg Ver'])
+                    for result in data['tms']:
+                        for k, v in result.items():
+                            temp_result_list.append([k,v])
+                    self.result_tms = temp_result_list
+                except Exception as e:
+                    print(str(e))
 
                 #Retrieve content from emv dictionary and assign to emv result list
-                temp_result_list = []
-                temp_result_list.append(['Package', 'Pkg Ver'])
-                for result in data['emv']:
-                    for k, v in result.items():
-                        temp_result_list.append([k,v])
-                self.result_emv = temp_result_list
+                try:
+                    temp_result_list = []
+                    temp_result_list.append(['Package', 'Pkg Ver'])
+                    for result in data['emv']:
+                        for k, v in result.items():
+                            temp_result_list.append([k,v])
+                    self.result_emv = temp_result_list
+                except Exception as e:
+                    print(str(e))
 
                 #Populate the tables from the loaded list
                 if self.result_jbz:
