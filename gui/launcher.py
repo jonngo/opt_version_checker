@@ -1,9 +1,6 @@
-import os
 from pathlib import Path
-
 from PyQt5.QtGui import QStandardItemModel, QStandardItem, QColor
 from PyQt5.QtWidgets import QFileDialog, QAbstractItemView
-
 import package
 from gui import Ui_MainWindow
 from gui import Ui_pkg_widget
@@ -14,7 +11,7 @@ from gui import Ui_save_widget
 from gui import Ui_load_widget
 from gui import Ui_map_widget
 from gui import Ui_compare_widget
-from PyQt5 import QtCore, QtWidgets, QtGui
+from PyQt5 import QtCore, QtWidgets
 from jbz_extraction import JobBundleExtraction
 from emv_version import EmvExtraction
 from tms_parameters import TmsExtraction
@@ -24,7 +21,16 @@ from PyQt5.QtCore import Qt
 import pandas as pd
 import json
 
+
 class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jfrog_widget, Ui_save_widget, Ui_load_widget, Ui_map_widget, Ui_compare_widget):
+
+    # ██╗███╗   ██╗██╗████████╗██╗ █████╗ ██╗     ██╗███████╗███████╗
+    # ██║████╗  ██║██║╚══██╔══╝██║██╔══██╗██║     ██║╚══███╔╝██╔════╝
+    # ██║██╔██╗ ██║██║   ██║   ██║███████║██║     ██║  ███╔╝ █████╗
+    # ██║██║╚██╗██║██║   ██║   ██║██╔══██║██║     ██║ ███╔╝  ██╔══╝
+    # ██║██║ ╚████║██║   ██║   ██║██║  ██║███████╗██║███████╗███████╗
+    # ╚═╝╚═╝  ╚═══╝╚═╝   ╚═╝   ╚═╝╚═╝  ╚═╝╚══════╝╚═╝╚══════╝╚══════╝
+
     def __init__(self):
         try:
             with open("config.json") as json_data_file:
@@ -119,7 +125,13 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         except Exception as e:
             print (str(e))
 
-    #MAIN
+    # ███╗   ███╗ █████╗ ██╗███╗   ██╗    ██╗    ██╗██╗███╗   ██╗██████╗  ██████╗ ██╗    ██╗    ██╗███╗   ██╗██╗████████╗
+    # ████╗ ████║██╔══██╗██║████╗  ██║    ██║    ██║██║████╗  ██║██╔══██╗██╔═══██╗██║    ██║    ██║████╗  ██║██║╚══██╔══╝
+    # ██╔████╔██║███████║██║██╔██╗ ██║    ██║ █╗ ██║██║██╔██╗ ██║██║  ██║██║   ██║██║ █╗ ██║    ██║██╔██╗ ██║██║   ██║
+    # ██║╚██╔╝██║██╔══██║██║██║╚██╗██║    ██║███╗██║██║██║╚██╗██║██║  ██║██║   ██║██║███╗██║    ██║██║╚██╗██║██║   ██║
+    # ██║ ╚═╝ ██║██║  ██║██║██║ ╚████║    ╚███╔███╔╝██║██║ ╚████║██████╔╝╚██████╔╝╚███╔███╔╝    ██║██║ ╚████║██║   ██║
+    # ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝     ╚══╝╚══╝ ╚═╝╚═╝  ╚═══╝╚═════╝  ╚═════╝  ╚══╝╚══╝     ╚═╝╚═╝  ╚═══╝╚═╝   ╚═╝
+
     def extendUI(self,version_checker_mainwindow):
         try:
             #Initialize Widgets
@@ -180,7 +192,15 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         except Exception as e:
             print (str(e))
 
-    #COMPARE (After making the filter rule in MAP, this option will compare the version using the rule made)
+    #  ██████╗ ██████╗ ███╗   ███╗██████╗  █████╗ ██████╗ ███████╗
+    # ██╔════╝██╔═══██╗████╗ ████║██╔══██╗██╔══██╗██╔══██╗██╔════╝
+    # ██║     ██║   ██║██╔████╔██║██████╔╝███████║██████╔╝█████╗
+    # ██║     ██║   ██║██║╚██╔╝██║██╔═══╝ ██╔══██║██╔══██╗██╔══╝
+    # ╚██████╗╚██████╔╝██║ ╚═╝ ██║██║     ██║  ██║██║  ██║███████╗
+    #  ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝
+
+    #After making the filter rule in MAP, this option will compare the version using the rule made
+
     def init_compare_widget(self):
         try:
             self.compare_widget = QtWidgets.QWidget()
@@ -292,7 +312,15 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         except Exception as e:
             print (str(e))
 
-    #MAP (This is to map the key name from different sources which will be used for the filter rules)
+    # ███╗   ███╗ █████╗ ██████╗
+    # ████╗ ████║██╔══██╗██╔══██╗
+    # ██╔████╔██║███████║██████╔╝
+    # ██║╚██╔╝██║██╔══██║██╔═══╝
+    # ██║ ╚═╝ ██║██║  ██║██║
+    # ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝
+
+    # This is to map the key name from different sources which will be used for the filter rules
+
     def init_map_widget(self):
         try:
             self.map_widget = QtWidgets.QWidget()
@@ -498,7 +526,13 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         except Exception as e:
             print (str(e))
 
-    #LOAD TO SCREEN
+    # ██╗      ██████╗  █████╗ ██████╗
+    # ██║     ██╔═══██╗██╔══██╗██╔══██╗
+    # ██║     ██║   ██║███████║██║  ██║
+    # ██║     ██║   ██║██╔══██║██║  ██║
+    # ███████╗╚██████╔╝██║  ██║██████╔╝
+    # ╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚═════╝
+
     def init_load_widget(self):
         try:
             self.load_to_screen_widget = QtWidgets.QWidget()
@@ -687,7 +721,13 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         except Exception as e:
             print (str(e))
 
-    #SAVE ON SCREEN DATA
+    # ███████╗ █████╗ ██╗   ██╗███████╗
+    # ██╔════╝██╔══██╗██║   ██║██╔════╝
+    # ███████╗███████║██║   ██║█████╗
+    # ╚════██║██╔══██║╚██╗ ██╔╝██╔══╝
+    # ███████║██║  ██║ ╚████╔╝ ███████╗
+    # ╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚══════╝
+
     def init_save_widget(self):
         try:
             self.save_on_screen_widget = QtWidgets.QWidget()
@@ -780,7 +820,13 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         except Exception as e:
             print (str(e))
 
-    #JBZ PACKAGE VERSION
+    # ██████╗  █████╗  ██████╗██╗  ██╗ █████╗  ██████╗ ███████╗    ██╗   ██╗███████╗██████╗ ███████╗██╗ ██████╗ ███╗   ██╗
+    # ██╔══██╗██╔══██╗██╔════╝██║ ██╔╝██╔══██╗██╔════╝ ██╔════╝    ██║   ██║██╔════╝██╔══██╗██╔════╝██║██╔═══██╗████╗  ██║
+    # ██████╔╝███████║██║     █████╔╝ ███████║██║  ███╗█████╗      ██║   ██║█████╗  ██████╔╝███████╗██║██║   ██║██╔██╗ ██║
+    # ██╔═══╝ ██╔══██║██║     ██╔═██╗ ██╔══██║██║   ██║██╔══╝      ╚██╗ ██╔╝██╔══╝  ██╔══██╗╚════██║██║██║   ██║██║╚██╗██║
+    # ██║     ██║  ██║╚██████╗██║  ██╗██║  ██║╚██████╔╝███████╗     ╚████╔╝ ███████╗██║  ██║███████║██║╚██████╔╝██║ ╚████║
+    # ╚═╝     ╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝      ╚═══╝  ╚══════╝╚═╝  ╚═╝╚══════╝╚═╝ ╚═════╝ ╚═╝  ╚═══╝
+
     def init_pkg_widget(self):
         try:
             self.pkg_widget = QtWidgets.QWidget()
@@ -997,7 +1043,13 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         except Exception as e:
             print (str(e))
 
-    #EMV KERNEL VERSION
+    # ███████╗███╗   ███╗██╗   ██╗    ██╗  ██╗███████╗██████╗ ███╗   ██╗███████╗██╗         ██╗   ██╗███████╗██████╗ ███████╗██╗ ██████╗ ███╗   ██╗
+    # ██╔════╝████╗ ████║██║   ██║    ██║ ██╔╝██╔════╝██╔══██╗████╗  ██║██╔════╝██║         ██║   ██║██╔════╝██╔══██╗██╔════╝██║██╔═══██╗████╗  ██║
+    # █████╗  ██╔████╔██║██║   ██║    █████╔╝ █████╗  ██████╔╝██╔██╗ ██║█████╗  ██║         ██║   ██║█████╗  ██████╔╝███████╗██║██║   ██║██╔██╗ ██║
+    # ██╔══╝  ██║╚██╔╝██║╚██╗ ██╔╝    ██╔═██╗ ██╔══╝  ██╔══██╗██║╚██╗██║██╔══╝  ██║         ╚██╗ ██╔╝██╔══╝  ██╔══██╗╚════██║██║██║   ██║██║╚██╗██║
+    # ███████╗██║ ╚═╝ ██║ ╚████╔╝     ██║  ██╗███████╗██║  ██║██║ ╚████║███████╗███████╗     ╚████╔╝ ███████╗██║  ██║███████║██║╚██████╔╝██║ ╚████║
+    # ╚══════╝╚═╝     ╚═╝  ╚═══╝      ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚══════╝      ╚═══╝  ╚══════╝╚═╝  ╚═╝╚══════╝╚═╝ ╚═════╝ ╚═╝  ╚═══╝
+
     def init_emv_widget(self):
         try:
             self.emv_widget = QtWidgets.QWidget()
@@ -1045,7 +1097,13 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         except Exception as e:
             print (str(e))
 
-    #TMSLITE PARAMETERS
+    # ████████╗███╗   ███╗███████╗██╗     ██╗████████╗███████╗    ██████╗  █████╗ ██████╗  █████╗ ███╗   ███╗███████╗████████╗███████╗██████╗ ███████╗
+    # ╚══██╔══╝████╗ ████║██╔════╝██║     ██║╚══██╔══╝██╔════╝    ██╔══██╗██╔══██╗██╔══██╗██╔══██╗████╗ ████║██╔════╝╚══██╔══╝██╔════╝██╔══██╗██╔════╝
+    #    ██║   ██╔████╔██║███████╗██║     ██║   ██║   █████╗      ██████╔╝███████║██████╔╝███████║██╔████╔██║█████╗     ██║   █████╗  ██████╔╝███████╗
+    #    ██║   ██║╚██╔╝██║╚════██║██║     ██║   ██║   ██╔══╝      ██╔═══╝ ██╔══██║██╔══██╗██╔══██║██║╚██╔╝██║██╔══╝     ██║   ██╔══╝  ██╔══██╗╚════██║
+    #    ██║   ██║ ╚═╝ ██║███████║███████╗██║   ██║   ███████╗    ██║     ██║  ██║██║  ██║██║  ██║██║ ╚═╝ ██║███████╗   ██║   ███████╗██║  ██║███████║
+    #    ╚═╝   ╚═╝     ╚═╝╚══════╝╚══════╝╚═╝   ╚═╝   ╚══════╝    ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝╚══════╝
+
     def init_tms_widget(self):
         try:
             self.tms_widget = QtWidgets.QWidget()
@@ -1085,7 +1143,13 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         except Exception as e:
             print (str(e))
 
-    #JFROG ARTIFACTORY
+     #       ██╗███████╗██████╗  ██████╗  ██████╗      █████╗ ██████╗ ████████╗██╗███████╗ █████╗  ██████╗████████╗ ██████╗ ██████╗ ██╗   ██╗
+     #       ██║██╔════╝██╔══██╗██╔═══██╗██╔════╝     ██╔══██╗██╔══██╗╚══██╔══╝██║██╔════╝██╔══██╗██╔════╝╚══██╔══╝██╔═══██╗██╔══██╗╚██╗ ██╔╝
+     #       ██║█████╗  ██████╔╝██║   ██║██║  ███╗    ███████║██████╔╝   ██║   ██║█████╗  ███████║██║        ██║   ██║   ██║██████╔╝ ╚████╔╝
+     #  ██   ██║██╔══╝  ██╔══██╗██║   ██║██║   ██║    ██╔══██║██╔══██╗   ██║   ██║██╔══╝  ██╔══██║██║        ██║   ██║   ██║██╔══██╗  ╚██╔╝
+     #  ╚█████╔╝██║     ██║  ██║╚██████╔╝╚██████╔╝    ██║  ██║██║  ██║   ██║   ██║██║     ██║  ██║╚██████╗   ██║   ╚██████╔╝██║  ██║   ██║
+     #   ╚════╝ ╚═╝     ╚═╝  ╚═╝ ╚═════╝  ╚═════╝     ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝╚═╝     ╚═╝  ╚═╝ ╚═════╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝   ╚═╝
+
     def init_jfrog_widget(self):
         try:
             self.jfrog_widget = QtWidgets.QWidget()
@@ -1147,39 +1211,12 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         except Exception as e:
             print (str(e))
 
-    #Common table renderer using basic table model
-    def populate_generic_table(self,table,result,color_code=None,hide_col=None):
-        try:
-            header = result.pop(0)
-            rn = [str(c+1) for c in range(0,len(result))]
-            data = pd.DataFrame(result, columns=header,index=rn)
-            model = TableModel(data,color_code)
-            table.setSelectionBehavior(QAbstractItemView.SelectRows)
-            table.setModel(model)
-            table.resizeColumnsToContents()
-            if hide_col is not None:
-                table.setColumnHidden(hide_col, True)
-            return model
-        except Exception as e:
-            print (str(e))
-
-    #change background color as per pkg group
-    def populate_map_pkg_table(self,table,result):
-        try:
-            header = result.pop(0)
-            rn = [str(c + 1) for c in range(0, len(result))]
-            data = pd.DataFrame(result, columns=header, index=rn)
-            model = MapPkgTableModel(data)
-            table.setSelectionBehavior(QAbstractItemView.SelectRows)
-            table.setModel(model)
-            table.resizeColumnsToContents()
-            #Hide the number column
-            table.setColumnHidden(0, True)
-            return model
-        except Exception as e:
-            print (str(e))
-
-
+    # ███████╗██╗  ██╗ █████╗ ██████╗ ███████╗██████╗     ███████╗██╗   ██╗███╗   ██╗ ██████╗████████╗██╗ ██████╗ ███╗   ██╗
+    # ██╔════╝██║  ██║██╔══██╗██╔══██╗██╔════╝██╔══██╗    ██╔════╝██║   ██║████╗  ██║██╔════╝╚══██╔══╝██║██╔═══██╗████╗  ██║
+    # ███████╗███████║███████║██████╔╝█████╗  ██║  ██║    █████╗  ██║   ██║██╔██╗ ██║██║        ██║   ██║██║   ██║██╔██╗ ██║
+    # ╚════██║██╔══██║██╔══██║██╔══██╗██╔══╝  ██║  ██║    ██╔══╝  ██║   ██║██║╚██╗██║██║        ██║   ██║██║   ██║██║╚██╗██║
+    # ███████║██║  ██║██║  ██║██║  ██║███████╗██████╔╝    ██║     ╚██████╔╝██║ ╚████║╚██████╗   ██║   ██║╚██████╔╝██║ ╚████║
+    # ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═════╝     ╚═╝      ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝
 
     #Hide panel
     def show_hide_panel(self, hs_dict):
@@ -1290,6 +1327,45 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         except Exception as e:
             print (str(e))
 
+# ████████╗ █████╗ ██████╗ ██╗     ███████╗    ███╗   ███╗ ██████╗ ██████╗ ███████╗██╗
+# ╚══██╔══╝██╔══██╗██╔══██╗██║     ██╔════╝    ████╗ ████║██╔═══██╗██╔══██╗██╔════╝██║
+#    ██║   ███████║██████╔╝██║     █████╗      ██╔████╔██║██║   ██║██║  ██║█████╗  ██║
+#    ██║   ██╔══██║██╔══██╗██║     ██╔══╝      ██║╚██╔╝██║██║   ██║██║  ██║██╔══╝  ██║
+#    ██║   ██║  ██║██████╔╝███████╗███████╗    ██║ ╚═╝ ██║╚██████╔╝██████╔╝███████╗███████╗
+#    ╚═╝   ╚═╝  ╚═╝╚═════╝ ╚══════╝╚══════╝    ╚═╝     ╚═╝ ╚═════╝ ╚═════╝ ╚══════╝╚══════╝
+
+    #Common table renderer using basic table model
+    def populate_generic_table(self,table,result,color_code=None,hide_col=None):
+        try:
+            header = result.pop(0)
+            rn = [str(c+1) for c in range(0,len(result))]
+            data = pd.DataFrame(result, columns=header,index=rn)
+            model = TableModel(data,color_code)
+            table.setSelectionBehavior(QAbstractItemView.SelectRows)
+            table.setModel(model)
+            table.resizeColumnsToContents()
+            if hide_col is not None:
+                table.setColumnHidden(hide_col, True)
+            return model
+        except Exception as e:
+            print (str(e))
+
+    #change background color as per pkg group
+    def populate_map_pkg_table(self,table,result):
+        try:
+            header = result.pop(0)
+            rn = [str(c + 1) for c in range(0, len(result))]
+            data = pd.DataFrame(result, columns=header, index=rn)
+            model = MapPkgTableModel(data)
+            table.setSelectionBehavior(QAbstractItemView.SelectRows)
+            table.setModel(model)
+            table.resizeColumnsToContents()
+            #Hide the number column
+            table.setColumnHidden(0, True)
+            return model
+        except Exception as e:
+            print (str(e))
+
 class TableModel(QtCore.QAbstractTableModel):
     def __init__(self, data, color_code = None):
         super(TableModel, self).__init__()
@@ -1369,6 +1445,13 @@ class MapPkgTableModel(QtCore.QAbstractTableModel):
             if orientation == Qt.Vertical:
                 return str(self._data.index[section])
 
+# ███╗   ███╗ █████╗ ██╗███╗   ██╗
+# ████╗ ████║██╔══██╗██║████╗  ██║
+# ██╔████╔██║███████║██║██╔██╗ ██║
+# ██║╚██╔╝██║██╔══██║██║██║╚██╗██║
+# ██║ ╚═╝ ██║██║  ██║██║██║ ╚████║
+# ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝
+
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
 
@@ -1399,3 +1482,5 @@ if __name__ == "__main__":
 
 # does not work
 # pyinstaller --noconsole --onefile --windowed --icon=vc.ico gui/launcher.py
+
+# https://manytools.org/hacker-tools/ascii-banner/
