@@ -84,7 +84,7 @@ class JobBundleExtraction:
             pkg_list = [os.path.join(root, name) for root, dirs, files in os.walk(self.base_xtrak_path+str(tag)+'/' + self.extract_folder + str(x) + '/') for name in files]
 
         master_pkg_list = []
-        master_pkg_list.append(['Package','Pkg Ver'])
+        master_pkg_list.append(['Package', 'Pkg Ver', 'Path'])
 
         #This list is used when saving packages, include in this other header information if needed.
         ref_pkg_list = []
@@ -99,11 +99,11 @@ class JobBundleExtraction:
                             # pmv - version from packman
                             pmv = self.string_version(package.version_num(os.path.join(root, name)))
                             if v is not None:
-                                master_pkg_list.append([name, v])
+                                master_pkg_list.append([name, v, os.path.join(root, name)])
                                 ref_pkg_list.append([name, v, pmv])
                                 # master_pkg_list.append([self.parse_package_name(name),pmv,self.parse_package_kvc(name), v])
 
-        self.display_table(master_pkg_list)
+        # self.display_table(master_pkg_list)
 
         #Find manifest file
 
@@ -141,20 +141,20 @@ class JobBundleExtraction:
                         manifest = [[n[c].split('"')[1], v[c].split('"')[1]] for c in range(0, len(v))]
                         manifest.insert(0,['TAG','VERSION'])
 
-        if manifest is not None:
-            self.display_table(manifest)
+        # if manifest is not None:
+        #     self.display_table(manifest)
 
         return master_pkg_list, manifest, ref_pkg_list
 
-    def display_table(self, content):
-        table = Texttable()
-        table.set_deco(Texttable.HEADER)
-        table.set_cols_dtype(['t', 't'])  # text
-        table.set_cols_width([180, 20])
-
-        table.set_cols_align(["l", "l"])
-        table.add_rows(content)
-        print(table.draw())
+    # def display_table(self, content):
+    #     table = Texttable()
+    #     table.set_deco(Texttable.HEADER)
+    #     table.set_cols_dtype(['t', 't'])  # text
+    #     table.set_cols_width([180, 20])
+    #
+    #     table.set_cols_align(["l", "l"])
+    #     table.add_rows(content)
+    #     print(table.draw())
 
 # Uncomment to perform module test.
 # if __name__ == "__main__":

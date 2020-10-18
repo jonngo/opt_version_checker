@@ -644,21 +644,29 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
 
                 #Populate the tables from the loaded list
                 if self.result_jbz:
+                    self.job_bundle_pkg_ver_label.setText("Package Version")
+                    self.jbz_pkg_ver_table.disconnect()
                     self.populate_generic_table(self.jbz_pkg_ver_table, self.result_jbz, color_code='jbz')
                     self.show_hide_panel({'jbz':True})
                     self.pkg_listview.hide()
 
                 if self.result_conf_other_1:
+                    self.first_conf_other_pkg_ver_label.setText("1st Conf and Other Version")
+                    self.first_conf_other_pkg_ver_table.disconnect()
                     self.populate_generic_table(self.first_conf_other_pkg_ver_table, self.result_conf_other_1, color_code='conf_other_1')
                     self.show_hide_panel({'first':True})
                     self.first_conf_other_pkg_listview.hide()
 
                 if self.result_conf_other_2:
+                    self.second_conf_other_pkg_ver_label.setText("2nd Conf and Other Version")
+                    self.second_conf_other_pkg_ver_table.disconnect()
                     self.populate_generic_table(self.second_conf_other_pkg_ver_table, self.result_conf_other_2, color_code='conf_other_2')
                     self.show_hide_panel({'second':True})
                     self.second_conf_other_pkg_listview.hide()
 
                 if self.result_conf_other_3:
+                    self.third_conf_other_pkg_ver_label.setText("3rd Conf and Other Version")
+                    self.third_conf_other_pkg_ver_table.disconnect()
                     self.populate_generic_table(self.third_conf_other_pkg_ver_table, self.result_conf_other_3, color_code='conf_other_3')
                     self.show_hide_panel({'third':True})
                     self.third_conf_other_pkg_listview.hide()
@@ -845,6 +853,22 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             self.jbx.sevenZ_exe = self.conf_sevenZ_exe
             self.jbx.manifest_file = self.conf_manifest
 
+            # The guide to list holding the information from different sources. (i.e. packages, tms, emv kernel, manifest)
+            # PACKAGE LIST
+            # *** jbz ***
+            # self.result_jbz - the view list for job bundle table
+            # self.result_manifest - the view list for manifest table
+            # self.result_jbz_ref - the reference list when saving job bundle.
+            # *** tgz #1 ***
+            # self.result_conf_other_1 - the view list for zipped packages from any tgz (e.g. conf)
+            # self.result_conf_other_1_ref - the reference list when saving tgz #1
+            # *** tgz #2 ***
+            # self.result_conf_other_2 - the view list for zipped packages from any tgz (e.g. others)
+            # self.result_conf_other_2_ref - the reference list when saving tgz #2
+            # *** tgz #3 ***
+            # self.result_conf_other_3 - the view list for zipped packages from any tgz (e.g. factory)
+            # self.result_conf_other_3_ref - the reference list when saving tgz #3
+
             #Do extraction if there is an entry from the line edit field.
             if self.pkg_ui.jbzPathLineEdit.text() != "":
                 self.result_jbz,self.result_manifest,self.result_jbz_ref = self.jbx.extract(tag=0,jbz_file=self.pkg_ui.jbzPathLineEdit.text())
@@ -894,28 +918,28 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
 
     def populate_jb_table(self,result):
         try:
-            self.model_jbz_pkg_ver_table = self.populate_generic_table(self.jbz_pkg_ver_table,result,color_code='jbz')
+            self.model_jbz_pkg_ver_table = self.populate_generic_table(self.jbz_pkg_ver_table,result,color_code='jbz',hide_col=2)
             self.jbz_pkg_ver_table.clicked.connect(self.jbz_package_info)
         except Exception as e:
             print (str(e))
 
     def populate_first_conf_table(self,result):
         try:
-            self.model_first_conf_ver_table = self.populate_generic_table(self.first_conf_other_pkg_ver_table,result,color_code='conf_other_1')
+            self.model_first_conf_ver_table = self.populate_generic_table(self.first_conf_other_pkg_ver_table,result,color_code='conf_other_1',hide_col=2)
             self.first_conf_other_pkg_ver_table.clicked.connect(self.first_conf_package_info)
         except Exception as e:
             print (str(e))
 
     def populate_second_conf_table(self,result):
         try:
-            self.model_second_conf_ver_table = self.populate_generic_table(self.second_conf_other_pkg_ver_table,result,color_code='conf_other_2')
+            self.model_second_conf_ver_table = self.populate_generic_table(self.second_conf_other_pkg_ver_table,result,color_code='conf_other_2',hide_col=2)
             self.second_conf_other_pkg_ver_table.clicked.connect(self.second_conf_package_info)
         except Exception as e:
             print (str(e))
 
     def populate_third_conf_table(self,result):
         try:
-            self.model_third_conf_ver_table = self.populate_generic_table(self.third_conf_other_pkg_ver_table,result,color_code='conf_other_3')
+            self.model_third_conf_ver_table = self.populate_generic_table(self.third_conf_other_pkg_ver_table,result,color_code='conf_other_3',hide_col=2)
             self.third_conf_other_pkg_ver_table.clicked.connect(self.third_conf_package_info)
         except Exception as e:
             print (str(e))
@@ -930,11 +954,10 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
     def common_package_info_table_setter(self,signal,model,list_model,list_view, folder_index):
         try:
             row = signal.row()
-            index = signal.sibling(row, 0)
+            column = 2 # column 2 has the path to the package.
+            index = signal.sibling(row, column)
             index_dict = model.itemData(index)
-            index_value = index_dict.get(0)
-
-            pkg_header_string = str(package.header_info(self.get_pkg_full_path(index_value,folder_index)))
+            pkg_header_string = str(package.header_info(index_dict.get(0)))
 
             list_model.clear()
 
@@ -946,7 +969,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         except Exception as e:
             print (str(e))
 
-    def jbz_package_info(self,signal):
+    def jbz_package_info(self, signal):
         try:
             self.pkg_listview.show()
             self.common_package_info_table_setter(signal, self.model_jbz_pkg_ver_table, self.pkg_header_list_model, self.pkg_listview, 0)
@@ -971,18 +994,6 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         try:
             self.third_conf_other_pkg_listview.show()
             self.common_package_info_table_setter(signal, self.model_third_conf_ver_table, self.third_conf_other_pkg_header_list_model, self.third_conf_other_pkg_listview, 3)
-        except Exception as e:
-            print (str(e))
-
-    def get_pkg_full_path(self,pkg_name,tag):
-        try:
-            for x in range(self.jbx.extract_file_starting_index,self.jbx.extract_file_ending_index+1):
-                if os.path.exists(self.jbx.base_xtrak_path+str(tag)+'/' + self.jbx.extract_folder + str(x)):
-                    print('processing ... {}'.format(x))
-                    for root, dirs, files in os.walk(self.jbx.base_xtrak_path+str(tag)+'/'+self.jbx.extract_folder+str(x)):
-                        for name in files:
-                            if name == pkg_name:
-                                return os.path.join(root,name)
         except Exception as e:
             print (str(e))
 
@@ -1137,7 +1148,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             print (str(e))
 
     #Common table renderer using basic table model
-    def populate_generic_table(self,table,result,color_code=None):
+    def populate_generic_table(self,table,result,color_code=None,hide_col=None):
         try:
             header = result.pop(0)
             rn = [str(c+1) for c in range(0,len(result))]
@@ -1146,6 +1157,8 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             table.setSelectionBehavior(QAbstractItemView.SelectRows)
             table.setModel(model)
             table.resizeColumnsToContents()
+            if hide_col is not None:
+                table.setColumnHidden(hide_col, True)
             return model
         except Exception as e:
             print (str(e))
@@ -1165,6 +1178,8 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             return model
         except Exception as e:
             print (str(e))
+
+
 
     #Hide panel
     def show_hide_panel(self, hs_dict):
