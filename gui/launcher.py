@@ -679,28 +679,44 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
                 #Populate the tables from the loaded list
                 if self.result_jbz:
                     self.job_bundle_pkg_ver_label.setText("Package Version")
-                    self.jbz_pkg_ver_table.disconnect()
+                    #Disconnect any signals attached to table.
+                    try:
+                        self.jbz_pkg_ver_table.disconnect()
+                    except Exception as e:
+                        print(str(e))
                     self.populate_generic_table(self.jbz_pkg_ver_table, self.result_jbz, color_code='jbz')
                     self.show_hide_panel({'jbz':True})
                     self.pkg_listview.hide()
 
                 if self.result_conf_other_1:
                     self.first_conf_other_pkg_ver_label.setText("1st Conf and Other Version")
-                    self.first_conf_other_pkg_ver_table.disconnect()
+                    #Disconnect any signals attached to table.
+                    try:
+                        self.first_conf_other_pkg_ver_table.disconnect()
+                    except Exception as e:
+                        print(str(e))
                     self.populate_generic_table(self.first_conf_other_pkg_ver_table, self.result_conf_other_1, color_code='conf_other_1')
                     self.show_hide_panel({'first':True})
                     self.first_conf_other_pkg_listview.hide()
 
                 if self.result_conf_other_2:
                     self.second_conf_other_pkg_ver_label.setText("2nd Conf and Other Version")
-                    self.second_conf_other_pkg_ver_table.disconnect()
+                    #Disconnect any signals attached to table.
+                    try:
+                        self.second_conf_other_pkg_ver_table.disconnect()
+                    except Exception as e:
+                        print(str(e))
                     self.populate_generic_table(self.second_conf_other_pkg_ver_table, self.result_conf_other_2, color_code='conf_other_2')
                     self.show_hide_panel({'second':True})
                     self.second_conf_other_pkg_listview.hide()
 
                 if self.result_conf_other_3:
                     self.third_conf_other_pkg_ver_label.setText("3rd Conf and Other Version")
-                    self.third_conf_other_pkg_ver_table.disconnect()
+                    #Disconnect any signals attached to table.
+                    try:
+                        self.third_conf_other_pkg_ver_table.disconnect()
+                    except Exception as e:
+                        print(str(e))
                     self.populate_generic_table(self.third_conf_other_pkg_ver_table, self.result_conf_other_3, color_code='conf_other_3')
                     self.show_hide_panel({'third':True})
                     self.third_conf_other_pkg_listview.hide()
