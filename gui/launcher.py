@@ -1,6 +1,6 @@
 from pathlib import Path
 from PyQt5.QtGui import QStandardItemModel, QStandardItem, QColor
-from PyQt5.QtWidgets import QFileDialog, QAbstractItemView
+from PyQt5.QtWidgets import QFileDialog, QAbstractItemView, QMessageBox
 import package
 from gui import Ui_MainWindow
 from gui import Ui_pkg_widget
@@ -71,6 +71,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
                         - conf_load_path
                     """
 
+                    # save path will also use this path
                     if 'load_path' in conf:
                         self.conf_load_path = self.end_with_slash(self.determine_path(conf['load_path']))
 
@@ -91,8 +92,6 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
 
                     if 'compare_path' in conf:
                         self.conf_compare_path = self.end_with_slash(self.determine_path(conf['compare_path']))
-
-                #TODO config of destination folder for saving
 
                 #Initialize all version result list
                 self.result_jbz = None
@@ -828,12 +827,14 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
     def save_on_screen_to_json(self):
         try:
             filename = self.save_on_screen_ui.save_filename_line_edit.text()
-            print(filename)
             if filename != '':
-                with open(filename+'.json', 'w') as outfile:
+                #The path to save is same as the path to load.
+                with open(self.conf_load_path+filename+'.json', 'w') as outfile:
                     json.dump(json.loads(self.results_to_json()), outfile)
             self.save_on_screen_widget.hide()
+            self.dialog('Saved to '+self.conf_load_path+filename, 'Save')
         except Exception as e:
+            self.dialog('Error saving configuration', 'Save')
             print (str(e))
 
     # ██████╗  █████╗  ██████╗██╗  ██╗ █████╗  ██████╗ ███████╗    ██╗   ██╗███████╗██████╗ ███████╗██╗ ██████╗ ███╗   ██╗
@@ -1233,6 +1234,14 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
     # ╚════██║██╔══██║██╔══██║██╔══██╗██╔══╝  ██║  ██║    ██╔══╝  ██║   ██║██║╚██╗██║██║        ██║   ██║██║   ██║██║╚██╗██║
     # ███████║██║  ██║██║  ██║██║  ██║███████╗██████╔╝    ██║     ╚██████╔╝██║ ╚████║╚██████╗   ██║   ██║╚██████╔╝██║ ╚████║
     # ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═════╝     ╚═╝      ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝
+
+    def dialog(self, message, title):
+        infoBox = QMessageBox()
+        infoBox.setIcon(QMessageBox.Information)
+        infoBox.setText(message)
+        infoBox.setWindowTitle(title)
+        infoBox.setStandardButtons(QMessageBox.Ok)
+        infoBox.exec_()
 
     #Hide panel
     def show_hide_panel(self, hs_dict):
