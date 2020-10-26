@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 from PyQt5.QtGui import QStandardItemModel, QStandardItem, QColor
 from PyQt5.QtWidgets import QFileDialog, QAbstractItemView, QMessageBox
@@ -831,10 +832,16 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
                 #The path to save is same as the path to load.
                 with open(self.conf_load_path+filename+'.json', 'w') as outfile:
                     json.dump(json.loads(self.results_to_json()), outfile)
-            self.save_on_screen_widget.hide()
-            self.dialog('Saved to '+self.conf_load_path+filename, 'Save')
+                    self.dialog('Saved to ' + self.conf_load_path + filename, 'Save')
+                    self.save_on_screen_widget.hide()
+            else:
+                self.dialog('Cannot save without file name.' + filename, 'Save')
         except Exception as e:
-            self.dialog('Error saving configuration', 'Save')
+            self.dialog('Error saving.', 'Save')
+            #Remove the faulty file created
+            if os.path.exists(self.conf_load_path+filename+'.json'):
+                os.remove(self.conf_load_path+filename+'.json')
+            self.save_on_screen_widget.hide()
             print (str(e))
 
     # ██████╗  █████╗  ██████╗██╗  ██╗ █████╗  ██████╗ ███████╗    ██╗   ██╗███████╗██████╗ ███████╗██╗ ██████╗ ███╗   ██╗
