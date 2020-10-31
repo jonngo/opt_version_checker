@@ -856,8 +856,8 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             self.pkg_widget = QtWidgets.QWidget()
             self.pkg_ui = Ui_pkg_widget()
             self.pkg_ui.setupUi(self.pkg_widget)
-            self.pkg_ui.jbzPathPushButton.clicked.connect(self.search_jbz_path)
-            self.pkg_ui.extractPushButton.clicked.connect(self.extract_jbz_and_other_pkg)
+            self.pkg_ui.jbz_path_push_button.clicked.connect(self.search_jbz_path)
+            self.pkg_ui.extract_push_button.clicked.connect(self.extract_jbz_and_other_pkg)
             self.pkg_ui.conf_other_pkg_1_push_button.clicked.connect(self.search_other_pkg_path_1)
             self.pkg_ui.conf_other_pkg_2_push_button.clicked.connect(self.search_other_pkg_path_2)
             self.pkg_ui.conf_other_pkg_3_push_button.clicked.connect(self.search_other_pkg_path_3)
@@ -866,11 +866,8 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
 
     def open_pkg_widget(self):
         try:
-            self.pkg_ui.extractionPathLineEdit.setText(self.conf_base_xtrak_path)
-            self.pkg_ui.sevenZlineEdit.setText(self.conf_sevenZ_exe)
-            self.pkg_ui.jbz_manifest_line_edit.setText(self.conf_manifest)
-            self.pkg_ui.jbzPathLineEdit.setFocus()
-            self.pkg_ui.jbzPathLineEdit.setText('')
+            self.pkg_ui.jbz_path_line_edit.setFocus()
+            self.pkg_ui.jbz_path_line_edit.setText('')
             self.pkg_ui.conf_other_pkg_1_line_edit.setText('')
             self.pkg_ui.conf_other_pkg_2_line_edit.setText('')
             self.pkg_ui.conf_other_pkg_3_line_edit.setText('')
@@ -892,7 +889,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
 
     def search_jbz_path(self):
         try:
-            self.open_file_dialog(self.pkg_ui.jbzPathLineEdit)
+            self.open_file_dialog(self.pkg_ui.jbz_path_line_edit)
         except Exception as e:
             print (str(e))
 
@@ -940,8 +937,8 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             # self.result_conf_other_3_ref - the reference list when saving tgz #3
 
             #Do extraction if there is an entry from the line edit field.
-            if self.pkg_ui.jbzPathLineEdit.text() != "":
-                self.result_jbz,self.result_manifest,self.result_jbz_ref = self.jbx.extract(tag=0,jbz_file=self.pkg_ui.jbzPathLineEdit.text())
+            if self.pkg_ui.jbz_path_line_edit.text() != "":
+                self.result_jbz,self.result_manifest,self.result_jbz_ref = self.jbx.extract(tag=0,jbz_file=self.pkg_ui.jbz_path_line_edit.text())
                 if self.result_jbz:
                     self.show_hide_panel({'jbz':True})
                     self.pkg_listview.hide()
@@ -971,7 +968,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             #Display the result from extraction
             if self.result_jbz:
                 self.populate_jb_table(self.result_jbz)
-                self.job_bundle_pkg_ver_label.setText("..."+self.pkg_ui.jbzPathLineEdit.text()[-40:])
+                self.job_bundle_pkg_ver_label.setText("..."+self.pkg_ui.jbz_path_line_edit.text()[-40:])
             if self.result_conf_other_1:
                 self.populate_first_conf_table(self.result_conf_other_1)
                 self.first_conf_other_pkg_ver_label.setText("..."+self.pkg_ui.conf_other_pkg_1_line_edit.text()[-40:])
