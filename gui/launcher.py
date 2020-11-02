@@ -134,6 +134,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
 
     def extendUI(self,version_checker_mainwindow):
         try:
+            version_checker_mainwindow.resize(640, 480)
             #Initialize Widgets
             self.init_jfrog_widget()
             self.init_pkg_widget()
@@ -754,6 +755,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             print (str(e))
 
     def open_save_widget(self):
+
         try:
             self.save_on_screen_ui.save_filename_line_edit.setText('')
             self.save_on_screen_widget.hide()
@@ -1250,6 +1252,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
     #Hide panel
     def show_hide_panel(self, hs_dict):
         try:
+            splash_flag = False
             for key, value in hs_dict.items():
                 if key == 'jfrog':
                     if value:
@@ -1257,6 +1260,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
                         self.jfrog_buttom_button_frame.show()
                         self.jfrog_table.show()
                         self.jfrog_label.show()
+                        splash_flag = True
                     else:
                         #hide jfrog
                         self.jfrog_buttom_button_frame.hide()
@@ -1269,6 +1273,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
                          self.jbz_pkg_ver_table.show()
                          self.job_bundle_pkg_ver_label.show()
                          self.pkg_listview.show()
+                         splash_flag = True
                      else:
                          #hide jbz
                          self.jbz_pkg_ver_buttom_button_frame.hide()
@@ -1283,6 +1288,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
                          self.first_conf_other_pkg_ver_table.show()
                          self.first_conf_other_pkg_ver_label.show()
                          self.first_conf_other_pkg_listview.show()
+                         splash_flag = True
                      else:
                          #hide first conf and other
                          self.first_conf_other_pkg_ver_buttom_button_frame.hide()
@@ -1297,6 +1303,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
                          self.second_conf_other_pkg_ver_table.show()
                          self.second_conf_other_pkg_ver_label.show()
                          self.second_conf_other_pkg_listview.show()
+                         splash_flag = True
                      else:
                          #hide second conf and other
                          self.second_conf_other_pkg_ver_buttom_button_frame.hide()
@@ -1311,6 +1318,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
                          self.third_conf_other_pkg_ver_table.show()
                          self.third_conf_other_pkg_ver_label.show()
                          self.third_conf_other_pkg_listview.show()
+                         splash_flag = True
                      else:
                          #hide third conf and other
                          self.third_conf_other_pkg_ver_buttom_button_frame.hide()
@@ -1324,6 +1332,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
                         self.manifest_buttom_button_frame.show()
                         self.manifest_table.show()
                         self.manifest_file_label.show()
+                        splash_flag = True
                     else:
                         # hide manifest
                         self.manifest_buttom_button_frame.hide()
@@ -1336,6 +1345,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
                          self.tms_param_buttom_button_frame.show()
                          self.tms_param_table.show()
                          self.tms_param_label.show()
+                         splash_flag = True
                      else:
                          #hide tms
                          self.tms_param_buttom_button_frame.hide()
@@ -1348,11 +1358,16 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
                         self.emv_kernel_ver_buttom_button_frame.show()
                         self.emv_kernel_ver_table.show()
                         self.emv_kernel_version_label.show()
+                        splash_flag = True
                     else:
                         # hide emv
                         self.emv_kernel_ver_buttom_button_frame.hide()
                         self.emv_kernel_ver_table.hide()
                         self.emv_kernel_version_label.hide()
+            #Hide the splash screen if screen is occupied, shown only in start-up.
+            if splash_flag:
+                self.splash_label.setVisible(False)
+
         except Exception as e:
             print (str(e))
 
