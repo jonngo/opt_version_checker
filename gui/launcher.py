@@ -565,7 +565,6 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
 
     def load_display_to_screen(self):
         try:
-            #TODO refactor the load function, too many duplicate code
             #Initialize the result list
             self.result_jbz = None
             self.result_conf_other_1 = None
@@ -589,93 +588,25 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
                 data = json.load(results_json)
 
                 #Retrieve content from jbz dictionary and assign to jbz result list
-                try:
-                    temp_result_list = []
-                    temp_ref_result_list = []
-                    temp_result_list.append(['Package', 'Pkg Ver'])
-                    for result in data['jbz']:
-                        for k, v in result.items():
-                            temp_result_list.append([k,v[0]])
-                            temp_ref_result_list.append([k,v[0],v[1]])
-                    self.result_jbz = temp_result_list
-                    self.result_jbz_ref = temp_ref_result_list
-                except Exception as e:
-                    print(str(e))
+                self.result_jbz, self.result_jbz_ref = self.results_json_to_list(data, 'jbz', ['PACKAGE', 'PKG VER'], False)
 
                 #Retrieve content from conf others 1 dictionary and assign to conf others 1 result list
-                try:
-                    temp_result_list = []
-                    temp_ref_result_list = []
-                    temp_result_list.append(['Package', 'Pkg Ver'])
-                    for result in data['conf_other_1']:
-                        for k, v in result.items():
-                            temp_result_list.append([k,v[0]])
-                            temp_ref_result_list.append([k,v[0],v[1]])
-                    self.result_conf_other_1 = temp_result_list
-                    self.result_conf_other_1_ref = temp_ref_result_list
-                except Exception as e:
-                    print(str(e))
+                self.result_conf_other_1, self.result_conf_other_1_ref = self.results_json_to_list(data, 'conf_other_1', ['PACKAGE', 'PKG VER'], False)
 
                 #Retrieve content from conf others 2 dictionary and assign to conf others 2 result list
-                try:
-                    temp_result_list = []
-                    temp_ref_result_list = []
-                    temp_result_list.append(['Package', 'Pkg Ver'])
-                    for result in data['conf_other_2']:
-                        for k, v in result.items():
-                            temp_result_list.append([k,v[0]])
-                            temp_ref_result_list.append([k,v[0],v[1]])
-                    self.result_conf_other_2 = temp_result_list
-                    self.result_conf_other_2_ref = temp_ref_result_list
-                except Exception as e:
-                    print(str(e))
+                self.result_conf_other_2, self.result_conf_other_2_ref = self.results_json_to_list(data, 'conf_other_2', ['PACKAGE', 'PKG VER'], False)
 
                 #Retrieve content from conf others 3 dictionary and assign to conf others 3 result list
-                try:
-                    temp_result_list = []
-                    temp_ref_result_list = []
-                    temp_result_list.append(['Package', 'Pkg Ver'])
-                    for result in data['conf_other_3']:
-                        for k, v in result.items():
-                            temp_result_list.append([k,v[0]])
-                            temp_ref_result_list.append([k,v[0],v[1]])
-                    self.result_conf_other_3 = temp_result_list
-                    self.result_conf_other_3_ref = temp_ref_result_list
-                except Exception as e:
-                    print(str(e))
+                self.result_conf_other_3, self.result_conf_other_3_ref = self.results_json_to_list(data, 'conf_other_3', ['PACKAGE', 'PKG VER'], False)
 
                 #Retrieve content from manifest dictionary and assign to manifest result list
-                try:
-                    temp_result_list = []
-                    temp_result_list.append(['Package', 'Pkg Ver'])
-                    for result in data['manifest']:
-                        for k, v in result.items():
-                            temp_result_list.append([k,v])
-                    self.result_manifest = temp_result_list
-                except Exception as e:
-                    print(str(e))
+                self.result_manifest = self.results_json_to_list(data, 'manifest', ['TAG', 'VERSION'], True)
 
                 #Retrieve content from tms dictionary and assign to tms result list
-                try:
-                    temp_result_list = []
-                    temp_result_list.append(['Package', 'Pkg Ver'])
-                    for result in data['tms']:
-                        for k, v in result.items():
-                            temp_result_list.append([k,v])
-                    self.result_tms = temp_result_list
-                except Exception as e:
-                    print(str(e))
+                self.result_tms = self.results_json_to_list(data, 'tms', ['TAG','VALUE'], True)
 
                 #Retrieve content from emv dictionary and assign to emv result list
-                try:
-                    temp_result_list = []
-                    temp_result_list.append(['Package', 'Pkg Ver'])
-                    for result in data['emv']:
-                        for k, v in result.items():
-                            temp_result_list.append([k,v])
-                    self.result_emv = temp_result_list
-                except Exception as e:
-                    print(str(e))
+                self.result_emv = self.results_json_to_list(data, 'emv', ["TAG", "VERSION"], True)
 
                 #Populate the tables from the loaded list
                 if self.result_jbz:
@@ -737,6 +668,27 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             self.load_to_screen_widget.hide()
         except Exception as e:
             print (str(e))
+
+    def results_json_to_list(self, data, key, header, single_val):
+        try:
+            # The list that is displayed on the screen.
+            temp_result_list = []
+            # The list that contains more information, this is used in packages that has version but it is not display, only package name and pkg version (v1/v255) is displayed.
+            temp_ref_result_list = []
+            temp_result_list.append(header)
+            for result in data[key]:
+                for k, v in result.items():
+                    if single_val:
+                        temp_result_list.append([k, v])
+                    else:
+                        temp_result_list.append([k, v[0]])
+                        temp_ref_result_list.append([k, v[0], v[1]])
+            if single_val:
+                return temp_result_list
+            else:
+                return temp_result_list, temp_ref_result_list
+        except Exception as e:
+            print(str(e))
 
     # ███████╗ █████╗ ██╗   ██╗███████╗
     # ██╔════╝██╔══██╗██║   ██║██╔════╝

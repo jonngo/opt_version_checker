@@ -84,7 +84,7 @@ class JobBundleExtraction:
             pkg_list = [os.path.join(root, name) for root, dirs, files in os.walk(self.base_xtrak_path+str(tag)+'/' + self.extract_folder + str(x) + '/') for name in files]
 
         master_pkg_list = []
-        master_pkg_list.append(['Package', 'Pkg Ver', 'Path'])
+        master_pkg_list.append(['PACKAGE', 'PKG VER', 'Path'])
 
         #This list is used when saving packages, include in this other header information if needed.
         ref_pkg_list = []
