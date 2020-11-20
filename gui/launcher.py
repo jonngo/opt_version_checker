@@ -373,19 +373,19 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             if self.result_manifest:
                 self.map_manifest_result_list = self.result_manifest.copy()
                 self.map_manifest_result_list.insert(0, ['TAG', 'VERSION'])
-                self.model_map_manifest_table = self.populate_generic_table(self.map_ui.map_manifest_table, self.map_manifest_result_list)
+                self.model_map_manifest_table = self.populate_generic_table(self.map_ui.map_manifest_table, self.map_manifest_result_list,color_code='manifest')
                 self.map_ui.map_manifest_table.doubleClicked.connect(self.map_stage_manifest)
 
             if self.result_tms:
                 self.map_tms_result_list = self.result_tms.copy()
                 self.map_tms_result_list.insert(0, ['TAG', 'VALUE'])
-                self.model_map_tms_table = self.populate_generic_table(self.map_ui.map_tms_table, self.map_tms_result_list)
+                self.model_map_tms_table = self.populate_generic_table(self.map_ui.map_tms_table, self.map_tms_result_list,color_code='tms')
                 self.map_ui.map_tms_table.doubleClicked.connect(self.map_stage_tms)
 
             if self.result_emv:
                 self.map_emv_result_list = self.result_emv.copy()
                 self.map_emv_result_list.insert(0,["TAG", "VERSION"])
-                self.model_map_emv_table = self.populate_generic_table(self.map_ui.map_emv_table, self.map_emv_result_list)
+                self.model_map_emv_table = self.populate_generic_table(self.map_ui.map_emv_table, self.map_emv_result_list,color_code='emv')
                 self.map_ui.map_emv_table.doubleClicked.connect(self.map_stage_emv)
 
             self.map_widget.show()
@@ -654,15 +654,15 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
                     self.third_conf_other_pkg_listview.hide()
 
                 if self.result_manifest:
-                    self.populate_generic_table(self.manifest_table, self.result_manifest)
+                    self.populate_generic_table(self.manifest_table, self.result_manifest, color_code='manifest')
                     self.show_hide_panel({'manifest': True})
 
                 if self.result_tms:
-                    self.populate_generic_table(self.tms_param_table, self.result_tms)
+                    self.populate_generic_table(self.tms_param_table, self.result_tms, color_code='tms')
                     self.show_hide_panel({'tms': True})
 
                 if self.result_emv:
-                    self.populate_generic_table(self.emv_kernel_ver_table, self.result_emv)
+                    self.populate_generic_table(self.emv_kernel_ver_table, self.result_emv, color_code='emv')
                     self.show_hide_panel({'emv': True})
 
             self.load_to_screen_widget.hide()
@@ -967,7 +967,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
 
     def populate_manifest_table(self,result):
         try:
-            self.model_manifest_table = self.populate_generic_table(self.manifest_table,result)
+            self.model_manifest_table = self.populate_generic_table(self.manifest_table,result,color_code='manifest')
         except Exception as e:
             print (str(e))
 
@@ -1066,7 +1066,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
                 selected_device = dc[0]
                 selected_customer = dc[1]
             self.result_emv = emvx.login(self.emv_ui.usernameLineEdit.text(),self.emv_ui.passwordLineEdit.text(),selected_device,selected_customer)
-            self.populate_generic_table(self.emv_kernel_ver_table,self.result_emv)
+            self.populate_generic_table(self.emv_kernel_ver_table,self.result_emv, color_code='emv')
             self.show_hide_panel({'emv': True})
             self.emv_widget.hide()
         except Exception as e:
@@ -1101,7 +1101,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             tmsx = TmsExtraction()
             self.result_tms = tmsx.load_tms_parameters(self.tms_ui.tmslite_param_line_edit.text())
             self.tms_widget.hide()
-            self.populate_generic_table(self.tms_param_table,self.result_tms)
+            self.populate_generic_table(self.tms_param_table,self.result_tms, color_code='tms')
             self.show_hide_panel({'tms': True})
         except Exception as e:
             print (str(e))
@@ -1386,6 +1386,15 @@ class TableModel(QtCore.QAbstractTableModel):
             elif self._color_code == 'conf_other_3':
                 #lighter green for conf 3 if even row else light green
                 return QColor(230,255,230) if index.row() % 2 == 0 else QColor(204, 255, 204)
+            elif self._color_code == 'manifest':
+                #lighter blue for manifest if even row else light blue
+                return QColor(230,240,255) if index.row() % 2 == 0 else QColor(204, 224, 255)
+            elif self._color_code == 'tms':
+                #lighter cream for tms if even row else light cream
+                return QColor(255,242,230) if index.row() % 2 == 0 else QColor(255, 229, 204)
+            elif self._color_code == 'emv':
+                #lighter pink for emv if even row else light pink
+                return QColor(255,230,255) if index.row() % 2 == 0 else QColor(255, 204, 255)
 
     def rowCount(self, index):
         return self._data.shape[0]
