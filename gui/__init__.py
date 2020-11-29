@@ -7,3 +7,4 @@ from .save_on_screen_data import Ui_save_widget
 from .load_to_screen import Ui_load_widget
 from .map import Ui_map_widget
 from .compare import Ui_compare_widget
+from .settings import Ui_settings_widget

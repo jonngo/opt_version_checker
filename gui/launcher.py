@@ -12,6 +12,7 @@ from gui import Ui_save_widget
 from gui import Ui_load_widget
 from gui import Ui_map_widget
 from gui import Ui_compare_widget
+from gui import Ui_settings_widget
 from PyQt5 import QtCore, QtWidgets
 from jbz_extraction import JobBundleExtraction
 from emv_version import EmvExtraction
@@ -23,7 +24,7 @@ import pandas as pd
 import json
 
 
-class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jfrog_widget, Ui_save_widget, Ui_load_widget, Ui_map_widget, Ui_compare_widget):
+class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jfrog_widget, Ui_save_widget, Ui_load_widget, Ui_map_widget, Ui_compare_widget, Ui_settings_widget):
 
     # ██╗███╗   ██╗██╗████████╗██╗ █████╗ ██╗     ██╗███████╗███████╗
     # ██║████╗  ██║██║╚══██╔══╝██║██╔══██╗██║     ██║╚══███╔╝██╔════╝
@@ -144,6 +145,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             self.init_load_widget()
             self.init_map_widget()
             self.init_compare_widget()
+            self.init_settings_widget()
 
             #Source Menu
             self.jbz_pkg_menu_item.triggered.connect(self.open_pkg_widget)
@@ -154,6 +156,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             self.load_menu_item.triggered.connect(self.open_load_widget)
             self.map_menu_item.triggered.connect(self.open_map_widget)
             self.compare_menu_item.triggered.connect(self.open_compare_widget)
+            self.settings_menu_item.triggered.connect(self.open_settings_widget)
 
             #View Menu - Show Menu
             #show_only_view
@@ -192,6 +195,32 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             version_checker_mainwindow.show()
         except Exception as e:
             print (str(e))
+
+    # ███████╗███████╗████████╗████████╗██╗███╗   ██╗ ██████╗ ███████╗
+    # ██╔════╝██╔════╝╚══██╔══╝╚══██╔══╝██║████╗  ██║██╔════╝ ██╔════╝
+    # ███████╗█████╗     ██║      ██║   ██║██╔██╗ ██║██║  ███╗███████╗
+    # ╚════██║██╔══╝     ██║      ██║   ██║██║╚██╗██║██║   ██║╚════██║
+    # ███████║███████╗   ██║      ██║   ██║██║ ╚████║╚██████╔╝███████║
+    # ╚══════╝╚══════╝   ╚═╝      ╚═╝   ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝
+
+    def init_settings_widget(self):
+        try:
+            self.settings_widget = QtWidgets.QWidget()
+            self.settings_ui = Ui_settings_widget()
+            self.settings_ui.setupUi(self.settings_widget)
+            self.settings_ui.settings_extract_path_line_edit.setFocus()
+            # self.compare_ui.compare_browse_push_button.clicked.connect(lambda state, x=self.compare_ui.compare_line_edit: self.browse_compare_rule_file(x))
+            # self.compare_ui.compare_push_button.clicked.connect(self.compare_the_versions)
+        except Exception as e:
+            print (str(e))
+
+    def open_settings_widget(self):
+        try:
+            self.settings_widget.hide()
+            self.settings_widget.show()
+        except Exception as e:
+            print (str(e))
+
 
     #  ██████╗ ██████╗ ███╗   ███╗██████╗  █████╗ ██████╗ ███████╗
     # ██╔════╝██╔═══██╗████╗ ████║██╔══██╗██╔══██╗██╔══██╗██╔════╝
@@ -1481,6 +1510,7 @@ if __name__ == "__main__":
 # pyuic5 load_to_screen.ui -o load_to_screen.py
 # pyuic5 map.ui -o map.py
 # pyuic5 compare.ui -o compare.py
+# pyuic5 settings.ui -o settings.py
 
 # To make .exe
 # pyinstaller --noconsole --onefile --windowed --icon=../vc.ico launcher.py

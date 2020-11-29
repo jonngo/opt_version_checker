@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>2486</width>
+    <width>3030</width>
     <height>549</height>
    </rect>
   </property>
@@ -544,7 +544,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>2486</width>
+     <width>3030</width>
      <height>22</height>
     </rect>
    </property>
@@ -554,6 +554,7 @@
     </property>
     <addaction name="save_menu_item"/>
     <addaction name="load_menu_item"/>
+    <addaction name="settings_menu_item"/>
     <addaction name="exit_menu_item"/>
    </widget>
    <widget class="QMenu" name="menuSource">
@@ -758,6 +759,11 @@
   <action name="compare_menu_item">
    <property name="text">
     <string>Compare</string>
+   </property>
+  </action>
+  <action name="settings_menu_item">
+   <property name="text">
+    <string>Settings</string>
    </property>
   </action>
  </widget>
