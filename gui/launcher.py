@@ -88,12 +88,21 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
 
                 for conf in data['compare_cfg']:
                     """
-                    Configuration variables of compare version
+                    Configuration variables of version comparison
                         - conf_compare_path
                     """
 
                     if 'compare_path' in conf:
                         self.conf_compare_path = self.end_with_slash(self.determine_path(conf['compare_path']))
+
+                for conf in data['jfrog_cfg']:
+                    """
+                    Configuration variables of jfrog repo path
+                        - conf_jfrog_path
+                    """
+
+                    if 'jfrog_repo_path' in conf:
+                        self.conf_jfrog_path = self.end_with_slash(self.determine_path(conf['jfrog_repo_path']))
 
                 #Initialize all version result list
                 self.result_jbz = None
@@ -209,8 +218,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             self.settings_ui = Ui_settings_widget()
             self.settings_ui.setupUi(self.settings_widget)
             self.settings_ui.settings_extract_path_line_edit.setFocus()
-            # self.compare_ui.compare_browse_push_button.clicked.connect(lambda state, x=self.compare_ui.compare_line_edit: self.browse_compare_rule_file(x))
-            # self.compare_ui.compare_push_button.clicked.connect(self.compare_the_versions)
+            self.restore_previous_conf()
         except Exception as e:
             print (str(e))
 
@@ -220,6 +228,35 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             self.settings_widget.show()
         except Exception as e:
             print (str(e))
+
+    def restore_previous_conf(self):
+        self.settings_ui.settings_extract_path_line_edit.setText(self.conf_base_xtrak_path)
+        self.settings_ui.settings_seven_zip_line_edit.setText(self.conf_sevenZ_exe)
+        self.settings_ui.settings_mnf_file_line_edit.setText(self.conf_manifest)
+        self.settings_ui.settings_pkg_loc_line_edit.setText(self.conf_default_pkg_folder)
+        self.settings_ui.settings_conf_emv_url_line_edit.setText(self.conf_emv_ver_url)
+        self.settings_ui.settings_chrome_wd_line_edit.setText(self.conf_chrome_driver_filepath)
+        self.settings_ui.settings_load_save_path_line_edit.setText(self.conf_load_path)
+        self.settings_ui.settings_tms_path_line_edit.setText(self.conf_tms_path)
+        self.settings_ui.settings_compare_path_line_edit.setText(self.conf_compare_path)
+        self.settings_ui.settings_jfrog_path_line_edit.setText(self.conf_jfrog_path)
+        self.settings_ui.settings_reset_push_button.clicked.connect(self.reset_config)
+        self.settings_ui.settings_save_push_button.clicked.connect(self.save_config)
+
+    def reset_config(self):
+        self.restore_previous_conf()
+
+    def config_to_json(self):
+        return '{"pkg_version_cfg": [{"base_xtrak_path": "'+self.conf_base_xtrak_path+'"},{"sevenZ_exe": "'+self.conf_sevenZ_exe+'"},{"manifest_file": "'+self.conf_manifest+'"},{"default_pkg_location": "'+self.conf_default_pkg_folder+'"}],"emv_version_cfg": [{"emv_ver_url": "'+self.conf_emv_ver_url+'"},{"chrome_driver_filepath": "'+self.conf_chrome_driver_filepath+'"}],"load_cfg": [{"load_path": "'+self.conf_load_path+'"}],"tms_cfg": [{"tms_path": "'+self.conf_tms_path+'"}],"compare_cfg": [{"compare_path": "'+self.conf_compare_path+'"}],"jfrog_cfg": [{"jfrog_repo_path": "'+self.conf_jfrog_path+'"}]}'
+
+    def save_config(self):
+        try:
+            with open('config.json', 'w') as outfile:
+                json.dump(json.loads(self.results_to_json()), outfile)
+                self.dialog('Saved to config.json', 'Save')
+                self.settings_widget.hide()
+        except Exception as e:
+            self.dialog('Error saving.', 'Save')
 
 
     #  ██████╗ ██████╗ ███╗   ███╗██████╗  █████╗ ██████╗ ███████╗
