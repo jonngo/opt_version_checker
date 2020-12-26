@@ -252,7 +252,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
     def save_config(self):
         try:
             with open('config.json', 'w') as outfile:
-                json.dump(json.loads(self.results_to_json()), outfile)
+                json.dump(json.loads(self.config_to_json()), outfile)
                 self.dialog('Saved to config.json', 'Save')
                 self.settings_widget.hide()
         except Exception as e:
