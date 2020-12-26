@@ -17,7 +17,10 @@
     ],
     "compare_cfg": [
         {"compare_path": "home"}
-    ]
-
+    ],
+	"jfrog_cfg": [
+		{
+			"jfrog_repo_path": "fw-sku-bundles-dev/firmware/sequoia/"
+		}
+	]
 }
-
