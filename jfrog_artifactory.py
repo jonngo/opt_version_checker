@@ -2,8 +2,11 @@ import json
 from subprocess import Popen,PIPE
 
 class JfrogArtifactory:
+    def __init__(self,path):
+        self.path = path
+
     def load_artifact(self,build):
-        process = Popen(["jfrog", "rt", "s", "fw-sku-bundles-dev/firmware/sequoia/"+build+"/"], stdout=PIPE, stderr=PIPE)
+        process = Popen(["jfrog", "rt", "s", self.path+build+"/"], stdout=PIPE, stderr=PIPE)
         stdout, stderr = process.communicate()
         s = stdout.decode("utf-8")
 

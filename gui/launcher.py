@@ -219,6 +219,8 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             self.settings_ui.setupUi(self.settings_widget)
             self.settings_ui.settings_extract_path_line_edit.setFocus()
             self.restore_previous_conf()
+            self.settings_ui.settings_reset_push_button.clicked.connect(self.reset_config)
+            self.settings_ui.settings_save_push_button.clicked.connect(self.save_config)
         except Exception as e:
             print (str(e))
 
@@ -240,8 +242,6 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         self.settings_ui.settings_tms_path_line_edit.setText(self.conf_tms_path)
         self.settings_ui.settings_compare_path_line_edit.setText(self.conf_compare_path)
         self.settings_ui.settings_jfrog_path_line_edit.setText(self.conf_jfrog_path)
-        self.settings_ui.settings_reset_push_button.clicked.connect(self.reset_config)
-        self.settings_ui.settings_save_push_button.clicked.connect(self.save_config)
 
     def reset_config(self):
         self.restore_previous_conf()
@@ -250,6 +250,17 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         return '{"pkg_version_cfg": [{"base_xtrak_path": "'+self.conf_base_xtrak_path+'"},{"sevenZ_exe": "'+self.conf_sevenZ_exe+'"},{"manifest_file": "'+self.conf_manifest+'"},{"default_pkg_location": "'+self.conf_default_pkg_folder+'"}],"emv_version_cfg": [{"emv_ver_url": "'+self.conf_emv_ver_url+'"},{"chrome_driver_filepath": "'+self.conf_chrome_driver_filepath+'"}],"load_cfg": [{"load_path": "'+self.conf_load_path+'"}],"tms_cfg": [{"tms_path": "'+self.conf_tms_path+'"}],"compare_cfg": [{"compare_path": "'+self.conf_compare_path+'"}],"jfrog_cfg": [{"jfrog_repo_path": "'+self.conf_jfrog_path+'"}]}'
 
     def save_config(self):
+        self.conf_base_xtrak_path = self.settings_ui.settings_extract_path_line_edit.text()
+        self.conf_sevenZ_exe = self.settings_ui.settings_seven_zip_line_edit.text()
+        self.conf_manifest = self.settings_ui.settings_mnf_file_line_edit.text()
+        self.conf_default_pkg_folder = self.settings_ui.settings_pkg_loc_line_edit.text()
+        self.conf_emv_ver_url = self.settings_ui.settings_conf_emv_url_line_edit.text()
+        self.conf_chrome_driver_filepath = self.settings_ui.settings_chrome_wd_line_edit.text()
+        self.conf_load_path = self.settings_ui.settings_load_save_path_line_edit.text()
+        self.conf_tms_path = self.settings_ui.settings_tms_path_line_edit.text()
+        self.conf_compare_path = self.settings_ui.settings_compare_path_line_edit.text()
+        self.conf_jfrog_path = self.settings_ui.settings_jfrog_path_line_edit.text()
+
         try:
             with open('config.json', 'w') as outfile:
                 json.dump(json.loads(self.config_to_json()), outfile)
@@ -1212,7 +1223,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
     #Jfrog Artifactory slot when Load button is clicked
     def load_build_list(self):
         try:
-            jfrog_art = JfrogArtifactory()
+            jfrog_art = JfrogArtifactory(self.conf_jfrog_path)
             self.result_of_jfrog_list = jfrog_art.load_artifact(self.jfrog_ui.jfrog_build_ver_line_edit.text())
             self.populate_jfrog_sku_bundle_table(self.result_of_jfrog_list)
         except Exception as e:
