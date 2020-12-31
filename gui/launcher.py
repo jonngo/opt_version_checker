@@ -1248,65 +1248,46 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
     def filter_jfrog_result(self):
         try:
             self.result_of_jfrog_list = self.jfrog_art_object.filter_artifact(self.jfrog_ui.jfrog_version_combo_box.currentText())
-            hidden_col = []
-            show_col = []
-
-            if not self.jfrog_ui.jfrog_type_check_box.isChecked():
-                hidden_col.append(1)
-            else:
-                show_col.append(1)
-
-            if not self.jfrog_ui.jfrog_size_check_box.isChecked():
-                hidden_col.append(2)
-            else:
-                show_col.append(2)
-
-            if not self.jfrog_ui.jfrog_created_check_box.isChecked():
-                hidden_col.append(3)
-            else:
-                show_col.append(3)
-
-            if not self.jfrog_ui.jfrog_modified_check_box.isChecked():
-                hidden_col.append(4)
-            else:
-                show_col.append(4)
-
-            if not self.jfrog_ui.jfrog_sha1_check_box.isChecked():
-                hidden_col.append(5)
-            else:
-                show_col.append(5)
-
-            if not self.jfrog_ui.jfrog_md5_check_box.isChecked():
-                hidden_col.append(6)
-            else:
-                show_col.append(6)
-
-            if not self.jfrog_ui.jfrog_props_check_box.isChecked():
-                hidden_col.append(7)
-            else:
-                show_col.append(7)
-
-            self.populate_jfrog_sku_bundle_table(self.result_of_jfrog_list,hidden_col=hidden_col,show_col=show_col)
+            col_visibility = {'type': not self.jfrog_ui.jfrog_type_check_box.isChecked(),
+                              'size':not self.jfrog_ui.jfrog_size_check_box.isChecked(),
+                              'created':not self.jfrog_ui.jfrog_created_check_box.isChecked(),
+                              'modified':not self.jfrog_ui.jfrog_modified_check_box.isChecked(),
+                              'sha1':not self.jfrog_ui.jfrog_sha1_check_box.isChecked(),
+                              'md5':not self.jfrog_ui.jfrog_md5_check_box.isChecked(),
+                              'props':not self.jfrog_ui.jfrog_props_check_box.isChecked()}
+            self.populate_jfrog_sku_bundle_table(self.result_of_jfrog_list,col_vis=col_visibility)
         except Exception as e:
             print (str(e))
 
-    def populate_jfrog_sku_bundle_table(self,result_orig,hidden_col=None,show_col=None):
+    def populate_jfrog_sku_bundle_table(self,result_orig,col_vis=None):
         try:
             result = result_orig.copy()
             header = result.pop(0)
             rn = [str(c+1) for c in range(0,len(result))]
             data = pd.DataFrame(result, columns=header,index=rn)
-            self.model = TableModel(data)
+            model = TableModel(data)
+            self.jfrog_ui.jfrog_all_tableview.setModel(model)
             self.jfrog_ui.jfrog_all_tableview.setSelectionBehavior(QAbstractItemView.SelectRows)
-            self.jfrog_ui.jfrog_all_tableview.setModel(self.model)
             self.jfrog_ui.jfrog_all_tableview.resizeColumnsToContents()
-            if hidden_col is not None:
-                for hc in hidden_col:
-                    self.jfrog_ui.jfrog_all_tableview.setColumnHidden(hc, True)
-            if show_col is not None:
-                for sc in show_col:
-                    self.jfrog_ui.jfrog_all_tableview.setColumnHidden(sc, False)
-            if hidden_col is None and show_col is None:
+            #Hide or unhide column
+            if col_vis is not None:
+                for key, value in col_vis.items():
+                    if key == 'type':
+                        self.jfrog_ui.jfrog_all_tableview.setColumnHidden(1, value)
+                    if key == 'size':
+                        self.jfrog_ui.jfrog_all_tableview.setColumnHidden(2, value)
+                    if key == 'created':
+                        self.jfrog_ui.jfrog_all_tableview.setColumnHidden(3, value)
+                    if key == 'modified':
+                        self.jfrog_ui.jfrog_all_tableview.setColumnHidden(4, value)
+                    if key == 'sha1':
+                        self.jfrog_ui.jfrog_all_tableview.setColumnHidden(5, value)
+                    if key == 'md5':
+                        self.jfrog_ui.jfrog_all_tableview.setColumnHidden(6, value)
+                    if key == 'props':
+                        self.jfrog_ui.jfrog_all_tableview.setColumnHidden(7, value)
+            #Unhide all column
+            if col_vis is None:
                 for i in range(1,8):
                     self.jfrog_ui.jfrog_all_tableview.setColumnHidden(i, False)
         except Exception as e:
