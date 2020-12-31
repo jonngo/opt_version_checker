@@ -1208,23 +1208,30 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             self.jfrog_ui = Ui_jfrog_widget()
             self.jfrog_ui.setupUi(self.jfrog_widget)
             #Jfrog Artifactory Signals
-            self.jfrog_ui.jfrog_load_push_button.clicked.connect(self.load_selected_sku_bundle)
-            self.jfrog_ui.jfrog_build_ver_line_edit.returnPressed.connect(self.load_build_list)
+            self.jfrog_ui.jfrog_main_push_button.clicked.connect(self.load_selected_sku_bundle)
+            self.jfrog_ui.jfrog_version_combo_box.activated.connect(self.load_build_content)
+            self.jfrog_ui.jfrog_filter_push_button.clicked.connect(self.filter_jfrog_result)
         except Exception as e:
             print (str(e))
 
     def open_jfrog_widget(self):
         try:
-            self.jfrog_widget.hide()
-            self.jfrog_widget.show()
+            self.jfrog_art_object = JfrogArtifactory(self.conf_jfrog_path)
+            self.jfrog_ui.jfrog_version_combo_box.clear()
+            ubn = self.jfrog_art_object.unique_build_number()
+            if ubn:
+                ubn.sort()
+                self.jfrog_ui.jfrog_version_combo_box.addItems(ubn)
+                self.jfrog_widget.hide()
+                self.jfrog_widget.show()
+            else:
+                self.dialog("Unable to retrieve list of build versions!", "Build Number")
         except Exception as e:
             print (str(e))
 
-    #Jfrog Artifactory slot when Load button is clicked
-    def load_build_list(self):
+    def load_build_content(self):
         try:
-            jfrog_art = JfrogArtifactory(self.conf_jfrog_path)
-            self.result_of_jfrog_list = jfrog_art.load_artifact(self.jfrog_ui.jfrog_build_ver_line_edit.text())
+            self.result_of_jfrog_list = self.jfrog_art_object.filter_artifact(self.jfrog_ui.jfrog_version_combo_box.currentText())
             self.populate_jfrog_sku_bundle_table(self.result_of_jfrog_list)
         except Exception as e:
             print (str(e))
@@ -1238,7 +1245,52 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         except Exception as e:
             print (str(e))
 
-    def populate_jfrog_sku_bundle_table(self,result_orig):
+    def filter_jfrog_result(self):
+        try:
+            self.result_of_jfrog_list = self.jfrog_art_object.filter_artifact(self.jfrog_ui.jfrog_version_combo_box.currentText())
+            hidden_col = []
+            show_col = []
+
+            if not self.jfrog_ui.jfrog_type_check_box.isChecked():
+                hidden_col.append(1)
+            else:
+                show_col.append(1)
+
+            if not self.jfrog_ui.jfrog_size_check_box.isChecked():
+                hidden_col.append(2)
+            else:
+                show_col.append(2)
+
+            if not self.jfrog_ui.jfrog_created_check_box.isChecked():
+                hidden_col.append(3)
+            else:
+                show_col.append(3)
+
+            if not self.jfrog_ui.jfrog_modified_check_box.isChecked():
+                hidden_col.append(4)
+            else:
+                show_col.append(4)
+
+            if not self.jfrog_ui.jfrog_sha1_check_box.isChecked():
+                hidden_col.append(5)
+            else:
+                show_col.append(5)
+
+            if not self.jfrog_ui.jfrog_md5_check_box.isChecked():
+                hidden_col.append(6)
+            else:
+                show_col.append(6)
+
+            if not self.jfrog_ui.jfrog_props_check_box.isChecked():
+                hidden_col.append(7)
+            else:
+                show_col.append(7)
+
+            self.populate_jfrog_sku_bundle_table(self.result_of_jfrog_list,hidden_col=hidden_col,show_col=show_col)
+        except Exception as e:
+            print (str(e))
+
+    def populate_jfrog_sku_bundle_table(self,result_orig,hidden_col=None,show_col=None):
         try:
             result = result_orig.copy()
             header = result.pop(0)
@@ -1248,6 +1300,15 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             self.jfrog_ui.jfrog_all_tableview.setSelectionBehavior(QAbstractItemView.SelectRows)
             self.jfrog_ui.jfrog_all_tableview.setModel(self.model)
             self.jfrog_ui.jfrog_all_tableview.resizeColumnsToContents()
+            if hidden_col is not None:
+                for hc in hidden_col:
+                    self.jfrog_ui.jfrog_all_tableview.setColumnHidden(hc, True)
+            if show_col is not None:
+                for sc in show_col:
+                    self.jfrog_ui.jfrog_all_tableview.setColumnHidden(sc, False)
+            if hidden_col is None and show_col is None:
+                for i in range(1,8):
+                    self.jfrog_ui.jfrog_all_tableview.setColumnHidden(i, False)
         except Exception as e:
             print (str(e))
 

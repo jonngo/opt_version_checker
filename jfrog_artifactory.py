@@ -4,23 +4,34 @@ from subprocess import Popen,PIPE
 class JfrogArtifactory:
     def __init__(self,path):
         self.path = path
+        self.load_all()
 
-    def load_artifact(self,build):
-        process = Popen(["jfrog", "rt", "s", self.path+build+"/"], stdout=PIPE, stderr=PIPE)
+    def load_all(self):
+        process = Popen(["jfrog", "rt", "s", self.path], stdout=PIPE, stderr=PIPE)
         stdout, stderr = process.communicate()
-        s = stdout.decode("utf-8")
+        self.all_repo_info = json.loads(stdout.decode("utf-8"))
 
-        build_json = json.loads(s)
+    def unique_build_number(self):
+        try:
+            build_num = []
+            for row in self.all_repo_info:
+                build_num.append(row['props']['build.number'][0])
+            return list(set(build_num))
+        except Exception as e:
+            return []
 
-        # header = ['Path', 'Type', 'Size', 'Created', 'Modified', 'sha1', 'md5', 'Props']
-        header = ['Path', 'Size', 'Created', 'Modified', 'sha1', 'md5']
+    def filter_artifact(self, build_num):
+        content = []
 
-        build_list = []
-        build_list.append(header)
+        for row in self.all_repo_info:
+            if row['props']['build.number'][0] == build_num:
+                content.append([row['path'], row['type'], row['size'], row['created'], row['modified'], row['sha1'], row['md5'], row['props']])
 
-        for row in build_json:
-            print(row)
-            # build_list.append([row['path'], row['type'], row['size'], row['created'], row['modified'], row['sha1'], row['md5'], row['props']])
-            build_list.append([row['path'], row['size'], row['created'], row['modified'], row['sha1'], row['md5']])
+        content.sort()
+        content.insert(0, ['Path', 'Type', 'Size', 'Created', 'Modified', 'SHA1', 'MD5', 'Props'])
+        return content
 
-        return build_list
+# if __name__ == "__main__":
+#     jfrog_art = JfrogArtifactory('fw-sku-release-dev/firmware/sequoia/')
+#     # result_of_jfrog_list = jfrog_art.load_artifact('02.01.0058.0')
+#     print (jfrog_art.unique_build_number())

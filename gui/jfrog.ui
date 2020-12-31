@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>887</width>
-    <height>613</height>
+    <width>663</width>
+    <height>448</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -46,16 +46,40 @@
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>Build version</string>
-        </property>
-       </widget>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Build version</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="jfrog_version_combo_box"/>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="jfrog_download_all_push_button">
+          <property name="text">
+           <string>Download All</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
-      <item row="0" column="1">
-       <widget class="QLineEdit" name="jfrog_build_ver_line_edit"/>
-      </item>
-      <item row="1" column="0" colspan="2">
+      <item row="1" column="0">
        <widget class="QTableView" name="jfrog_all_tableview"/>
       </item>
      </layout>
@@ -63,6 +87,83 @@
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QCheckBox" name="jfrog_type_check_box">
+       <property name="text">
+        <string>type</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="jfrog_size_check_box">
+       <property name="text">
+        <string>size</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="jfrog_created_check_box">
+       <property name="text">
+        <string>created</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="jfrog_modified_check_box">
+       <property name="text">
+        <string>modified</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="jfrog_sha1_check_box">
+       <property name="text">
+        <string>sha1</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="jfrog_md5_check_box">
+       <property name="text">
+        <string>md5</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="jfrog_props_check_box">
+       <property name="text">
+        <string>props</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="jfrog_filter_push_button">
+       <property name="text">
+        <string>Filter</string>
+       </property>
+      </widget>
+     </item>
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
@@ -77,9 +178,16 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="jfrog_load_push_button">
+      <widget class="QPushButton" name="jfrog_download_push_button">
        <property name="text">
-        <string>Load</string>
+        <string>Download</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="jfrog_main_push_button">
+       <property name="text">
+        <string>Main</string>
        </property>
       </widget>
      </item>
