@@ -1208,8 +1208,8 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             self.jfrog_ui = Ui_jfrog_widget()
             self.jfrog_ui.setupUi(self.jfrog_widget)
             #Jfrog Artifactory Signals
-            self.jfrog_ui.jfrog_main_push_button.clicked.connect(self.load_selected_sku_bundle)
-            self.jfrog_ui.jfrog_version_combo_box.activated.connect(self.load_build_content)
+            self.jfrog_ui.jfrog_main_push_button.clicked.connect(self.copy_selected_build_to_main)
+            self.jfrog_ui.jfrog_version_combo_box.activated.connect(self.filter_jfrog_result)
             self.jfrog_ui.jfrog_filter_push_button.clicked.connect(self.filter_jfrog_result)
         except Exception as e:
             print (str(e))
@@ -1229,17 +1229,19 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         except Exception as e:
             print (str(e))
 
-    def load_build_content(self):
-        try:
-            self.result_of_jfrog_list = self.jfrog_art_object.filter_artifact(self.jfrog_ui.jfrog_version_combo_box.currentText())
-            self.populate_jfrog_sku_bundle_table(self.result_of_jfrog_list)
-        except Exception as e:
-            print (str(e))
+    def jfrog_check_box_state_of_column(self):
+        return {'type': not self.jfrog_ui.jfrog_type_check_box.isChecked(),
+                'size': not self.jfrog_ui.jfrog_size_check_box.isChecked(),
+                'created': not self.jfrog_ui.jfrog_created_check_box.isChecked(),
+                'modified': not self.jfrog_ui.jfrog_modified_check_box.isChecked(),
+                'sha1': not self.jfrog_ui.jfrog_sha1_check_box.isChecked(),
+                'md5': not self.jfrog_ui.jfrog_md5_check_box.isChecked(),
+                'props': not self.jfrog_ui.jfrog_props_check_box.isChecked()}
 
-    def load_selected_sku_bundle(self):
+    def copy_selected_build_to_main(self):
         try:
             if self.result_of_jfrog_list:
-                self.populate_jfrog_table(self.result_of_jfrog_list)
+                self.populate_jfrog_table(self.jfrog_table,self.result_of_jfrog_list,self.jfrog_check_box_state_of_column())
                 self.jfrog_widget.hide()
                 self.show_hide_panel({'jfrog': True})
         except Exception as e:
@@ -1248,60 +1250,36 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
     def filter_jfrog_result(self):
         try:
             self.result_of_jfrog_list = self.jfrog_art_object.filter_artifact(self.jfrog_ui.jfrog_version_combo_box.currentText())
-            col_visibility = {'type': not self.jfrog_ui.jfrog_type_check_box.isChecked(),
-                              'size':not self.jfrog_ui.jfrog_size_check_box.isChecked(),
-                              'created':not self.jfrog_ui.jfrog_created_check_box.isChecked(),
-                              'modified':not self.jfrog_ui.jfrog_modified_check_box.isChecked(),
-                              'sha1':not self.jfrog_ui.jfrog_sha1_check_box.isChecked(),
-                              'md5':not self.jfrog_ui.jfrog_md5_check_box.isChecked(),
-                              'props':not self.jfrog_ui.jfrog_props_check_box.isChecked()}
-            self.populate_jfrog_sku_bundle_table(self.result_of_jfrog_list,col_vis=col_visibility)
+            self.populate_jfrog_table(self.jfrog_ui.jfrog_all_tableview,self.result_of_jfrog_list,self.jfrog_check_box_state_of_column())
         except Exception as e:
             print (str(e))
 
-    def populate_jfrog_sku_bundle_table(self,result_orig,col_vis=None):
+    def populate_jfrog_table(self, table, result_orig, col_vis):
         try:
             result = result_orig.copy()
             header = result.pop(0)
             rn = [str(c+1) for c in range(0,len(result))]
             data = pd.DataFrame(result, columns=header,index=rn)
             model = TableModel(data)
-            self.jfrog_ui.jfrog_all_tableview.setModel(model)
-            self.jfrog_ui.jfrog_all_tableview.setSelectionBehavior(QAbstractItemView.SelectRows)
-            self.jfrog_ui.jfrog_all_tableview.resizeColumnsToContents()
+            table.setModel(model)
+            table.setSelectionBehavior(QAbstractItemView.SelectRows)
+            table.resizeColumnsToContents()
             #Hide or unhide column
-            if col_vis is not None:
-                for key, value in col_vis.items():
-                    if key == 'type':
-                        self.jfrog_ui.jfrog_all_tableview.setColumnHidden(1, value)
-                    if key == 'size':
-                        self.jfrog_ui.jfrog_all_tableview.setColumnHidden(2, value)
-                    if key == 'created':
-                        self.jfrog_ui.jfrog_all_tableview.setColumnHidden(3, value)
-                    if key == 'modified':
-                        self.jfrog_ui.jfrog_all_tableview.setColumnHidden(4, value)
-                    if key == 'sha1':
-                        self.jfrog_ui.jfrog_all_tableview.setColumnHidden(5, value)
-                    if key == 'md5':
-                        self.jfrog_ui.jfrog_all_tableview.setColumnHidden(6, value)
-                    if key == 'props':
-                        self.jfrog_ui.jfrog_all_tableview.setColumnHidden(7, value)
-            #Unhide all column
-            if col_vis is None:
-                for i in range(1,8):
-                    self.jfrog_ui.jfrog_all_tableview.setColumnHidden(i, False)
-        except Exception as e:
-            print (str(e))
-
-    def populate_jfrog_table(self,result):
-        try:
-            header = result.pop(0)
-            rn = [str(c+1) for c in range(0,len(result))]
-            data = pd.DataFrame(result, columns=header,index=rn)
-            self.model = TableModel(data)
-            self.jfrog_table.setSelectionBehavior(QAbstractItemView.SelectRows)
-            self.jfrog_table.setModel(self.model)
-            self.jfrog_table.resizeColumnsToContents()
+            for key, value in col_vis.items():
+                if key == 'type':
+                    table.setColumnHidden(1, value)
+                if key == 'size':
+                    table.setColumnHidden(2, value)
+                if key == 'created':
+                    table.setColumnHidden(3, value)
+                if key == 'modified':
+                    table.setColumnHidden(4, value)
+                if key == 'sha1':
+                    table.setColumnHidden(5, value)
+                if key == 'md5':
+                    table.setColumnHidden(6, value)
+                if key == 'props':
+                    table.setColumnHidden(7, value)
         except Exception as e:
             print (str(e))
 
