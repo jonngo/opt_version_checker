@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>936</width>
-    <height>420</height>
+    <width>817</width>
+    <height>515</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -216,6 +216,9 @@
       <set>Qt::AlignCenter</set>
      </property>
      <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="settings_jfrog_path_line_edit"/>
+      </item>
       <item row="0" column="0">
        <widget class="QLabel" name="settings_jfrog_rep_path_label">
         <property name="text">
@@ -223,8 +226,52 @@
         </property>
        </widget>
       </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="settings_jfrog_download_path_label">
+        <property name="text">
+         <string>Download Path</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="settings_jfrog_download_path_line_edit"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="export_group_box">
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="title">
+      <string>EXPORT</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="0" column="0">
+       <widget class="QLabel" name="settings_export_format_label">
+        <property name="text">
+         <string>Format</string>
+        </property>
+       </widget>
+      </item>
       <item row="0" column="1">
-       <widget class="QLineEdit" name="settings_jfrog_path_line_edit"/>
+       <widget class="QComboBox" name="settings_export_combo_box"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="settings_export_path">
+        <property name="text">
+         <string>Path</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="settings_export_path_line_edit"/>
       </item>
      </layout>
     </widget>
