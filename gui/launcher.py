@@ -18,6 +18,7 @@ from jbz_extraction import JobBundleExtraction
 from emv_version import EmvExtraction
 from tms_parameters import TmsExtraction
 from jfrog_artifactory import JfrogArtifactory
+from export_file import ExportToFile
 import sys
 from PyQt5.QtCore import Qt
 import pandas as pd
@@ -208,6 +209,16 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             self.tms_param_hide_pushbutton.clicked.connect(lambda state, x={'tms': False}: self.show_hide_panel(x))
             self.manifest_hide_pushbutton.clicked.connect(lambda state, x={'manifest': False}: self.show_hide_panel(x))
             self.emv_kernel_ver_hide_pushbutton.clicked.connect(lambda state, x={'emv': False}: self.show_hide_panel(x))
+
+            #export pushbutton
+            self.jfrog_export_pushbutton.clicked.connect(lambda state, x='jfrog': self.export_file(x))
+            self.jbz_pkg_version_export_pushbutton.clicked.connect(lambda state, x='jbz': self.export_file(x))
+            self.first_conf_other_pkg_version_export_pushbutton.clicked.connect(lambda state, x='first': self.export_file(x))
+            self.second_conf_other_pkg_version_export_pushbutton.clicked.connect(lambda state, x='second': self.export_file(x))
+            self.third_conf_other_pkg_version_export_pushbutton.clicked.connect(lambda state, x='third': self.export_file(x))
+            self.tms_param_export_pushbutton.clicked.connect(lambda state, x='tms': self.export_file(x))
+            self.manifest_export_pushbutton.clicked.connect(lambda state, x='manifest': self.export_file(x))
+            self.emv_kernel_ver_export_pushbutton.clicked.connect(lambda state, x='emv': self.export_file(x))
 
             #show_all view
             self.show_all_menu_item.triggered.connect(lambda state, x={'jfrog':True,'jbz':True,'first':True,'second':True,'third':True,'tms': True,'manifest': True,'emv': True}: self.show_hide_panel(x))
@@ -1452,6 +1463,34 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
 
         except Exception as e:
             print (str(e))
+
+    #Export file to selected format
+    def export_file(self, export_content_type):
+        result_to_export = []
+        try:
+            if export_content_type == 'jfrog':
+                result_to_export = self.result_of_jfrog_list
+            elif export_content_type == 'jbz':
+                result_to_export = self.result_jbz
+            elif export_content_type == 'first':
+                result_to_export = self.result_conf_other_1
+            elif export_content_type == 'second':
+                result_to_export = self.result_conf_other_2
+            elif export_content_type == 'third':
+                result_to_export = self.result_conf_other_3
+            elif export_content_type == 'tms':
+                result_to_export = self.result_tms
+            elif export_content_type == 'manifest':
+                result_to_export = self.result_manifest
+            elif export_content_type == 'emv':
+                result_to_export = self.result_emv
+            if result_to_export:
+                export_the_result = ExportToFile(self.conf_export_path, self.conf_export_format, result_to_export)
+                export_the_result.export()
+
+        except Exception as e:
+            print (str(e))
+
 
 # ████████╗ █████╗ ██████╗ ██╗     ███████╗    ███╗   ███╗ ██████╗ ██████╗ ███████╗██╗
 # ╚══██╔══╝██╔══██╗██╔══██╗██║     ██╔════╝    ████╗ ████║██╔═══██╗██╔══██╗██╔════╝██║
