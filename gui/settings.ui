@@ -217,7 +217,7 @@
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="1">
-       <widget class="QLineEdit" name="settings_jfrog_path_line_edit"/>
+       <widget class="QLineEdit" name="settings_jfrog_repo_path_line_edit"/>
       </item>
       <item row="0" column="0">
        <widget class="QLabel" name="settings_jfrog_rep_path_label">
@@ -264,7 +264,7 @@
        <widget class="QComboBox" name="settings_export_combo_box"/>
       </item>
       <item row="1" column="0">
-       <widget class="QLabel" name="settings_export_path">
+       <widget class="QLabel" name="settings_export_path_label">
         <property name="text">
          <string>Path</string>
         </property>

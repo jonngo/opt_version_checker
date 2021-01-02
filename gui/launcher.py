@@ -97,12 +97,27 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
 
                 for conf in data['jfrog_cfg']:
                     """
-                    Configuration variables of jfrog repo path
-                        - conf_jfrog_path
+                    Configuration variables of jfrog paths
+                        - conf_jfrog_repo_path
+                        - conf_jfrog_download_path
                     """
 
                     if 'jfrog_repo_path' in conf:
-                        self.conf_jfrog_path = self.end_with_slash(self.determine_path(conf['jfrog_repo_path']))
+                        self.conf_jfrog_repo_path = self.end_with_slash(self.determine_path(conf['jfrog_repo_path']))
+                    elif 'jfrog_download_path' in conf:
+                        self.conf_jfrog_download_path = self.end_with_slash(self.determine_path(conf['jfrog_download_path']))
+
+                for conf in data['export_cfg']:
+                    """
+                    Configuration variables of export file
+                        - conf_export_format
+                        - conf_export_path
+                    """
+
+                    if 'export_format' in conf:
+                        self.conf_export_format = conf['export_format']
+                    elif 'export_path' in conf:
+                        self.conf_export_path = self.end_with_slash(self.determine_path(conf['export_path']))
 
                 #Initialize all version result list
                 self.result_jbz = None
@@ -218,9 +233,10 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             self.settings_ui = Ui_settings_widget()
             self.settings_ui.setupUi(self.settings_widget)
             self.settings_ui.settings_extract_path_line_edit.setFocus()
-            self.restore_previous_conf()
             self.settings_ui.settings_reset_push_button.clicked.connect(self.reset_config)
             self.settings_ui.settings_save_push_button.clicked.connect(self.save_config)
+            self.settings_ui.settings_export_combo_box.addItems(['CSV','HTML','PDF'])
+            self.restore_previous_conf()
         except Exception as e:
             print (str(e))
 
@@ -232,41 +248,57 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             print (str(e))
 
     def restore_previous_conf(self):
-        self.settings_ui.settings_extract_path_line_edit.setText(self.conf_base_xtrak_path)
-        self.settings_ui.settings_seven_zip_line_edit.setText(self.conf_sevenZ_exe)
-        self.settings_ui.settings_mnf_file_line_edit.setText(self.conf_manifest)
-        self.settings_ui.settings_pkg_loc_line_edit.setText(self.conf_default_pkg_folder)
-        self.settings_ui.settings_conf_emv_url_line_edit.setText(self.conf_emv_ver_url)
-        self.settings_ui.settings_chrome_wd_line_edit.setText(self.conf_chrome_driver_filepath)
-        self.settings_ui.settings_load_save_path_line_edit.setText(self.conf_load_path)
-        self.settings_ui.settings_tms_path_line_edit.setText(self.conf_tms_path)
-        self.settings_ui.settings_compare_path_line_edit.setText(self.conf_compare_path)
-        self.settings_ui.settings_jfrog_path_line_edit.setText(self.conf_jfrog_path)
+        try:
+            self.settings_ui.settings_extract_path_line_edit.setText(self.conf_base_xtrak_path)
+            self.settings_ui.settings_seven_zip_line_edit.setText(self.conf_sevenZ_exe)
+            self.settings_ui.settings_mnf_file_line_edit.setText(self.conf_manifest)
+            self.settings_ui.settings_pkg_loc_line_edit.setText(self.conf_default_pkg_folder)
+            self.settings_ui.settings_conf_emv_url_line_edit.setText(self.conf_emv_ver_url)
+            self.settings_ui.settings_chrome_wd_line_edit.setText(self.conf_chrome_driver_filepath)
+            self.settings_ui.settings_load_save_path_line_edit.setText(self.conf_load_path)
+            self.settings_ui.settings_tms_path_line_edit.setText(self.conf_tms_path)
+            self.settings_ui.settings_compare_path_line_edit.setText(self.conf_compare_path)
+            self.settings_ui.settings_jfrog_repo_path_line_edit.setText(self.conf_jfrog_repo_path)
+            self.settings_ui.settings_jfrog_download_path_line_edit.setText(self.conf_jfrog_download_path)
+            self.settings_ui.settings_export_combo_box.setCurrentText(self.conf_export_format)
+            self.settings_ui.settings_export_path_line_edit.setText(self.conf_export_path)
+        except Exception as e:
+            print (str(e))
 
     def reset_config(self):
         self.restore_previous_conf()
 
     def config_to_json(self):
-        return '{"pkg_version_cfg": [{"base_xtrak_path": "'+self.conf_base_xtrak_path+'"},{"sevenZ_exe": "'+self.conf_sevenZ_exe+'"},{"manifest_file": "'+self.conf_manifest+'"},{"default_pkg_location": "'+self.conf_default_pkg_folder+'"}],"emv_version_cfg": [{"emv_ver_url": "'+self.conf_emv_ver_url+'"},{"chrome_driver_filepath": "'+self.conf_chrome_driver_filepath+'"}],"load_cfg": [{"load_path": "'+self.conf_load_path+'"}],"tms_cfg": [{"tms_path": "'+self.conf_tms_path+'"}],"compare_cfg": [{"compare_path": "'+self.conf_compare_path+'"}],"jfrog_cfg": [{"jfrog_repo_path": "'+self.conf_jfrog_path+'"}]}'
-
+        return '{"pkg_version_cfg": [{"base_xtrak_path": "' + self.conf_base_xtrak_path + '"},{"sevenZ_exe": "' + self.conf_sevenZ_exe + '"},{"manifest_file": "' + self.conf_manifest + '"},{"default_pkg_location": "' + self.conf_default_pkg_folder + '"}],' \
+                '"emv_version_cfg": [{"emv_ver_url": "' + self.conf_emv_ver_url + '"},{"chrome_driver_filepath": "' + self.conf_chrome_driver_filepath + '"}],' \
+                '"load_cfg": [{"load_path": "' + self.conf_load_path + '"}],' \
+                '"tms_cfg": [{"tms_path": "' + self.conf_tms_path + '"}],' \
+                '"compare_cfg": [{"compare_path": "' + self.conf_compare_path + '"}],' \
+                '"jfrog_cfg": [{"jfrog_repo_path": "' + self.conf_jfrog_repo_path + '"},{"jfrog_download_path":"' + self.conf_jfrog_download_path + '"}],' \
+                '"export_cfg": [{"export_format": "' + self.conf_export_format + '"},{"export_path":"' + self.conf_export_path + '"}]}'
     def save_config(self):
-        self.conf_base_xtrak_path = self.settings_ui.settings_extract_path_line_edit.text()
-        self.conf_sevenZ_exe = self.settings_ui.settings_seven_zip_line_edit.text()
-        self.conf_manifest = self.settings_ui.settings_mnf_file_line_edit.text()
-        self.conf_default_pkg_folder = self.settings_ui.settings_pkg_loc_line_edit.text()
-        self.conf_emv_ver_url = self.settings_ui.settings_conf_emv_url_line_edit.text()
-        self.conf_chrome_driver_filepath = self.settings_ui.settings_chrome_wd_line_edit.text()
-        self.conf_load_path = self.settings_ui.settings_load_save_path_line_edit.text()
-        self.conf_tms_path = self.settings_ui.settings_tms_path_line_edit.text()
-        self.conf_compare_path = self.settings_ui.settings_compare_path_line_edit.text()
-        self.conf_jfrog_path = self.settings_ui.settings_jfrog_path_line_edit.text()
-
         try:
+            self.conf_base_xtrak_path = self.settings_ui.settings_extract_path_line_edit.text()
+            self.conf_sevenZ_exe = self.settings_ui.settings_seven_zip_line_edit.text()
+            self.conf_manifest = self.settings_ui.settings_mnf_file_line_edit.text()
+            self.conf_default_pkg_folder = self.settings_ui.settings_pkg_loc_line_edit.text()
+            self.conf_emv_ver_url = self.settings_ui.settings_conf_emv_url_line_edit.text()
+            self.conf_chrome_driver_filepath = self.settings_ui.settings_chrome_wd_line_edit.text()
+            self.conf_load_path = self.settings_ui.settings_load_save_path_line_edit.text()
+            self.conf_tms_path = self.settings_ui.settings_tms_path_line_edit.text()
+            self.conf_compare_path = self.settings_ui.settings_compare_path_line_edit.text()
+            self.conf_jfrog_repo_path = self.settings_ui.settings_jfrog_repo_path_line_edit.text()
+            self.conf_jfrog_download_path = self.settings_ui.settings_jfrog_download_path_line_edit.text()
+            self.conf_export_format = self.settings_ui.settings_export_combo_box.currentText()
+            self.conf_export_path = self.settings_ui.settings_export_path_line_edit.text()
+
             with open('config.json', 'w') as outfile:
+                print(self.config_to_json())
                 json.dump(json.loads(self.config_to_json()), outfile)
                 self.dialog('Saved to config.json', 'Save')
                 self.settings_widget.hide()
         except Exception as e:
+            print (str(e))
             self.dialog('Error saving.', 'Save')
 
 
@@ -1216,7 +1248,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
 
     def open_jfrog_widget(self):
         try:
-            self.jfrog_art_object = JfrogArtifactory(self.conf_jfrog_path)
+            self.jfrog_art_object = JfrogArtifactory(self.conf_jfrog_repo_path)
             self.jfrog_ui.jfrog_version_combo_box.clear()
             ubn = self.jfrog_art_object.unique_build_number()
             if ubn:
