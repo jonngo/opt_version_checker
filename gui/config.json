@@ -1,26 +1,55 @@
 {
-    "pkg_version_cfg": [
-        {"base_xtrak_path":"home"},
-        {"sevenZ_exe":"C:/Program Files/7-Zip/7z.exe"},
-        {"manifest_file":"manifest.mnf"},
-        {"default_pkg_location":"home"}
-    ],
-    "emv_version_cfg": [
-        {"emv_ver_url": "https://conf.invenco.com/display/CC/EMV+Versions"},
-        {"chrome_driver_filepath":"C:/Users/jonathann/invenco/my_hack_project/opt_version_checker/chromedriver_win32/chromedriver.exe"}
-    ],
-    "load_cfg": [
-        {"load_path": "home"}
-    ],
-    "tms_cfg": [
-        {"tms_path": "home"}
-    ],
-    "compare_cfg": [
-        {"compare_path": "home"}
-    ],
-	"jfrog_cfg": [
-		{
-			"jfrog_repo_path": "fw-sku-bundles-dev/firmware/sequoia/"
-		}
-	]
+  "pkg_version_cfg": [
+    {
+      "base_xtrak_path": "home"
+    },
+    {
+      "sevenZ_exe": "C:/Program Files/7-Zip/7z.exe"
+    },
+    {
+      "manifest_file": "manifest.mnf"
+    },
+    {
+      "default_pkg_location": "home"
+    }
+  ],
+  "emv_version_cfg": [
+    {
+      "emv_ver_url": "https://conf.invenco.com/display/CC/EMV+Versions"
+    },
+    {
+      "chrome_driver_filepath": "chromedriver_win32/chromedriver.exe"
+    }
+  ],
+  "load_cfg": [
+    {
+      "load_path": "home"
+    }
+  ],
+  "tms_cfg": [
+    {
+      "tms_path": "home"
+    }
+  ],
+  "compare_cfg": [
+    {
+      "compare_path": "home"
+    }
+  ],
+  "jfrog_cfg": [
+    {
+      "jfrog_repo_path": "fw-sku-bundles-dev/firmware/sequoia/"
+    },
+    {
+      "jfrog_download_path": "home"
+    }
+  ],
+  "export_cfg": [
+    {
+      "export_format": "CSV"
+    },
+    {
+      "export_path": "home"
+    }
+  ]
 }
