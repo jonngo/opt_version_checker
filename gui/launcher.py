@@ -276,21 +276,22 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
                 '"compare_cfg": [{"compare_path": "' + self.conf_compare_path + '"}],' \
                 '"jfrog_cfg": [{"jfrog_repo_path": "' + self.conf_jfrog_repo_path + '"},{"jfrog_download_path":"' + self.conf_jfrog_download_path + '"}],' \
                 '"export_cfg": [{"export_format": "' + self.conf_export_format + '"},{"export_path":"' + self.conf_export_path + '"}]}'
+
     def save_config(self):
         try:
-            self.conf_base_xtrak_path = self.settings_ui.settings_extract_path_line_edit.text()
-            self.conf_sevenZ_exe = self.settings_ui.settings_seven_zip_line_edit.text()
+            self.conf_base_xtrak_path = self.determine_path(self.settings_ui.settings_extract_path_line_edit.text())
+            self.conf_sevenZ_exe = self.determine_path(self.settings_ui.settings_seven_zip_line_edit.text())
             self.conf_manifest = self.settings_ui.settings_mnf_file_line_edit.text()
-            self.conf_default_pkg_folder = self.settings_ui.settings_pkg_loc_line_edit.text()
+            self.conf_default_pkg_folder = self.determine_path(self.settings_ui.settings_pkg_loc_line_edit.text())
             self.conf_emv_ver_url = self.settings_ui.settings_conf_emv_url_line_edit.text()
-            self.conf_chrome_driver_filepath = self.settings_ui.settings_chrome_wd_line_edit.text()
-            self.conf_load_path = self.settings_ui.settings_load_save_path_line_edit.text()
-            self.conf_tms_path = self.settings_ui.settings_tms_path_line_edit.text()
-            self.conf_compare_path = self.settings_ui.settings_compare_path_line_edit.text()
+            self.conf_chrome_driver_filepath = self.determine_path(self.settings_ui.settings_chrome_wd_line_edit.text())
+            self.conf_load_path = self.determine_path(self.settings_ui.settings_load_save_path_line_edit.text())
+            self.conf_tms_path = self.determine_path(self.settings_ui.settings_tms_path_line_edit.text())
+            self.conf_compare_path = self.determine_path(self.settings_ui.settings_compare_path_line_edit.text())
             self.conf_jfrog_repo_path = self.settings_ui.settings_jfrog_repo_path_line_edit.text()
-            self.conf_jfrog_download_path = self.settings_ui.settings_jfrog_download_path_line_edit.text()
+            self.conf_jfrog_download_path = self.determine_path(self.settings_ui.settings_jfrog_download_path_line_edit.text())
             self.conf_export_format = self.settings_ui.settings_export_combo_box.currentText()
-            self.conf_export_path = self.settings_ui.settings_export_path_line_edit.text()
+            self.conf_export_path = self.determine_path(self.settings_ui.settings_export_path_line_edit.text())
 
             with open('config.json', 'w') as outfile:
                 print(self.config_to_json())
