@@ -23,7 +23,7 @@ import sys
 from PyQt5.QtCore import Qt
 import pandas as pd
 import json
-
+import time
 
 class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jfrog_widget, Ui_save_widget, Ui_load_widget, Ui_map_widget, Ui_compare_widget, Ui_settings_widget):
 
@@ -366,6 +366,11 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
                     self.active_comparison_list.append([tag['ref'],self.find_package_version(tag['pkg']), self.find_manifest_version(tag['mnf']), self.find_tms_version(tag['tms']), self.find_emv_version(tag['emv'])])
 
                 self.populate_generic_table(self.compare_ui.compare_table, self.active_comparison_list)
+
+                #temporary code to export the comparison to a csv file
+                df = pd.DataFrame(self.active_comparison_list, columns=['Name','Package','Manifest','TMS','EMV'])
+
+                df.to_csv(self.conf_load_path + time.strftime("%Y%m%d%H%M%S") + '_comparison' + ".csv")
 
         except Exception as e:
             print (str(e))
@@ -1285,6 +1290,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
     def copy_selected_build_to_main(self):
         try:
             if self.result_of_jfrog_list:
+                self.result_of_jfrog_list.insert(0, ['Path', 'Type', 'Size', 'Created', 'Modified', 'SHA1', 'MD5', 'Props'])
                 self.populate_jfrog_table(self.jfrog_table,self.result_of_jfrog_list,self.jfrog_check_box_state_of_column())
                 self.jfrog_widget.hide()
                 self.show_hide_panel({'jfrog': True})
@@ -1298,9 +1304,9 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
         except Exception as e:
             print (str(e))
 
-    def populate_jfrog_table(self, table, result_orig, col_vis):
+    def populate_jfrog_table(self, table, result, col_vis):
         try:
-            result = result_orig.copy()
+            # result = result_orig.copy()
             header = result.pop(0)
             rn = [str(c+1) for c in range(0,len(result))]
             data = pd.DataFrame(result, columns=header,index=rn)
@@ -1467,25 +1473,53 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
     #Export file to selected format
     def export_file(self, export_content_type):
         result_to_export = []
+        export_header = []
+        column_state = {}
+        title = ''
         try:
             if export_content_type == 'jfrog':
                 result_to_export = self.result_of_jfrog_list
+                export_header = ['Path', 'Type', 'Size', 'Created', 'Modified', 'SHA1', 'MD5', 'Props']
+                column_state = self.jfrog_check_box_state_of_column()
+                title = "jfrog"
             elif export_content_type == 'jbz':
                 result_to_export = self.result_jbz
+                title = 'jbz'
             elif export_content_type == 'first':
                 result_to_export = self.result_conf_other_1
+                title = 'other_pkg_1'
             elif export_content_type == 'second':
                 result_to_export = self.result_conf_other_2
+                title = 'other_pkg_2'
             elif export_content_type == 'third':
                 result_to_export = self.result_conf_other_3
+                title = 'other_pkg_3'
             elif export_content_type == 'tms':
                 result_to_export = self.result_tms
+                export_header = ['TAG', 'VALUE']
+                title = 'tms'
             elif export_content_type == 'manifest':
                 result_to_export = self.result_manifest
+                export_header = ['TAG', 'VERSION']
+                title = 'manifest'
             elif export_content_type == 'emv':
+                export_header = ['TAG', 'VERSION']
                 result_to_export = self.result_emv
+                title = 'emv'
+
+            #Packages will have extra Path column if it was extracted (Source > Packages), but only 2 columns if it is loaded (File > Load)
+            #Set column state true = HIDE, and false = SHOW.
+            if export_content_type == 'jbz' or export_content_type == 'first' or export_content_type == 'second' or export_content_type == 'third':
+                if result_to_export:
+                    if len(result_to_export[0]) == 3:
+                        export_header = ['PACKAGE', 'PKG VER', 'PATH']
+                        column_state = {'PACKAGE':False,'PKG VER':False,'PATH':True}
+                    elif len(result_to_export[0]) == 2:
+                        export_header = ['PACKAGE', 'PKG VER']
+                        column_state = {'PACKAGE':False,'PKG VER':False}
+
             if result_to_export:
-                export_the_result = ExportToFile(self.conf_export_path, self.conf_export_format, result_to_export)
+                export_the_result = ExportToFile(self.conf_export_path, self.conf_export_format, result_to_export, export_header, column_state, title)
                 export_the_result.export()
 
         except Exception as e:
