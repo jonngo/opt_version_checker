@@ -39,32 +39,50 @@ class ExportToFile:
                     if num in incol:
                         new_row.append(inner_row)
                 new_content.append(new_row)
-            for a in new_content:
-                print(a)
         else:
             #Include all columns
             new_content = self.content
             new_header = self.header
 
         if self.format == 'HTML':
-            self.write_in_html(new_content,new_header)
-        elif self.format == 'PDF':
-            self.write_in_pdf(new_content,new_header)
+            return self.write_in_html(new_content,new_header)
+        elif self.format == 'XLSX':
+            return self.write_in_xlsx(new_content, new_header)
         elif self.format == 'CSV':
-            self.write_in_csv(new_content,new_header)
+            return self.write_in_csv(new_content,new_header)
 
     def write_in_html(self,content, header):
         print("\nExport in HTML format to " + self.path)
-        for row in content:
-            print(row)
+        try:
+            rn = [str(c + 1) for c in range(0, len(content))]
+            df = pd.DataFrame(content, columns=header, index=rn)
+            html = df.to_html()
+            f = self.path+time.strftime("%Y%m%d%H%M%S")+self.title+".html"
+            with open(f, 'w') as outfile:
+                outfile.write(html)
+                return True
+        except Exception as e:
+            print(e)
+            return False
 
-    def write_in_pdf(self,content, header):
-        print("\nExport in PDF format to " + self.path)
-        for row in content:
-            print(row)
+    def write_in_xlsx(self, content, header):
+        print("\nExport in XLSX format to " + self.path)
+        try:
+            rn = [str(c + 1) for c in range(0, len(content))]
+            df = pd.DataFrame(content, columns=header, index=rn)
+            df.to_excel(self.path+time.strftime("%Y%m%d%H%M%S")+self.title+".xlsx", index=rn)
+            return True
+        except Exception as e:
+            print(e)
+            return False
 
     def write_in_csv(self,content, header):
         print("\nExport in CSV format to " + self.path)
-        rn = [str(c + 1) for c in range(0, len(content))]
-        df = pd.DataFrame(content, columns=header, index=rn)
-        df.to_csv(self.path+time.strftime("%Y%m%d%H%M%S")+self.title+".csv")
+        try:
+            rn = [str(c + 1) for c in range(0, len(content))]
+            df = pd.DataFrame(content, columns=header, index=rn)
+            df.to_csv(self.path+time.strftime("%Y%m%d%H%M%S")+self.title+".csv")
+            return True
+        except Exception as e:
+            print(e)
+            return False

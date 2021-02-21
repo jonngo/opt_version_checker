@@ -246,7 +246,7 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
             self.settings_ui.settings_extract_path_line_edit.setFocus()
             self.settings_ui.settings_reset_push_button.clicked.connect(self.reset_config)
             self.settings_ui.settings_save_push_button.clicked.connect(self.save_config)
-            self.settings_ui.settings_export_combo_box.addItems(['CSV','HTML','PDF'])
+            self.settings_ui.settings_export_combo_box.addItems(['CSV','HTML','XLSX'])
             self.restore_previous_conf()
         except Exception as e:
             print (str(e))
@@ -1520,7 +1520,10 @@ class Launcher(Ui_MainWindow, Ui_pkg_widget, Ui_emv_widget, Ui_tms_widget, Ui_jf
 
             if result_to_export:
                 export_the_result = ExportToFile(self.conf_export_path, self.conf_export_format, result_to_export, export_header, column_state, title)
-                export_the_result.export()
+                if export_the_result.export():
+                    self.dialog('Saved to ' + self.conf_export_path, 'Save')
+                else:
+                    self.dialog('Error saving.', 'Save')
 
         except Exception as e:
             print (str(e))
